@@ -1,5 +1,4 @@
-# Sistema de Reservas de Ambientes
-
+# Sistema de F.U.T.E.C.R.A.
 ## Requerimientos
 
 Si se desea instalar este sistema se tiene los siguientes requisitos:
@@ -13,7 +12,7 @@ Si se desea instalar este sistema se tiene los siguientes requisitos:
 
 1.- Clonar el proyecto con git
 
-`git clone https://github.com/casiprogramador/reserva-ambientes.git`
+`git clone https://github.com/Orlandoguti/ProyectoGrado.git`
 
 2.- Instalar las dependecias de Laravel con composer
 
@@ -30,7 +29,7 @@ Si se desea instalar este sistema se tiene los siguientes requisitos:
 	DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=reserva-ambientes
+    DB_DATABASE=proyecto_grado
     DB_USERNAME=root
     DB_PASSWORD=
 
