@@ -21,7 +21,7 @@ class PersonaController extends Controller
             $query->where('nombre', 'like', '%' . $filtro . '%')
                 ->orWhere('num_documento', 'like', '%' . $filtro . '%');
         })
-        ->where('u.idrol', 2)
+        ->where('u.idrol', 3)
         ->orderBy('personas.nombre', 'asc')
         ->get();
 

@@ -60,7 +60,7 @@
                         </div>
                         <div class="row" style="justify-content: center;">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Fecha:</label>
+                                <label class="form-label">Fecha de Registro:</label>
                                 <input name="date" id="date" type="date" v-model="fecha" class="form-control" placeholder="Fecha de Registro" disabled>
                             </div>
                         </div>

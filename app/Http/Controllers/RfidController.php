@@ -27,10 +27,12 @@ class RfidController extends Controller
 
         if ($buscar==''){
             $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
+            ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos','rfids.idgenero','=','generos.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
             ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
             ->where('rfids.fecha','=',$fecha)
+            ->where('users.idrol', '=', 3)
             ->orderBy('rfids.created_at', 'desc')
             ->orderBy('rfids.estado', 'desc')->paginate(10);
             $total_estado0 = Rfid::where('estado', 0)->where('fecha','=', $fecha)->count();
@@ -40,9 +42,11 @@ class RfidController extends Controller
         else{
             $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
             ->join('generos','rfids.idgenero','=','generos.id')
+            ->join('users', 'personas.id', '=', 'users.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
             ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
             ->where('rfids.fecha','=',$fecha)
+            ->where('users.idrol', '=', 3)
             ->where('personas.'.$criterio, 'like', '%'. $buscar . '%')->orderBy('fecha', 'desc')->paginate(10);
 
             $total_estado0 = Rfid::where('estado', 0)->where('fecha','=', $fecha)->count();
@@ -73,6 +77,7 @@ class RfidController extends Controller
 
             $rfids = DB::table('rfids')
             ->join('personas', 'rfids.idpersona', '=', 'personas.id')
+            ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos', 'rfids.idgenero', '=', 'generos.id')
             ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
             ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
@@ -86,6 +91,7 @@ class RfidController extends Controller
                     ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
             })
             ->whereBetween('rfids.fecha', [$date1, $date2])
+            ->where('users.idrol', '=', 3)
             ->orderByDesc('rfids.created_at')
             ->orderBy('rfids.estado')
             ->orderBy('rfids.idgrupo')
@@ -98,14 +104,18 @@ class RfidController extends Controller
 
             $chartData = DB::table('rfids as r')
             ->join('personas as p', 'r.idpersona', '=', 'p.id')
+            ->join('users as u', 'p.id', '=', 'u.id')
             ->select(DB::raw('COUNT(r.idrfid) as total'), 'p.marca')
             ->whereBetween('fecha', [$date1, $date2])
+            ->where('u.idrol', '=', 3)
             ->groupBy('p.marca')
             ->get();
 
             $chartData2 = DB::table('rfids as r')
             ->join('personas as p', 'r.idpersona', '=', 'p.id')
+            ->join('users as u', 'p.id', '=', 'u.id')
             ->where('r.estado', '=', 2)
+            ->where('u.idrol', '=', 3)
             ->select('p.marca as marca', DB::raw('COUNT(r.estado) AS total'))
             ->whereBetween('fecha', [$date1, $date2])
             ->groupBy('p.marca')
@@ -113,7 +123,9 @@ class RfidController extends Controller
 
             $chartData3 = DB::table('rfids as r')
             ->join('personas as p', 'r.idpersona', '=', 'p.id')
+            ->join('users as u', 'p.id', '=', 'u.id')
             ->where('r.estado', '=', 2)
+            ->where('u.idrol', '=', 3)
             ->select('p.marca as marca', DB::raw('COUNT(r.estado) AS total'), DB::raw('MONTH(r.fecha) AS mes'))
             ->groupBy('p.marca', DB::raw('MONTH(r.fecha)'))
             ->get();
@@ -128,6 +140,7 @@ class RfidController extends Controller
         else{
 
             $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
+            ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos','rfids.idgenero','=','generos.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
             ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
@@ -140,6 +153,7 @@ class RfidController extends Controller
                     ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
                     ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
             })
+            ->where('users.idrol', '=', 3)
             ->orderBy('rfids.created_at', 'desc')
             ->orderBy('rfids.estado', 'desc')->paginate(10);
             $total_estado0 = Rfid::where('estado', 0)->count();
@@ -148,20 +162,26 @@ class RfidController extends Controller
 
             $chartData = DB::table('rfids as r')
             ->join('personas as p', 'r.idpersona', '=', 'p.id')
+            ->join('users as u', 'p.id', '=', 'u.id')
             ->select(DB::raw('COUNT(r.idrfid) as total'), 'p.marca')
+            ->where('u.idrol', '=', 3)
             ->groupBy('p.marca')
             ->get();
 
             $chartData2 = DB::table('rfids as r')
             ->join('personas as p', 'r.idpersona', '=', 'p.id')
+            ->join('users as u', 'p.id', '=', 'u.id')
             ->where('r.estado', '=', 2)
             ->select('p.marca as marca', DB::raw('COUNT(r.estado) AS total'))
+            ->where('u.idrol', '=', 3)
             ->groupBy('p.marca')
             ->get();
 
             $chartData3 = DB::table('rfids as r')
             ->join('personas as p', 'r.idpersona', '=', 'p.id')
+            ->join('users as u', 'p.id', '=', 'u.id')
             ->where('r.estado', '=', 2)
+            ->where('u.idrol', '=', 3)
             ->select('p.marca as marca', DB::raw('COUNT(r.estado) AS total'), DB::raw('MONTH(r.fecha) AS mes'))
             ->groupBy('p.marca', DB::raw('MONTH(r.fecha)'))
             ->get();

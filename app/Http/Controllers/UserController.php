@@ -56,11 +56,17 @@ class UserController extends Controller
 
             $persona = new Persona();
             $persona->nombre = $request->nombre;
+
             $persona->marca = $request->marca;
             $persona->num_documento = $request->num_documento;
             $persona->direccion = $request->direccion;
             $persona->telefono = $request->telefono;
             $persona->idcargo = $request->idcargo;
+            if ($request->idrol == 2) {
+                $persona->marca = 'Sin Marca';
+                }else{
+                $persona->marca = $request->marca;
+                }
             $fileData = $request->file('imagen');
             if($fileData) { // Check if an image is uploaded
                 $fileName = time()."_".$fileData->getClientOriginalName();

@@ -236,9 +236,7 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom05" class="form-label">Estado del Ganado:</label>
                                             <input v-model="estado" type="text" class="form-control" id="validationCustom05" placeholder="Estado del Ganado" required disabled>
-                                            <div class="invalid-feedback">
-                                                No hay Estado.
-                                            </div>
+
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom06" class="form-label">Fecha:</label>
@@ -474,7 +472,7 @@ getOpcionSeleccionada(idpersona) {
 
                         if (registros.length > 0) {
                         // Mostrar alerta de que ya existe un registro con el mismo RFID y estado 3
-                        swal('Error!', `El ID RFID está registrado con una Marca.`, 'warning');
+                        swal('Error!', `El ID Tarjeta está registrado con una Marca.`, 'warning');
                         } else {
                         // No hay registros existentes, proceder con el registro
                         let formData = new FormData();
@@ -482,7 +480,7 @@ getOpcionSeleccionada(idpersona) {
                         formData.append('idpersona', me.idpersona);
                         formData.append('marca', me.marca);
                         formData.append('idgenero', me.idgenero);
-                        formData.append('estado', me.estado);
+                        formData.append('estado', me.estado=0);
                         formData.append('fecha', me.fecha);
 
                         axios.post('/rfid/registrar', formData)
@@ -502,6 +500,7 @@ getOpcionSeleccionada(idpersona) {
         }
        },
   cerrarModal(){
+      this.inputHabilitado = false;
       this.modal= false;
       this.tituloModal='';
       this.idrfid= 0;
@@ -526,7 +525,7 @@ getOpcionSeleccionada(idpersona) {
                       this.idpersona='';
                       this.idgenero='';
                       this.fecha = moment().format('YYYY-MM-DD');
-                      this.estado=0;
+                      this.estado='Ingresando al Corral';
                       this.tipoAccion = 1;
                       break;
                   }
@@ -646,7 +645,6 @@ setInterval(() => {
     }
 
     &::before{
-      content: "✔";
       left: 0;
       color: #000000;
     }

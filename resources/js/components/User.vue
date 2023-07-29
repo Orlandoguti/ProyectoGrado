@@ -38,7 +38,7 @@
                                         <option value="nombre">Nombre</option>
                                         <option value="num_documento">CI</option>
                                         <option value="marca">Marca</option>
-                                        <option value="telefono">Teléfono</option>
+                                        <option value="telefono">Celular</option>
                                       </select>
                                       <input type="text" v-model="buscar" @keyup.enter="listarPersona(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                       <button type="submit" @click="listarPersona(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -140,7 +140,7 @@
                                         <div class="row" style="margin-left: -14%; width: 40%; margin-top: 4.5%;">
                                             <div v-if="tipoAccion==1" style="margin-top: -15%;">
                                                 <label style="color:white;" class="form-label">Cambiar Tipo de Usuario:</label>
-                                                <input type="checkbox" class="inputcheck" @click="cambiarmodal" >
+                                                <input type="checkbox" class="inputcheck" @click="cambiarmodal">
                                             </div>
                                             <div class="user-card-img" style="display: block;">
                                                 <div class="row" style="margin-left: -11%;">
@@ -228,7 +228,7 @@
                                         <div class="row" style="margin-left: -14%; width: 40%; margin-top: 4.5%;">
                                             <div v-if="tipoAccion==1" style="margin-top: -15%;">
                                                 <label style="color:white;" class="form-label">Cambiar Tipo de Usuario:</label>
-                                                <input type="checkbox" class="inputcheck" @click="cambiarmodal1" >
+                                                <input type="checkbox" class="inputcheck" @click="cambiarmodal1" v-model="inputHabilitado">
                                             </div>
                                             <div class="user-card-img" style="display: block;">
                                                 <div class="row" style="margin-left: -11%;">
@@ -317,6 +317,7 @@
 
         data (){
             return {
+                inputHabilitado : false,
                 idcargo:0,
                 vermodal:1,
                 ing:'',
@@ -389,12 +390,14 @@
         },
         methods : {
             cambiarmodal() {
+            this.inputHabilitado = 'false';
             this.vermodal = 2;
             this.idrol = 3;
             this.imagen = '';
             this.$refs.fileInput.value = '';  // Cambia el valor para habilitar el input
             },
             cambiarmodal1() {
+            this.inputHabilitado = 'true';
             this.vermodal = 1;
             this.idrol = 2;
             this.imagen = '';
@@ -552,6 +555,8 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.nombre='';
+                this.inputHabilitado = 'false';
+                this.vermodal=1;
                 this.marca='';
                 this.num_documento='';
                 this.direccion='';
