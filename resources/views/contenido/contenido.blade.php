@@ -44,6 +44,10 @@
                  <template v-if="menu==10">
                     <grupos></grupos>
                 </template>
+                <template v-if="menu==11">
+                    <clasegresos></clasegresos>
+                </template>
+
                 @elseif (Auth::user()->idrol == 2)
 
                 <template v-if="menu==0">

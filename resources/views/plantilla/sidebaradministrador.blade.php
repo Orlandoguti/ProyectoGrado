@@ -382,12 +382,27 @@
                                         </i>Lista de Usuarios
                                     </a>
                                 </li>
-                                <li class="app-sidebar__heading">GRUPOS DE CARNEO</li>
-                                <li @click="menu=10">
+                                <li class="app-sidebar__heading">ADMINISTRACION</li>
+                                <li>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-user">
-                                        </i>Listar Grupos
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Lista de Administracion
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
+                                    <ul>
+                                        <li @click="menu=10">
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Listar Grupos
+                                            </a>
+                                        </li>
+                                        <li @click="menu=11">
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-id">
+                                                </i>Listar Clasificacion
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li class="app-sidebar__heading">CORRALES</li>
                                 <li @click="menu=7">

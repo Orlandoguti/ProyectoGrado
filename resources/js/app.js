@@ -37,6 +37,7 @@ Vue.component('noticias-afiliado', require('./components/NoticiasAfiliado.vue').
 Vue.component('user', require('./components/User.vue').default);
 Vue.component('lista', require('./components/Listas.vue').default);
 Vue.component('grupos', require('./components/Grupos.vue').default);
+Vue.component('clasegresos', require('./components/ClasEgresos.vue').default);
 Vue.component('detalle-lista', require('./components/DetalleLista.vue').default);
 Vue.component('ingreso-egreso', require('./components/IngresoEgresos.vue').default);
 

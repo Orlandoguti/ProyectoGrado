@@ -42,6 +42,7 @@
                             <table class="align-middle mb-0 table table-borderless table-striped table-hover">
                                 <thead>
                                 <tr>
+                                    <th class="text-center">#ID</th>
                                     <th class="text-center">Nombre</th>
                                     <th class="text-center">Detalles</th>
                                     <th class="text-center">Fecha de Registro</th>
@@ -50,6 +51,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="grupo in arrayGrupo" :key="grupo.id" v-if="grupo.id > 0">
+                                    <td class="text-center text-muted"  v-text="grupo.id"></td>
                                     <td class="text-center text-muted"  v-text="grupo.nombre"></td>
                                     <td class="text-center text-muted"  v-text="grupo.detalle"></td>
                                     <td class="text-center text-muted"  v-text="grupo.fecharegistro"></td>

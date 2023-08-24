@@ -80,7 +80,10 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/variables/indexVariables', 'VariablesController@index');
 
         Route::get('/IngresoEgreso/indexIngresoEgreso', 'IngresoEgresoController@indexIngresoEgreso');
-        Route::post('/egreso/registrar', 'IngresoEgresoController@store');
+        Route::post('/egreso/registrar', 'IngresoEgresoController@storeEgreso');
+        Route::get('/clasegresos/index', 'IngresoEgresoController@index');
+        Route::post('/clasegresos/registrar', 'IngresoEgresoController@storeclasegresos');
+        Route::get('/clasegresos/selectClasEgresos', 'IngresoEgresoController@selectClasEgresos');
 
 
 

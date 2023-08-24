@@ -84,6 +84,13 @@
                                         <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-4 mb-3">
+                                                    <label for="validationCustom04" class="form-label">Clasificacion del Egreso:</label>
+                                                    <select name="select" v-model="idclasegreso" id="validationCustom04" class="form-select" placeholder="Marca Afiliado" required>
+                                                        <option value="" disabled>Seleccione la Clasificacion</option>
+                                                        <option v-if="clasegreso.id >= 1" v-for="clasegreso in arrayClasEgreso" :key="clasegreso.id" :value="clasegreso.id" v-text="clasegreso.nombre" ></option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
                                                         <label class="form-label">Egreso: <span style="color: red;" v-show="egreso==0"></span></label>
                                                         <input type="text" value="0" class="form-control" v-model="egreso" placeholder="Ingrese Egreso....">
                                                     </div>
@@ -92,8 +99,8 @@
                                                         <input type="number" v-model="monto" class="form-control" placeholder="Monto">
                                                     </div>
                                                     <div class="col-md-4 mb-3">
-                                                        <label for="validationCustom01" class="form-label">Detalles:</label>
-                                                        <input type="text" value="0" class="form-control" v-model="detalleEgreso" placeholder="Ingrese Detalle...">
+                                                        <label for="validationCustom01" class="form-label">Descripcion:</label>
+                                                        <input type="text" value="0" class="form-control" v-model="detalle" placeholder="Ingrese Detalle...">
                                                   </div>
                                                 </div>
                                                 <div class="row" style="display: flex; justify-content: center;">
@@ -111,24 +118,26 @@
                                                 <table class="align-middle mb-0 table table-borderless table-striped table-hover">
                                                     <thead>
                                                         <tr>
+                                                            <th class="text-center">Clasificacion</th>
                                                             <th class="text-center">Egreso</th>
                                                             <th class="text-center">Monto</th>
-                                                            <th class="text-center">Detalles</th>
+                                                            <th class="text-center">Descripcion</th>
                                                             <th class="text-center">Opciones</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody v-if="arrayDetalle.length">
                                                         <tr v-for="(detalle,index) in arrayDetalle" :key="detalle.id">
-                                                           <td class="text-center text-muted" v-text="detalle.egreso"></td>
-                                                            <td class="text-center text-muted" v-text="detalle.monto"></td>
-                                                            <td class="text-center text-muted" v-text="detalle.detalleEgreso"></td>
-                                                            <td class="text-center text-muted">
-                                                                <button @click="eliminarDetalle(index)" type="button" class="btn btn-danger btn-sm">
-                                                                    <i class="icon-close"></i>
-                                                                </button>
-                                                            </td>
+                                                          <td class="text-center text-muted" v-text="detalle.nombreClaseEgresos"></td>
+                                                          <td class="text-center text-muted" v-text="detalle.egreso"></td>
+                                                          <td class="text-center text-muted" v-text="detalle.monto"></td>
+                                                          <td class="text-center text-muted" v-text="detalle.detalle"></td>
+                                                          <td class="text-center text-muted">
+                                                            <button @click="eliminarDetalle(index)" type="button" class="btn btn-danger btn-sm">
+                                                              <i class="icon-close"></i>
+                                                            </button>
+                                                          </td>
                                                         </tr>
-                                                    </tbody>
+                                                      </tbody>
                                                     <tbody v-else>
                                                         <tr>
                                                             <td class="text-center text-muted" colspan="6">
@@ -160,10 +169,10 @@ export default {
         tituloModal: '',
         tipoAccion: 0,
         egreso: '',
-        fecha: '',
         monto: 0,
-        detalleEgreso: '',
-        arrayPedido : [],
+        idclasegreso:'',
+        detalle: '',
+        arrayClasEgreso : [],
         arrayDetalle : [],
         chartData: [],
     };
@@ -175,7 +184,6 @@ export default {
   methods: {
     registrarEgreso(){
                 axios.post('/egreso/registrar', {
-            'fecha': this.fecha = moment().format('YYYY-MM-DD'),
             'data': this.arrayDetalle
         }).then(function(response) {
             swal(
@@ -192,64 +200,17 @@ export default {
             );
         });
             },
-    agregarDetalle(){
-
-                 let me=this;
-                 if(me.detalleEgreso==0){
-                       if(me.egreso==0){
-                      swal({
-                             type: 'error',
-                             title: 'Error...',
-                             text: 'Ingrese Nombre del Egreso!',
-                         })
-                     }else{
-                          if(me.monto==0){
-                      swal({
-                             type: 'error',
-                             title: 'Error...',
-                             text: 'Ingrese Monto del Egreso!',
-                         })
-                     }else{
-                     me.arrayDetalle.push({
-                             monto: me.monto,
-                             detalleEgreso:'No Hay detalle',
-                             egreso: me.egreso,
-                             });
-                             me.egreso='';
-                             me.monto=0;
-                             me.detalleEgreso='';
-                     }
-                 }
-                 }else{
-                     if(me.detalleEgreso != 0){
-
-                          if(me.egreso==0){
-                      swal({
-                             type: 'error',
-                             title: 'Error...',
-                             text: 'Ingrese Nombre del Egreso!',
-                         })
-                     }else{
-                          if(me.monto==0){
-                      swal({
-                             type: 'error',
-                             title: 'Error...',
-                             text: 'Ingrese Monto del Egreso!',
-                         })
-                     }else{
-                             me.arrayDetalle.push({
-                             monto: me.monto,
-                             detalleEgreso: me.detalleEgreso,
-                             egreso: me.egreso,
-                             });
-                             me.egreso='';
-                             me.monto=0;
-                             me.detalleEgreso='';
-                     }
-                  }
-                  }
-                 }
-             },
+            agregarDetalle() {
+                let me = this;
+                const selectedClasEgreso = me.arrayClasEgreso.find(clasegreso => clasegreso.id === me.idclasegreso);
+                me.arrayDetalle.push({
+                    monto: me.monto,
+                    idclasegreso: selectedClasEgreso.id,
+                    nombreClaseEgresos: selectedClasEgreso.nombre,
+                    detalle: me.detalle,
+                    egreso: me.egreso,
+                });
+                },
 
 
     indexIngresoEgreso() {
@@ -265,6 +226,19 @@ export default {
             });
         },
 
+    selectClasEgreso() {
+      let me = this;
+      var url = '/clasegresos/selectClasEgresos';
+      axios
+        .get(url)
+        .then(function (response) {
+          var respuesta = response.data;
+          me.arrayClasEgreso = respuesta.clasegresos;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     renderChart() {
         var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
@@ -364,6 +338,7 @@ export default {
 
     },
     abrirModal(modelo, accion, data = []) {
+        this.selectClasEgreso();
       switch (modelo) {
         case 'egreso': {
           switch (accion) {
