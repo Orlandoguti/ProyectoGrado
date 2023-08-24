@@ -228,6 +228,7 @@ watch: {
 
     },
   methods : {
+
     seleccionarGrupo(grupoId) {
         this.grupo = grupoId;
         this.fechaFiltro = moment().format('YYYY-MM-DD')
@@ -409,9 +410,8 @@ watch: {
           me.listaProceso1(page);
       },
 
-
     initializeWebSocket() {
-      this.webSocket = new WebSocket('ws://192.168.100.117:81/', ['arduino']);
+      this.webSocket = new WebSocket('ws://192.168.100.116:81/', ['arduino']);
 
       this.webSocket.onopen = () => {
         console.log('Connected to WebSocket server');

@@ -5,10 +5,10 @@
                         <div class="page-title-wrapper" style="width: 100%;justify-content: center;display: flex;">
                             <div class="page-title-heading" style="width: 25%;">
                                 <div class="page-title-icon">
-                                    <i class="pe-7s-home icon-gradient bg-mean-fruit">
+                                    <i class="pe-7s-graph icon-gradient bg-mean-fruit">
                                     </i>
                                 </div>
-                                <div>PRINCIPAL
+                                <div>DASHBOARD
                                     <div class="page-title-subheading">F.U.T.E.C.R.A.
                                     </div>
                                 </div>
@@ -32,7 +32,7 @@
                         <div class="widget-content-outer">
                             <div class="widget-content-wrapper">
                                 <div class="widget-content-left">
-                                    <div class="widget-heading">Total Ganados Carneados</div>
+                                    <div class="widget-heading">Total Ganados Faeneados</div>
                                     <div class="widget-subheading">Federacion Unica de Trabajadores en Carne y Ramas Anexas.</div>
                                 </div>
                                 <div class="widget-content-right">
@@ -47,7 +47,7 @@
                         <div class="widget-content-outer">
                             <div class="widget-content-wrapper">
                                 <div class="widget-content-left">
-                                    <div class="widget-heading">Total Ganados Proceso de Carneo</div>
+                                    <div class="widget-heading">Total Ganados Proceso de Faeneado</div>
                                     <div class="widget-subheading">Federacion Unica de Trabajadores en Carne y Ramas Anexas.</div>
                                 </div>
                                 <div class="widget-content-right">
@@ -90,70 +90,74 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                <div class="main-card mb-3 card">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Ganados Carneados por Mes</h5>
-                        <canvas id="stacked-bars-chart"></canvas>
+                    <div class="main-card mb-3 card">
+                       <div class="card-body">
+                           <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados por Marca</h5>
+                           <canvas id="polar-chart"></canvas>
+                       </div>
+                   </div>
+               </div>
+                <div class="col-md-6">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Grupo</h5>
+                            <canvas id="verticalChart"></canvas>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Toros y Vacas Carneados por Mes</h5>
+                            <canvas id="line-chart"></canvas>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                 <div class="main-card mb-3 card">
                     <div class="card-body">
-                        <h5 class="card-title">Toros y Vacas Carneados por Mes</h5>
-                        <canvas id="line-chart"></canvas>
+                        <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Mes</h5>
+                        <canvas id="stacked-bars-chart"></canvas>
                     </div>
                 </div>
                 </div>
             </div>
             <div class="row">
-                    <div class="col-md-6">
-                     <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Ganados por Marca</h5>
-                            <canvas id="polar-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
              <div class="col-md-6">
                 <div class="main-card mb-3 card">
                     <div class="card-body">
-                        <h5 class="card-title">Total Marcas Carneadas </h5>
+                        <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Marcas Carneadas </h5>
                         <canvas id="chart-area"></canvas>
                     </div>
                 </div>
                      </div>
-                 </div>
-                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="main-card mb-3 card">
-                            <div class="card-header">
-                                <div class="d-flex justify-content-center"> <!-- Utilizamos d-flex y justify-content-center para centrar horizontalmente -->
-                                    <span># GENERAR REPORTE #</span>
-                                </div>
-                                <div class="btn-actions-pane-right">
-                                    <div class="input-group">
-                                        <input type="date" v-model="date1"  class="form-control" placeholder="Ingrese la Fecha">
-                                        <div>-</div>
-                                        <input type="date" v-model="date2" @change="listarRfid(1,buscar,date1,date2)" class="form-control" placeholder="Ingrese la Fecha">
-                                        <button type="submit" @click="generatePdf(date1,date2)" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Copy to use file-pdf-o"></i></button>
-                                        <button type="submit" @click="excelVenta(date1,date2)" class="btn btn-success"><i class="fa fa-download" aria-hidden="true" title="Copy to use file-excel-o"></i></button>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-md-6">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Toros y Vacas Carneados por Mes</h5>
+                            <canvas id="line-chart"></canvas>
                         </div>
                     </div>
-                </div>
+                    </div>
+                 </div>
 
            <div class="row">
+            <section v-if="ver==0">
             <div class="col-md-12">
                 <div class="main-card mb-3 card">
-                    <div class="card-header"># LISTA DE GANADOS
+                    <div class="card-header"><i class="pe-7s-note2" aria-hidden="true"></i> LISTA DE GANADOS
                         <div class="btn-actions-pane-right">
                             <div class="input-group">
+                                <input type="date" v-model="date1"  class="form-control" placeholder="Ingrese la Fecha">
+                                <span style="display: flex; align-items: center;">-</span>
+                                <input type="date" v-model="date2" @change="listarRfid(1,buscar,date1,date2)" class="form-control" placeholder="Ingrese la Fecha">
                                 <input type="text" v-model="buscar" @keyup="listarRfid(1,buscar,date1,date2)" class="form-control" placeholder="Texto a buscar">
                                 <button type="submit" @click="listarRfid(1,buscar,date1='',date2='')" @change="fetchChartDataFromDatabase()" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                            </div>
+                                <button type="submit" @click="generatePdf(date1,date2,buscar)" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Copy to use file-pdf-o"></i></button>
+                                <button type="submit" @click="excelVenta(date1,date2,buscar)" class="btn btn-success"><i class="fa fa-download" aria-hidden="true" title="Copy to use file-excel-o"></i></button>
+                           </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -163,13 +167,13 @@
                                 <th class="text-center">Codigo Tarjeta</th>
                                 <th class="text-center">Nombre</th>
                                 <th class="text-center">Genero</th>
-                                <th class="text-center">Grupo Carneo</th>
+                                <th class="text-center">Grupo Faeneo</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Fecha Ingreso</th>
                                 <th class="text-center">Opciones</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody v-if="arrayRfid.length">
                                 <tr v-for="rfid in arrayRfid"  :key="rfid.id">
                                 <td class="text-center text-muted"  v-text="rfid.idrfid"></td>
                                 <td>
@@ -201,16 +205,22 @@
                                     </div>
                                 </td>
                                 <td v-text="rfid.fecha" class="text-center"></td>
-                                <td>
-                                    <button type="button" @click="abrirModal('rfid','actualizar',articulo)" class="btn btn-warning btn-sm">
-                                      <i class="icon-pencil"></i>
-                                    </button> &nbsp;
-
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-info btn-sm" @click="verGanado(rfid.id)">
+                                        <i style="color: black;" class="fa fa-eye" aria-hidden="true" title="Copy to use file-excel-o"></i>
+                                    </button>
                                         <button type="button" class="btn btn-danger btn-sm" @click="eliminarGanado(rfid.id)">
-                                            <i class="icon-trash"></i>
+                                            <i class="pe-7s-trash" aria-hidden="true" title="Copy to use file-excel-o"></i>
                                         </button>
                                 </td>
                             </tr>
+                            </tbody>
+                            <tbody v-else>
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        No hay Registros
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -231,6 +241,89 @@
                     </div>
                 </div>
             </div>
+        </section>
+        <section v-if="ver==1">
+            <div class="col-md-12">
+                <div class="main-card mb-3 card">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body" style="text-align: center;">
+                            <h5 style="color: coral;" class="card-title"> Informacion Del Ganado ID: {{ id }}</h5>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Codigo Tarjeta</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Genero</th>
+                                <th class="text-center">Grupo Faeneo</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center">Fecha Ingreso</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <td class="text-center text-muted"  v-text="idrfid"></td>
+                                <td>
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left me-3">
+                                                <div class="widget-content-left">
+                                                    <img width="40" class="rounded-circle" src="/img/plantilla/torologo.png" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-left flex2">
+                                                <span v-text="marca" class="widget-heading"></span>
+                                                <span v-text="nombre" class="widget-subheading opacity-7"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td v-text="gnombre" class="text-center"></td>
+                                <td v-text="grunombre" class="text-center"></td>
+                                <td  class="text-center">
+                                    <div v-if="estado == 0">
+                                        <div class="badge bg-danger">Ganado en Corral</div>
+                                    </div>
+                                    <div v-if="estado == 1">
+                                        <div class="badge bg-warning">Proceo de Faeneado</div>
+                                    </div>
+                                    <div v-if="estado == 2">
+                                        <div class="badge bg-success">Ganado Carneado</div>
+                                    </div>
+                                </td>
+                                <td v-text="fecha" class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Registrado Por</th>
+                                <th class="text-center">Sacado del Corral Por</th>
+                                <th class="text-center">Faeneado Por</th>
+                                <th class="text-center">Hora de Faeneo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <td class="text-center text-muted"  v-text="idregistro"></td>
+                                <td class="text-center text-muted"  v-text="idprocesofaeneo"></td>
+                                <td v-text="idfaeneo" class="text-center"></td>
+                                <td v-text="updated_at" class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="justify-content: center; display: flex; margin-top: 2%; margin-bottom: 2%;">
+                            <div> <button type="button" @click="cerrarModal()"  class="btn btn-info">Cerrar Informacion</button></div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        </section>
         </div>
     <div>
 </div>
@@ -244,6 +337,17 @@ export default {
 
 data (){
   return {
+    ver:0,
+    id:'',
+    idrfid:'',
+    grunombre:'',
+    gnombre:'',
+    updated_at:'',
+    idregistro:'',
+    idprocesofaeneo:'',
+    idfaeneo:'',
+    chartData:[],
+    chartData5:[],
       totalestado0:'',
       totalestado1:'',
       totalestado2:'',
@@ -255,8 +359,6 @@ data (){
       nombre : '',
       idgenero : 0,
       estado : 0,
-      chartData: [],
-      chartData2: [],
       arrayPersona : [],
       arrayRfid: [],
       arrayGenero: [],
@@ -328,10 +430,11 @@ watch: {
 },
 methods : {
 
-    generatePdf(date1, date2) {
+    generatePdf(date1, date2, buscar) {
         const requestData = {
             date1: date1,
-            date2: date2
+            date2: date2,
+            buscar: buscar,
         };
 
         axios.post('/rfid/pdf', requestData, { responseType: 'blob' })
@@ -358,10 +461,12 @@ methods : {
             this.chartData2 = response.data.chartData2;
             this.chartData3 = response.data.chartData3;
             this.chartData4 = response.data.chartData4;
+            this.chartData5 = response.data.chartData5;
             this.polarChart();
             this.PieChart();
             this.BarChart();
             this.LineChart();
+            this.BarVerticalChart();
             })
             .catch((error) => {
             console.error('Error fetching data:', error);
@@ -370,7 +475,7 @@ methods : {
         generateRandomSolidColor() {
             var letters = '0123456789ABCDEF';
             var color = '#';
-            for (var i = 0; i < 6; i++) {
+            for (var i = 0; i < 3; i++) {
                 color += letters[Math.floor(Math.random() * 16)];
             }
             return color;
@@ -518,7 +623,7 @@ methods : {
                     var randomColors = marcaLabels.map(() => this.generateRandomSolidColor());
                     var datasets = marcaLabels.map((marca, index) => ({
                     data: dataForChart.map((data) => data.totalsByMarca[marca] || 0),
-                    backgroundColor: randomColors[index], // Generamos un color sólido aleatorio para cada marca
+                    backgroundColor: randomColors[index],
                     label: marca,
                     stack: 'stack1', // Establecemos el mismo valor para agrupar los datos
                     }));
@@ -563,6 +668,67 @@ methods : {
                     type: 'bar',
                     data: configmyBar.data,
                     options: configmyBar.options,
+                    });
+                }
+            },
+
+            BarVerticalChart() {
+                var ctx = document.getElementById('verticalChart');
+
+                if (ctx && this.chartData5.length > 0) {
+                    var monthNames = [
+                        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                    ];
+                    var datasets = [];
+                    // Crear un objeto para agrupar los totales por grupo
+                    var totalsByGroup = {};
+
+                    this.chartData5.forEach((data) => {
+                        var group = data.grupo;
+                        var monthIndex = Number(data.mes) - 1;
+
+                        if (!totalsByGroup[group]) {
+                            totalsByGroup[group] = {
+                                label: group,
+                                data: new Array(12).fill(0), // Crear un array para los totales de cada mes (inicialmente lleno de ceros)
+                                backgroundColor: this.generateRandomSolidColor() // Obtener un color aleatorio del array
+                            };
+                        }
+
+                        // Agregar el total al mes correspondiente
+                        totalsByGroup[group].data[monthIndex] = data.total;
+                    });
+
+                    // Convertir el objeto de totales por grupo en un array de datasets
+                    for (var group in totalsByGroup) {
+                        if (totalsByGroup.hasOwnProperty(group)) {
+                            datasets.push(totalsByGroup[group]);
+                        }
+                    }
+
+
+                    var configmyBar = {
+                        data: {
+                            datasets: datasets,
+                            labels: monthNames,
+                        },
+                        options: {
+                            responsive: true,
+                            legend: {
+                                position: 'right',
+                            },
+                            title: {
+                                display: false,
+                                text: ''
+                            }
+                        }
+                    };
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: configmyBar.data,
+                        options: configmyBar.options,
                     });
                 }
             },
@@ -700,84 +866,63 @@ methods : {
   },
 
   cerrarModal(){
-      this.modal= false;
-      this.tituloModal='';
-      this.idrfid= 0;
+      this.ver= 0;
+      this.id= '';
+      this.idrfid= '';
       this.idpersona = '';
-      this.estado= 0;
+      this.idregistro = '';
+      this.idprocesofaeneo = '';
+      this.idfaeneo = '';
+      this.estado= '';
       this.fecha = '';
-      this.closeWebSocket();
+      this.updated_at = '';
   },
-  abrirModal(modelo, accion, data = []){
-      switch(modelo){
-          case "rfid":
-          {
-              switch(accion){
-                  case 'registrar':
-                    this.initializeWebSocket();
+  verGanado(id){
+                let me=this;
+                me.ver=1;
 
-                  {
-                      this.modal = true;
-                      this.formValidated = false;
-                      this.tituloModal = 'Registrar Tarjeta RFID';
-                      this.rfidData = '',
-                      this.idpersona='';
-                      this.idgenero='';
-                      this.fecha = moment().format('YYYY-MM-DD');
-                      this.estado=0;
-                      this.tipoAccion = 1;
-                      break;
-                  }
-                  case 'actualizar':
-                  {
-                      //console.log(data);
-                      this.modal = true;
-                      this.tituloModal='Actualizar Tarjeta RFID';
-                      this.tipoAccion=2;
-                      this.rfidData=data['idrfid'];
-                      this.marca=data['marca'];
-                      this.idgenero=data['idgenero'];
-                      this.estado=data['estado'];
-                      break;
-                  }
-              }
-          }
+               var arrayRfid=[];
+                var url= '/rfid/verInformacion?id=' + id;
 
-      }
-  },
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    arrayRfid = respuesta.rfids;
+
+                    me.id = arrayRfid[0]['id'];
+                    me.idrfid = arrayRfid[0]['idrfid'];
+                    me.nombre = arrayRfid[0]['persona_nombre'];
+                    me.marca = arrayRfid[0]['marca'];
+                    me.grunombre = arrayRfid[0]['grunombre'];
+                    me.gnombre = arrayRfid[0]['gnombre'];
+                    me.estado = arrayRfid[0]['estado'];
+                    me.fecha = arrayRfid[0]['fecha'];
+                    me.updated_at = arrayRfid[0]['updated_at'];
+                    me.idregistro = arrayRfid[0]['idregistro'];
+                    me.idprocesofaeneo = arrayRfid[0]['idprocesofaeneo'];
+                    me.idfaeneo = arrayRfid[0]['idfaeneo'];
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
 
 
   eliminarGanado(id){
-    if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
+
         axios.delete(`/rfid/eliminar/${id}`)
             .then(response => {
-            this.listarRfid(1,'','marca');
-            console.error(error.response.data.message);
-            });
-        }
-    },
-  initializeWebSocket() {
-  this.webSocket = new WebSocket('ws://192.168.100.117:81/', ['arduino']);
+            this.listarRfid(1,this.buscar='',this.date1='',this.date2='');
+            this.fetchChartDataFromDatabase(this.date1,this.date2);
+            swal(
+                        'Eliminado!',
+                        'El Registro se ha sido eliminado con éxito.',
+                        'warning'
+                        )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
 
-  this.webSocket.onopen = () => {
-    console.log('Connected to WebSocket server');
-    this.webSocket.send('Connect ' + new Date());
-  };
-
-  this.webSocket.onerror = (error) => {
-    console.error('WebSocket Error', error);
-  };
-
-  this.webSocket.onmessage = (event) => {
-    console.log('Received message:', event.data);
-    this.rfidData = event.data; // Asignar el mensaje del WebSocket a la variable rfidData
-  };
-},
-closeWebSocket() {
-  if (this.webSocket) {
-    this.webSocket.close(); // Cerrar el WebSocket
-  }
-},
 },
 
 mounted() {

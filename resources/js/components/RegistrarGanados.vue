@@ -88,7 +88,6 @@
                     </div>
                 </div>
             </div>
-
            <div class="row">
             <div class="col-md-12">
                 <div class="main-card mb-3 card">
@@ -148,13 +147,17 @@
                                     </div>
                                 </td>
                                 <td v-text="rfid.fecha" class="text-center"></td>
-                                <td>
+                                <td class="text-center">
+                                    <button type="button" @click="enviarMensajeWhatsApp(rfid)" class="btn btn-success btn-sm">
+                                        <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                      </button> &nbsp;
+
                                     <button type="button" @click="abrirModal('rfid','actualizar',articulo)" class="btn btn-warning btn-sm">
-                                      <i class="icon-pencil"></i>
-                                    </button> &nbsp;
+                                        <i style="color: white;" class="fa fa-edit" aria-hidden="true"></i>
+                                      </button> &nbsp;
 
                                         <button type="button" class="btn btn-danger btn-sm" @click="eliminarGanado(rfid.id)">
-                                            <i class="icon-trash"></i>
+                                            <i class="pe-7s-trash"></i>
                                         </button>
                                 </td>
                             </tr>
@@ -266,6 +269,7 @@
 </template>
 <script>
 import moment from 'moment';
+import toastr from 'toastr';
 export default {
 
 data (){
@@ -353,23 +357,46 @@ idpersona(newVal) {
 },
 
 methods : {
+
+    enviarMensajeWhatsApp(rfid) {
+      var settings = {
+        async: true,
+        crossDomain: true,
+        url: "https://api.ultramsg.com/instance58594/messages/chat",
+        method: "POST",
+        data: {
+          token: "zdhnpr3dhsnohb7s",
+          to: rfid.telefono,
+          body: 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
+        }
+
+      };
+      $.ajax(settings).done(function (response) {
+        toastr.options = {
+                closeButton: true,
+                debug: false,
+                newestOnTop: true,
+                progressBar: true,
+                positionClass: 'toast-top-right',
+                preventDuplicates: false,
+                onclick: null,
+                showDuration: '500',
+                hideDuration: '1000',
+                timeOut: '5000',
+                extendedTimeOut: '1000',
+                showEasing: 'swing',
+                hideEasing: 'linear',
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+            };
+            toastr.success('Se ha enviado el mensaje','Enviado');
+        console.log(response);
+        // Haz lo que necesites con la respuesta, como mostrar un mensaje de éxito
+      });
+    },
     habilitarInput() {
       this.inputDeshabilitado = false; // Cambia el valor para habilitar el input
     },
-enviarMensaje() {
-  const telefono = '67023449'; // Número de teléfono
-  const mensaje = '¡Hola! Este es mi mensaje predefinido.'; // Mensaje predefinido
-
-  // Crear el enlace de WhatsApp
-  const enlaceWhatsApp = `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`;
-
-  // Abrir una nueva ventana o pestaña del navegador con el enlace de WhatsApp
-  window.open(enlaceWhatsApp);
-},
-enviarMensajeGmail(){
-    axios.post(`/enviar-correo`).then((response) => {
-  });
-},
 
 getOpcionSeleccionada(idpersona) {
   // Realiza una solicitud HTTP a tu backend para obtener los detalles de la opción seleccionada
@@ -551,16 +578,19 @@ getOpcionSeleccionada(idpersona) {
 
 
   eliminarGanado(id){
-    if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
         axios.delete(`/rfid/eliminar/${id}`)
             .then(response => {
             this.listarRfid(1,'','marca');
+             swal(
+                        'Eliminado!',
+                        'El Registro se ha sido eliminado con éxito.',
+                        'warning'
+                        )
             console.error(error.response.data.message);
             });
-        }
     },
   initializeWebSocket() {
-  this.webSocket = new WebSocket('ws://192.168.100.117:81/', ['arduino']);
+  this.webSocket = new WebSocket('ws://192.168.100.116:81/', ['arduino']);
 
   this.webSocket.onopen = () => {
     console.log('Connected to WebSocket server');

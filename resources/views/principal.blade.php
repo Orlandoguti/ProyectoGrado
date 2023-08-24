@@ -8,9 +8,14 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="css/sweetalert2.css">
 <script src="js/sweetalert2.min.js" ></script>
+<script src="js/websocket.js" ></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <link rel="stylesheet" href="{{ mix('/css/base.css') }}">
 <link rel="stylesheet" type="text/css" href="auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <link href="css/pe-icon-7-stroke.min.css" rel="stylesheet" type="text/css" media="all" />
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+
+
 </head>
 
 <body class="modal-open">
@@ -35,6 +40,7 @@
         <!-- /Fin del contenido principal -->
     </div>
     <script src="{{ asset('js/app.js') }}" async></script>
+
 </body>
 
 </html>

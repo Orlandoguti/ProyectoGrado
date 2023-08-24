@@ -7,7 +7,7 @@ class Lista extends Model
 {
 
     protected $fillable = [
-        'id', 'idpersona', 'estado','cantidad','fecha'
+        'id', 'idpersona', 'estado','cantidad'.'total','fecha'
     ];
 
     public function persona(){

@@ -32,31 +32,12 @@
                 <div class="app-header-left">
                     <div class="search-wrapper">
                         <div class="input-holder">
-                            <input type="text" class="search-input" placeholder="Type to search">
-                            <button class="search-icon"><span></span></button>
+                            <input type="text" class="search-input" placeholder="Bienvenido al Sistema.">
+                            <button class="search-icon font-icon-wrapper font-icon-lg" style="margin-right: 0px; min-width: 0px; background: rgb(255 255 255 / 6%);"><i class="fa fa-leaf icon-gradient bg-plum-plate"></i></button>
                         </div>
                         <button class="btn-close"></button>
                     </div>
-                    <ul class="header-menu nav">
-                        <li class="nav-item">
-                            <a href="javascript:void(0);" class="nav-link">
-                                <i class="nav-link-icon fa fa-database"> </i>
-                                Statistics
-                            </a>
-                        </li>
-                        <li class="btn-group nav-item">
-                            <a href="javascript:void(0);" class="nav-link">
-                                <i class="nav-link-icon fa fa-edit"></i>
-                                Projects
-                            </a>
-                        </li>
-                        <li class="dropdown nav-item">
-                            <a href="javascript:void(0);" class="nav-link">
-                                <i class="nav-link-icon fa fa-cog"></i>
-                                Settings
-                            </a>
-                        </li>
-                    </ul>        </div>
+                </div>
                 <div class="app-header-right">
                     <div class="header-btn-lg pe-0">
                         <div class="widget-content p-0">
@@ -69,7 +50,6 @@
                                         </a>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                             <button type="button" id="btn-exit" tabindex="0" class="dropdown-item"><li class="btn-exit" id="btn-exit" tabindex="0">Cerrar Sesion</li></button>
-                                            <button type="button" tabindex="0" class="dropdown-item">Settings</button>
                                         </div>
                                     </div>
                                 </div>
@@ -80,11 +60,6 @@
                                     <div class="widget-subheading">
                                         {{Auth::user()->rol->nombre}}
                                     </div>
-                                </div>
-                                <div class="widget-content-right header-user-info ms-3">
-                                    <button type="button" class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
-                                        <i class="fa text-white fa-calendar pe-1 ps-1"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -100,81 +75,18 @@
             <div class="theme-settings__inner">
                 <div class="scrollbar-container">
                     <div class="theme-settings__options-wrapper">
-                        <h3 class="themeoptions-heading">Layout Options
-                        </h3>
-                        <div class="p-3">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left me-3">
-                                                <div class="switch has-switch switch-container-class" data-class="fixed-header">
-                                                    <div class="switch-animate switch-on">
-                                                        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Fixed Header
-                                                </div>
-                                                <div class="widget-subheading">Makes the header top fixed, always visible!
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left me-3">
-                                                <div class="switch has-switch switch-container-class" data-class="fixed-sidebar">
-                                                    <div class="switch-animate switch-on">
-                                                        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Fixed Sidebar
-                                                </div>
-                                                <div class="widget-subheading">Makes the sidebar left fixed, always visible!
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left me-3">
-                                                <div class="switch has-switch switch-container-class" data-class="fixed-footer">
-                                                    <div class="switch-animate switch-off">
-                                                        <input type="checkbox" data-toggle="toggle" data-onstyle="success">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="widget-content-left">
-                                                <div class="widget-heading">Fixed Footer
-                                                </div>
-                                                <div class="widget-subheading">Makes the app footer bottom fixed, always visible!
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
                         <h3 class="themeoptions-heading">
                             <div>
-                                Header Options
+                                Opciones de Encabezado
                             </div>
                             <button type="button" class="btn-pill btn-shadow btn-wide ms-auto btn btn-focus btn-sm switch-header-cs-class" data-class="">
-                                Restore Default
+                                Restaurar Predeterminado
                             </button>
                         </h3>
                         <div class="p-3">
                             <ul class="list-group">
                                 <li class="list-group-item">
-                                    <h5 class="pb-2">Choose Color Scheme
+                                    <h5 class="pb-2">Elija Esquema de Color
                                     </h5>
                                     <div class="theme-settings-swatches">
                                         <div class="swatch-holder bg-primary switch-header-cs-class" data-class="bg-primary header-text-light">
@@ -256,15 +168,15 @@
                             </ul>
                         </div>
                         <h3 class="themeoptions-heading">
-                            <div>Sidebar Options</div>
+                            <div>Opciones de la Barra Lateral</div>
                             <button type="button" class="btn-pill btn-shadow btn-wide ms-auto btn btn-focus btn-sm switch-sidebar-cs-class" data-class="">
-                                Restore Default
+                                Restaurar Predeterminado
                             </button>
                         </h3>
                         <div class="p-3">
                             <ul class="list-group">
                                 <li class="list-group-item">
-                                    <h5 class="pb-2">Choose Color Scheme
+                                    <h5 class="pb-2">Elija Esquema de Color
                                     </h5>
                                     <div class="theme-settings-swatches">
                                         <div class="swatch-holder bg-primary switch-sidebar-cs-class" data-class="bg-primary sidebar-text-light">
@@ -345,29 +257,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="themeoptions-heading">
-                            <div>Main Content Options</div>
-                            <button type="button" class="btn-pill btn-shadow btn-wide ms-auto active btn btn-focus btn-sm">Restore Default
-                            </button>
-                        </h3>
-                        <div class="p-3">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <h5 class="pb-2">Page Section Tabs
-                                    </h5>
-                                    <div class="theme-settings-swatches">
-                                        <div role="group" class="mt-2 btn-group">
-                                            <button type="button" class="btn-wide btn-shadow btn-primary btn btn-secondary switch-theme-class" data-class="body-tabs-line">
-                                                Line
-                                            </button>
-                                            <button type="button" class="btn-wide btn-shadow btn-primary active btn btn-secondary switch-theme-class" data-class="body-tabs-shadow">
-                                                Shadow
-                                            </button>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -407,34 +296,49 @@
                     <div class="scrollbar-sidebar">
                         <div class="app-sidebar__inner">
                             <ul class="vertical-nav-menu">
-                                <li class="app-sidebar__heading">GANADOS</li>
-                                <li  @click="menu=0">
+                                <li class="app-sidebar__heading">PRINCIPAL</li>
+                                <li>
                                     <a href="#" class="mm-active">
                                         <i class="metismenu-icon pe-7s-home"></i>
-                                        Lista de Ganados
+                                        Administracion
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
+                                    <ul>
+                                        <li @click="menu=0">
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-menu"></i>
+                                                Noticias
+                                            </a>
+                                        </li>
+                                        <li @click="menu=1">
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-id">
+                                                </i>Dashboard
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li class="app-sidebar__heading">PROCESOS DE FAENEO</li>
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-server"></i>
-                                        Lista de Procesos
+                                        Lista de Ganados
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        <li @click="menu=5">
+                                        <li @click="menu=2">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-menu"></i>
                                                 Registrar Ganado
                                             </a>
                                         </li>
-                                        <li @click="menu=2">
+                                        <li @click="menu=3">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-id">
-                                                </i>Proceso RFID
+                                                </i>Proceso Faeneo
                                             </a>
                                         </li>
-                                        <li>
+                                        <li @click="menu=4">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-wallet">
                                                 </i>Proceso Final
@@ -442,18 +346,54 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="app-sidebar__heading">LISTA DE GANADOS</li>
-                                <li @click="menu=3">
+                                <li class="app-sidebar__heading">LISTA DE AUTORIZACION FAENEO</li>
+                                <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
-                                        Generar Lista
+                                        Lista de Ganados
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li @click="menu=5">
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Generar Lista
+                                            </a>
+                                        </li>
+                                        <li @click="menu=8">
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-id">
+                                                </i>Detalles Boucher
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="app-sidebar__heading">INGRESOS - EGRESOS</li>
+                                <li @click="menu=9">
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-cash">
+                                        </i>Generar Egreso
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">USUARIOS</li>
-                                <li @click="menu=4">
+                                <li @click="menu=6">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-user">
                                         </i>Lista de Usuarios
+                                    </a>
+                                </li>
+                                <li class="app-sidebar__heading">GRUPOS DE CARNEO</li>
+                                <li @click="menu=10">
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-user">
+                                        </i>Listar Grupos
+                                    </a>
+                                </li>
+                                <li class="app-sidebar__heading">CORRALES</li>
+                                <li @click="menu=7">
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-display1">
+                                        </i>Monitorear Corrales
                                     </a>
                                 </li>
                             </ul>

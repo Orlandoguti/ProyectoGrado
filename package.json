@@ -61,6 +61,7 @@
         "vue-template-compiler": "^2.7.14",
         "vuelidate": "^0.7.4",
         "vuetify": "^1.5.4",
+        "vuex": "^4.1.0",
         "whatwg-fetch": "^3.0.0",
         "wnumb": "^1.2.0",
         "yarn": "^1.22.19"

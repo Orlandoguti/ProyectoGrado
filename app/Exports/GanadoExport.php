@@ -25,7 +25,7 @@ class GanadoExport implements FromView, ShouldAutoSize
  }
      public function view(): View
     {
-        if ($this->date1 != '' && $this->date2 != '' ) {
+        if ($this->date1 != '' && $this->date2 != '' && $this ->buscar != '' || $this->buscar == '' && $this->date1 != '' && $this->date2 != '') {
             return view('exports.ganadoexcel', [
                 'rfids' => DB::table('rfids')
                     ->join('personas', 'rfids.idpersona', '=', 'personas.id')
@@ -46,9 +46,48 @@ class GanadoExport implements FromView, ShouldAutoSize
                     ->orderBy('rfids.estado')
                     ->orderBy('rfids.idgrupo')
                     ->paginate(10),
-                    'total_estado0' => Rfid::where('estado', 0)->whereBetween('fecha', [$this->date1, $this->date2])->count(),
-                    'total_estado1' => Rfid::where('estado', 1)->whereBetween('fecha', [$this->date1, $this->date2])->count(),
-                    'total_estado2' => Rfid::where('estado', 2)->whereBetween('fecha', [$this->date1, $this->date2])->count()
+                    'total_estado0' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+                    ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+                    ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->where(function ($query) {
+                        $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('grupos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.marca', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.num_documento', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.direccion', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
+                    })
+                    ->where('estado', 0)->whereBetween('fecha', [$this->date1, $this->date2])->count(),
+                    'total_estado1' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+                    ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+                    ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->where(function ($query) {
+                        $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('grupos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.marca', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.num_documento', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.direccion', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
+                    })
+                    ->where('estado', 1)->whereBetween('fecha', [$this->date1, $this->date2])->count(),
+                    'total_estado2' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+                    ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+                    ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->where(function ($query) {
+                        $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('grupos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.marca', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.num_documento', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.direccion', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
+                    })
+                    ->where('estado', 2)->whereBetween('fecha', [$this->date1, $this->date2])->count()
             ]);
         } else {
             return view('exports.ganadoexcel', [
@@ -68,9 +107,48 @@ class GanadoExport implements FromView, ShouldAutoSize
                     ->orderBy('rfids.created_at', 'desc')
                     ->orderBy('rfids.estado', 'desc')->paginate(10),
 
-                    'total_estado0' => Rfid::where('estado', 0)->count(),
-                    'total_estado1' => Rfid::where('estado', 1)->count(),
-                    'total_estado2' => Rfid::where('estado', 2)->count()
+                    'total_estado0' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+                    ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+                    ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->where(function ($query) {
+                        $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('grupos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.marca', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.num_documento', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.direccion', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
+                    })
+                    ->where('estado', 0)->count(),
+                    'total_estado1' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+                    ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+                    ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->where(function ($query) {
+                        $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('grupos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.marca', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.num_documento', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.direccion', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
+                    })
+                    ->where('estado', 1)->count(),
+                    'total_estado2' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+                    ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+                    ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->where(function ($query) {
+                        $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('grupos.nombre', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.marca', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.num_documento', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.direccion', 'like', '%' . $this->buscar . '%')
+                            ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
+                    })
+                    ->where('estado', 2)->count()
             ]);
         }
     }
