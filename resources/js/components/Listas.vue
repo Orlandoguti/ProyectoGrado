@@ -32,6 +32,7 @@
                 <div class="col-md-1">
                             <div class="main-card mb-3 card">
                             <select style="text-align: center; color: coral;" class="form-control" v-model="maxtotalfaeneo" @change="actualizarmaxfaeneo()" :disabled="inputDisabled">
+                            <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="20">20</option>
                             <option value="30">30</option>
@@ -48,8 +49,8 @@
                                     <div class="btn-actions-pane-right">
                                         <div class="input-group">
                                             <select class="form-control" v-model="grupo" @click="listagrupo1(1,date1,date2)">
+                                                <option value="" disabled>Filtro por Grupo</option>
                                                 <option value="">Ninguno</option>
-                                                <option value="0" disabled>Filtro por Grupo</option>
                                                 <option v-for="grupo in arrayGrupo" :key="grupo.id"  v-text="grupo.nombre" v-if="grupo.id >= 1"></option>
                                               </select>
                                               <select class="form-control" v-model="fmarca" @click="listagrupo1(1,date1,date2)">
@@ -122,19 +123,6 @@
                                 <div class="card-body">
                                     <form @submit="validacionForm($event)" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
                                         <div class="row">
-                                            <div>
-                                                <!-- Contenido del baucher -->
-                                                <div class="baucher">
-                                                  <p>Cantidad: {{ cantidad }}</p>
-                                                  <p>Id Persona: {{ idpersona }}</p>
-                                                  <p>Id Grupo: {{ idgrupo }}</p>
-                                                  <p>Estado: {{ estado }}</p>
-                                                  <p>Fecha: {{ fecha }}</p>
-                                                </div>
-
-                                                <!-- Botón para imprimir -->
-                                                <button @click="imprimirBaucher">Imprimir Baucher</button>
-                                              </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="validationCustom01" class="form-label">Marca:</label>
                                                 <select class="form-control" v-model="idpersona">

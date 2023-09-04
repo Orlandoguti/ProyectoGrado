@@ -394,6 +394,14 @@ methods : {
         // Haz lo que necesites con la respuesta, como mostrar un mensaje de éxito
       });
     },
+    enviargmail() {
+      var url= '/rfid/gmail';
+      axios.post(url).then(function (response) {
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+  },
     habilitarInput() {
       this.inputDeshabilitado = false; // Cambia el valor para habilitar el input
     },

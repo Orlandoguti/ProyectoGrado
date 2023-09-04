@@ -346,8 +346,11 @@ data (){
     idregistro:'',
     idprocesofaeneo:'',
     idfaeneo:'',
-    chartData:[],
-    chartData5:[],
+    chartData : [],
+        chartData2 : [],
+        chartData3 : [],
+        chartData4 : [],
+        chartData5 : [],
       totalestado0:'',
       totalestado1:'',
       totalestado2:'',
@@ -419,7 +422,6 @@ totalRegistros() {
 },
 watch: {
   date1: function(newDate1) {
-    // Aquí puedes llamar a la función para actualizar los gráficos con la nueva fecha date1
     this.fetchChartDataFromDatabase(this.date1, this.date2);
   },
 
@@ -451,9 +453,9 @@ methods : {
     excelVenta(date1,date2,buscar){
                 window.open('rfid/excel?'+ 'date1='+ date1 + '&date2='+ date2 + '&buscar='+ buscar,'_blank');
             },
-
     fetchChartDataFromDatabase(date1,date2) {
   // Obtener la fecha actual (opcional, si quieres mostrar los datos de la fecha actual por defecto)
+
         axios
             .get('/rfid/indexAdministrador?&date1=' + date1 + '&date2='+ date2)
             .then((response) => {
@@ -472,6 +474,7 @@ methods : {
             console.error('Error fetching data:', error);
             });
         },
+
         generateRandomSolidColor() {
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -546,12 +549,12 @@ methods : {
         }
         },
         PieChart() {
-            var ctx = document.getElementById('chart-area');
+            let ctx1 = document.getElementById('chart-area');
 
-            if (ctx && this.chartData2.length > 0) {
-                var randomColors = this.generateRandomColors(this.chartData2.length,0);
+            if (ctx1 && this.chartData2.length > 0) {
+                let randomColors = this.generateRandomColors(this.chartData2.length,0);
 
-                var configPie = {
+                let configPie = {
                 data: {
                     datasets: [
                     {
@@ -577,7 +580,7 @@ methods : {
                 },
                 };
 
-                new Chart(ctx, {
+                new Chart(ctx1, {
                 type: 'pie',
                 data: configPie.data,
                 options: configPie.options,

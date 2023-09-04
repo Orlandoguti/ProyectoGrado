@@ -322,14 +322,14 @@
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-server"></i>
-                                        Lista de Ganados
+                                        Gestion de Ganados
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li @click="menu=2">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-menu"></i>
-                                                Registrar Ganado
+                                                Ganados
                                             </a>
                                         </li>
                                         <li @click="menu=3">
@@ -350,14 +350,14 @@
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
-                                        Lista de Ganados
+                                        Gestion de Lista
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li @click="menu=5">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Generar Lista
+                                                Listas
                                             </a>
                                         </li>
                                         <li @click="menu=8">
@@ -372,14 +372,14 @@
                                 <li @click="menu=9">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-cash">
-                                        </i>Generar Egreso
+                                        </i>Gestion Egreso
                                     </a>
                                 </li>
-                                <li class="app-sidebar__heading">USUARIOS</li>
+                                <li class="app-sidebar__heading">GESTION DE USUARIOS</li>
                                 <li @click="menu=6">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-user">
-                                        </i>Lista de Usuarios
+                                        </i>Usuarios
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">ADMINISTRACION</li>
@@ -393,13 +393,13 @@
                                         <li @click="menu=10">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Listar Grupos
+                                                Grupos
                                             </a>
                                         </li>
                                         <li @click="menu=11">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-id">
-                                                </i>Listar Clasificacion
+                                                </i>Clasificacion
                                             </a>
                                         </li>
                                     </ul>

@@ -14,6 +14,7 @@
 <link rel="stylesheet" type="text/css" href="auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <link href="css/pe-icon-7-stroke.min.css" rel="stylesheet" type="text/css" media="all" />
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script src="https://apis.google.com/js/platform.js"></script>
 
 
 </head>

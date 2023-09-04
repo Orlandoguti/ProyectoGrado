@@ -183,8 +183,10 @@
         </section>
         <table class="izquierda">
             <tr>
-                <th colspan="5">Total Cantidad:</th>
+                <th colspan="2">Total Cantidad:</th>
                 <td><?php echo $totalCantidad; ?></td>
+                <th colspan="2">Total:</th>
+                <td><?php echo $totalCantidad * 24 . ' Bs'; ?></td>
             </tr>
         </table>
     </body>

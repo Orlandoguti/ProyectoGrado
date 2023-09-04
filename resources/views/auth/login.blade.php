@@ -32,19 +32,14 @@
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button type="submit" class="login100-form-btn">
-                                Login
+                                Iniciar Sesion
                             </button>
                         </div>
                     </div>
 
                     <div class="text-center p-t-30">
                         <span class="txt1">
-                            No recuerdas tu cuenta?
                         </span>
-
-                        <a class="txt2" href="#">
-                            Sign Up
-                        </a>
                     </div>
                 </form>
             </div>

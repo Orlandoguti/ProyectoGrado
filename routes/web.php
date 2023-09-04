@@ -2,7 +2,10 @@
 <?php
 use App\Persona;
 use App\Rfid;
+use App\Mail\ContactanosMailable;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\MailController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -84,8 +87,13 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/clasegresos/index', 'IngresoEgresoController@index');
         Route::post('/clasegresos/registrar', 'IngresoEgresoController@storeclasegresos');
         Route::get('/clasegresos/selectClasEgresos', 'IngresoEgresoController@selectClasEgresos');
+        Route::post('/generar-pdf-egreso', 'IngresoEgresoController@egresoPdf');
 
-
+        Route::get('/rfid/gmail',function(){
+            Mail::to('orlandoguti698@gmail.com')->queue(new ContactanosMailable());
+        });
+        Route::get('/google/authorize', 'GoogleController@authorize');
+        Route::get('/google/callback', 'GoogleController@callback');
 
 
     });
