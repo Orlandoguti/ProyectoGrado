@@ -89,15 +89,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                       <div class="card-body">
-                           <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados por Marca</h5>
-                           <canvas id="polar-chart"></canvas>
-                       </div>
-                   </div>
-               </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="main-card mb-3 card">
                         <div class="card-body">
                             <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Grupo</h5>
@@ -108,14 +100,6 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Toros y Vacas Carneados por Mes</h5>
-                            <canvas id="line-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
                 <div class="main-card mb-3 card">
                     <div class="card-body">
                         <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Mes</h5>
@@ -123,6 +107,14 @@
                     </div>
                 </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="main-card mb-3 card">
+                       <div class="card-body">
+                           <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados por Marca</h5>
+                           <canvas id="polar-chart"></canvas>
+                       </div>
+                   </div>
+               </div>
             </div>
             <div class="row">
              <div class="col-md-6">
@@ -133,14 +125,15 @@
                     </div>
                 </div>
                      </div>
-                <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Toros y Vacas Carneados por Mes</h5>
-                            <canvas id="line-chart"></canvas>
+                     <div class="col-md-6">
+                        <div class="main-card mb-3 card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Toros y Vacas Carneados por Mes</h5>
+                                <canvas id="line-chart"></canvas>
+                            </div>
                         </div>
                     </div>
-                    </div>
+
                  </div>
 
            <div class="row">

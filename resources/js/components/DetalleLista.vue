@@ -58,7 +58,7 @@
                                             <td class="text-center text-muted"><span>{{detallelista.total}} Bs.</span></td>
                                             <td v-text="detallelista.fecha" class="text-center"></td>
                                             <td class="text-center">
-                                                <button @click="generarPDF(detallelista.id)">Generar PDF</button>
+                                                <button type="submit" @click="generarPDF(detallelista.id)" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Copy to use file-pdf-o"></i></button>
                                             </td>
                                         </tr>
                                         </tbody>

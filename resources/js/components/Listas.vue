@@ -77,6 +77,7 @@
                                             <th class="text-center">Grupo Carneo</th>
                                             <th class="text-center">Cantidad</th>
                                             <th class="text-center">Fecha</th>
+                                            <th class="text-center">Opciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -86,7 +87,12 @@
                                             <td class="text-center text-muted"  v-text="lista.gnombre"></td>
                                             <td class="text-center text-muted"  v-text="lista.total_cantidad"></td>
                                             <td v-text="lista.fecha" class="text-center"></td>
-                                        </tr>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-danger btn-sm" @click="eliminarGanado(rfid.id)">
+                                                    <i class="pe-7s-trash" aria-hidden="true" title="Copy to use file-excel-o"></i>
+                                                </button>
+                                             </td>
+                                           </tr>
                                         </tbody>
                                     </table>
                                 </div>

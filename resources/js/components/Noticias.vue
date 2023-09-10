@@ -27,7 +27,7 @@
                         </div>
                </section>
                     <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
-                        <p>{{ formattedDate }}</p>
+                        <p>----- NOTICIAS ------</p>
                     </div>
                      <div class="row" style="justify-content: center;">
                         <div class="col-md-11">
@@ -142,7 +142,9 @@
                         </div>
                       </div>
                     </div>
-
+                    <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
+                        <p>------ SOBRE EL MATADERO ------</p>
+                    </div>
                     <div class="row" style="font-size: 1rem; justify-content: center; text-align: center;">
                         <div class="col-lg-5 col-xl-5">
                             <div class="card mb-3 widget-content">
@@ -165,7 +167,9 @@
                             </div>
                         </div>
                     </div>
-
+                    <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
+                        <p>------ AVISOS ------</p>
+                    </div>
                     <div class="row" style="display: flex; justify-content: center;">
                         <div class="col-md-5">
                             <div class="main-card mb-3 card">

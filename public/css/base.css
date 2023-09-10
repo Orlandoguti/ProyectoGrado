@@ -12118,9 +12118,9 @@ button,
 }
 
 .app-header__logo .logo-src {
-  height: 23px;
-  width: 97px;
-  background: url("/img/plantilla/logo-inverse.png");
+  height: 30px;
+  width: 150px;
+  background: url(/img/plantilla/logo-inverse.png) no-repeat;
 }
 
 .app-header__menu,
@@ -12246,7 +12246,7 @@ button,
 }
 
 .app-header.header-text-light .app-header__logo .logo-src {
-  background: url("/img/plantilla/logo.png");
+  background: url(/img/plantilla/logo.png) no-repeat;
 }
 
 .app-header.header-text-light .app-header__mobile-menu .hamburger-inner,
@@ -12344,7 +12344,7 @@ button,
 }
 
 .app-header.header-text-dark .app-header__logo .logo-src {
-  background: url("/img/plantilla/logo-inverse.png");
+  background: url(/img/plantilla/logo-inverse.png) no-repeat;
 }
 
 .app-sidebar {
@@ -12623,7 +12623,7 @@ button,
 }
 
 .app-sidebar.sidebar-text-light .app-header__logo .logo-src {
-  background: url("/img/plantilla/logo.png");
+  background: url(/img/plantilla/logo.png) no-repeat;
 }
 
 .app-sidebar.sidebar-text-light .app-header__logo .hamburger-inner,
@@ -12894,7 +12894,7 @@ button,
 .closed-sidebar.closed-sidebar-mobile .app-sidebar .app-header__logo .logo-src {
   display: block !important;
   margin: 0 auto;
-  width: 21px;
+  width: 74px;
 }
 
 .closed-sidebar.closed-sidebar-mobile .app-sidebar .app-header__logo .header__pane {
@@ -12906,7 +12906,7 @@ button,
 }
 
 .closed-sidebar.closed-sidebar-mobile .app-sidebar:hover .app-header__logo .logo-src {
-  width: 97px;
+  width: 150px;
   margin: 0;
 }
 
@@ -30280,7 +30280,7 @@ A VERTICAL event
   }
 
   .sidebar-mobile-open .app-sidebar .app-header__logo .logo-src {
-    width: 97px !important;
+    width: 150px !important;
     margin-left: auto;
     margin-right: 0;
   }

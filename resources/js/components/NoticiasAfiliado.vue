@@ -26,9 +26,9 @@
                             </div>
                         </div>
                </section>
-                    <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
-                        <p>{{ formattedDate }}</p>
-                    </div>
+               <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
+                    <p>NOTICIAS</p>
+                </div>
                      <div class="row" style="justify-content: center;">
                         <div class="col-md-11">
                             <div class="main-card mb-3 card">
@@ -89,7 +89,9 @@
                             </div>
                         </div>
                     </div>
-
+                    <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
+                        <p>AVISOS</p>
+                    </div>
                     <div class="row" style="display: flex; justify-content: center;">
                         <div class="col-md-5">
                             <div class="main-card mb-3 card">

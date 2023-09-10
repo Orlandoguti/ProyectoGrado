@@ -70,15 +70,16 @@
 
             </div>
             <div class="col-md-8">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body"><h5 class="card-title"><i class="fa fa-tasks" style="margin-right: 1%;"></i>SELECCIONE EL GRUPO DE CARNEO</h5>
-
-                            <button  v-for="grupo in arrayGrupo" :key="grupo.id"  @click="seleccionarGrupo(grupo.nombre)"  :class="{ active: grupo === grupo.nombre }" v-if="grupo.id >= 1"
-                            class="mb-2 me-2 btn btn-success"><i class="fa fa-cubes"></i> {{ grupo.nombre }}<span class="badge rounded-pill bg-light">
-                              <!-- Mostrar el total de registros del grupo si existe en totalesPorGrupo, de lo contrario, mostrar 0 -->
-                              {{ totalesPorGrupo[grupo.nombre] || 0 }}
-                            </span>
-                          </button>
+                    <div class="main-card mb-3 card" style="text-align: center;">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-tasks" style="margin-right: 1%;"></i>SELECCIONE EL GRUPO DE CARNEO</h5>
+                            <button v-for="grupo in arrayGrupo" :key="grupo.id" @click="seleccionarGrupo(grupo.nombre)" :class="{ active: grupo === grupoSeleccionado }" v-if="grupo.id >= 1 && totalesPorGrupo[grupo.nombre] > 0"
+                              class="mb-2 me-2 btn btn-success">
+                              <i class="fa fa-cubes"></i> {{ grupo.nombre }}
+                              <span class="badge rounded-pill bg-light">
+                                {{ totalesPorGrupo[grupo.nombre] || 0 }}
+                              </span>
+                            </button>
                           </div>
                     </div>
             <div class="main-card mb-3 card">
@@ -106,8 +107,8 @@
                                 <td v-text="lista.ganados" class="text-center"></td>
                                 <td v-text="lista.fecha" class="text-center"></td>
                                 <td class="text-center">
-                                    <button type="button" @click="abrirModal('lista','actualizar',lista)" class="btn btn-warning btn-sm">
-                                      <i class="fa fa-pencil-square-o" style="margin-right: 1%;"> </i>
+                                    <button type="button" @click="abrirModal('lista','actualizar',lista)" class="btn btn-success btn-sm">
+                                        <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                     </button> &nbsp;
                                 </td>
                             </tr>

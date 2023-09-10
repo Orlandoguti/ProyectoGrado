@@ -86,7 +86,6 @@
                             <th class="text-center">Grupo Carneo</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Fecha Ingreso</th>
-                            <th class="text-center">Opciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -121,15 +120,6 @@
                                 </div>
                             </td>
                             <td v-text="rfid.fecha" class="text-center"></td>
-                            <td>
-                                <button type="button" @click="abrirModal('rfid','actualizar',articulo)" class="btn btn-warning btn-sm">
-                                  <i class="icon-pencil"></i>
-                                </button> &nbsp;
-
-                                    <button type="button" class="btn btn-danger btn-sm" @click="eliminarGanado(rfid.id)">
-                                        <i class="icon-trash"></i>
-                                    </button>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
