@@ -115,7 +115,7 @@
                                                 <td>{{ noticia.descripcion }}</td>
                                                 <td class="text-center">
                                                   <button type="button" class="btn btn-danger btn-sm" @click="eliminarNoticia(noticia.id)">
-                                                    <i class="icon-trash"></i>
+                                                    <i class="pe-7s-trash" aria-hidden="true" title="Eliminar Noticia"></i>
                                                   </button>
                                                 </td>
                                               </tr>
