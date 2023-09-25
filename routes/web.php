@@ -16,20 +16,18 @@ use App\Http\Controllers\MailController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware'=>['guest']],function(){
-    Route::get('/','Auth\LoginController@showLoginForm');
+Route::group(['middleware' => ['guest']], function () {
+    Route::get('/', 'Auth\LoginController@showLoginForm');
     Route::post('/', 'Auth\LoginController@login')->name('login');
+
 });
 
+    Route::group(['middleware' => ['auth']], function () {
+        Route::get('/main', function () {return view('contenido/contenido');
+        })->name('main');
+        Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-
-Route::group(['middleware'=>['auth']],function(){
-
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::get('/main', function () {return view('contenido/contenido');
-    })->name('main');
-
-    Route::group(['middleware' => ['Administrador']], function () {
+       Route::group(['middleware' => ['Administrador']], function () {
 
         Route::post('/lista/store', 'ListaController@store');
         Route::get('/listagrupo1', 'ListaController@listagrupo1');
@@ -76,7 +74,7 @@ Route::group(['middleware'=>['auth']],function(){
 
         Route::get('/cargo/selectCargo', 'CargoController@selectCargo');
 
-        Route::post('/actualizarInformacion', 'NoticiasController@actualizarInformacion');
+        Route::post('/registrarInformacion', 'NoticiasController@registrarInformacion');
         Route::get('/informaciones/indexInformacion', 'NoticiasController@indexInformacion');
 
         Route::post('/variables/actualizarTotal', 'VariablesController@actualizarTotal');

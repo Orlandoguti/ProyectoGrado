@@ -42,6 +42,8 @@ class NoticiasController extends Controller
             $noticias = new Noticias();
             $noticias->titulo = $request->titulo;
             $noticias->descripcion = $request->descripcion;
+            $noticias->fecha = $request->fecha;
+            $noticias->idpersona = \Auth::user()->id;
 
             $fileData = $request->file('imagen');
             if ($request->hasFile('imagen')) {
@@ -56,44 +58,61 @@ class NoticiasController extends Controller
             DB::rollBack();
         }
     }
-  public function eliminar(Request $request)
-{
-    if (!$request->ajax()) return redirect('/');
+    public function indexInformacionAdministrador(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
 
-    try {
-        DB::beginTransaction();
 
-        $noticias = Noticias::findOrFail($request->id);
-        $noticias->delete();
+            $informacion = Informacion::paginate(5);
 
-        DB::commit();
-        return response()->json(['mensaje' => 'Noticia eliminada correctamente']);
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return response()->json(['mensaje' => 'Error al eliminar la noticia'], 500);
+            return [
+                'pagination' => [
+                    'total'        => $informacion->total(),
+                    'current_page' => $informacion->currentPage(),
+                    'per_page'     => $informacion->perPage(),
+                    'last_page'    => $informacion->lastPage(),
+                    'from'         => $informacion->firstItem(),
+                    'to'           => $informacion->lastItem(),
+                ],
+                'informacion' => $informacion
+            ];
     }
-}
+  public function eliminar(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
 
-public function actualizarInformacion(Request $request)
+        try {
+            DB::beginTransaction();
+
+            $noticias = Noticias::findOrFail($request->id);
+            $noticias->delete();
+
+            DB::commit();
+            return response()->json(['mensaje' => 'Noticia eliminada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['mensaje' => 'Error al eliminar la noticia'], 500);
+        }
+    }
+
+public function registrarInformacion(Request $request)
 {
     if (!$request->ajax()) return redirect('/');
 
     try {
         DB::beginTransaction();
+        $informacion = new Informacion();
+        $informacion->titulo = $request->titulo;
+        $informacion->contenido = $request->contenido;
+        $informacion->fecha = $request->fecha;
+        $informacion->idpersona = \Auth::user()->id;
 
-        $nuevoTitulo = $request->input('tituloinf');
-        $nuevoContenido = $request->input('contenido');
-
-        // Actualizar todos los registros en la tabla 'informaciones'
-        Informacion::query()->update([
-            'titulo' => $nuevoTitulo,
-            'contenido' => $nuevoContenido
-        ]);
+        $informacion->save();
 
         DB::commit();
     } catch (Exception $e) {
         DB::rollBack();
-        return back()->with('error', 'Error al actualizar la información.');
+        return back()->with('error', 'Error al registrar el aviso.');
     }
 }
 

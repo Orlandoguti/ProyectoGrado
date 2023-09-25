@@ -170,23 +170,53 @@
                     <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
                         <p>------ AVISOS ------</p>
                     </div>
-                    <div class="row" style="display: flex; justify-content: center;">
+                    <div style="display: flex; justify-content: center; margin-top: -3%; margin-bottom: 1%;"><input type="checkbox" class="inputcheck" v-model="inputHabilitado"></div>
+                        <div class="row" v-if="inputHabilitado == true">
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div style="display: flex; justify-content: center;" class="card-header"># DETALLES DE AVISOS #
+                                    </div>
+                                    <div class="table-responsive">
+                                    <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Titulo</th>
+                                            <th class="text-center">Contenido</th>
+                                            <th class="text-center">Fecha de Registro</th>
+                                            <th class="text-center">Opciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="informaciones in arrayInformaciones" :key="informaciones.id">
+                                            <td class="text-center text-muted"  v-text="informaciones.titulo"></td>
+                                            <td class="text-center text-muted"  v-text="informaciones.contenido"></td>
+                                            <td class="text-center text-muted"  v-text="informaciones.fecha"></td>
+                                            <td class="text-center text-muted"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                               </div>
+                          </div>
+                    </div>
+                    <div v-if="inputHabilitado == false" class="row" style="display: flex; justify-content: center;">
                         <div class="col-md-5">
                             <div class="main-card mb-3 card">
                                 <div class="card-body"><h5 class="card-title" style="text-align: center; color: coral;">PANEL DE INFORMACION</h5>
-                                    <form @submit.prevent="actualizarInformacion()">
+                                    <form @submit.prevent="registrarInformacion()">
                                         <div class="position-relative mb-3">
                                             <label for="exampleEmail" class="form-label">Titulo:</label>
-                                            <input v-model="tituloinf" name="tituloinf" id="exampleEmail" placeholder="Ingrese el titulo..." type="text" class="form-control" :disabled="!esEditable">
+                                            <input v-model="titulo" name="tituloinf" id="exampleEmail" placeholder="Ingrese el titulo..." type="text" class="form-control" :disabled="!esEditable">
                                         </div>
                                         <div class="position-relative mb-3">
                                             <label for="exampleText" class="form-label">Contenido:</label>
                                             <textarea v-model="contenido" name="contenido" id="exampleText" class="form-control" :disabled="!esEditable"></textarea>
                                         </div>
-                                        <div class="form-check"><input v-model="esEditable" type="checkbox" class="form-check-input">
-                                            <label class="form-check-label" for="exampleCheck">Editar</label>
-                                          </div>
-                                        <div style="display: flex; justify-content: center;"><button class="mt-1 btn btn-primary">Actualizar</button></div>
+                                            <div class="form-check"><input v-model="esEditable" type="checkbox" class="form-check-input">
+                                                <label class="form-check-label" for="exampleCheck">Editar</label>
+                                              </div>
+                                            <div style="display: flex; justify-content: center;"><button class="mt-1 btn btn-primary">Registrar</button></div>
+
                                     </form>
                                 </div>
                             </div>
@@ -200,14 +230,16 @@ import moment from 'moment';
 export default {
   data() {
     return {
+      inputHabilitado : false,
       imagenmin:'',
       imagen:'',
       titulo:'',
-      tituloinf:'',
       contenido:'',
       esEditable: false,
       descripcion:'',
       arrayNoticias: [],
+      arrayInformaciones: [],
+      fecha: '',
       modal: 0,
       tituloModal: '',
       pagination : {
@@ -218,7 +250,7 @@ export default {
                     'from' : 0,
                     'to' : 0,
                 },
-                offset : 3,
+      offset : 3,
     };
   },
 
@@ -261,7 +293,6 @@ export default {
     this.formattedDate = dayOfWeekUpperCase + " " + moment().format("DD-MM-YYYY");
   },
   methods: {
-
     obtimage(e){
                 let file = e.target.files[0];
                 this.imagen = file;
@@ -296,25 +327,26 @@ export default {
           console.error(error);
         });
     },
-    actualizarInformacion(tituloinf,contenido) {
+    registrarInformacion() {
       let me = this;
-
       let formData = new FormData();
-        formData.append("tituloinf", this.tituloinf);
-        formData.append("contenido", this.contenido);
+      this.fecha = moment().format('YYYY-MM-DD');
+      formData.append("titulo", this.titulo);
+      formData.append("contenido", this.contenido);
+      formData.append("fecha", this.fecha);
 
       axios
-        .post("/actualizarInformacion", formData, {
+        .post("/registrarInformacion", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Configurar el encabezado adecuado para enviar un archivo
           },
         })
         .then(function (response) {
+          swal("Registrado!", "El aviso ha sido registrado con éxito.", "success");
           me.esEditable=false;
-          swal("Registrado!", "La Informacion se ha sido registrada con éxito.", "success");
         })
         .catch(function (error) {
-          swal("Error!", "No se ha podido actualizar la Informacion.", "warning");
+          swal("Error!", "No se ha podido registrar el aviso.", "warning");
           console.log(error);
         });
     },
@@ -322,8 +354,10 @@ export default {
       let me = this;
 
       let formData = new FormData();
+      this.fecha = moment().format('YYYY-MM-DD');
       formData.append("imagen", this.imagen);
       formData.append("titulo", this.titulo);
+      formData.append("fecha", this.fecha);
       formData.append("descripcion", this.descripcion);
 
       axios

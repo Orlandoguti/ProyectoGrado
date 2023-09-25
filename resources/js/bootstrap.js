@@ -23,13 +23,11 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-const JwtToken = `Bearer ${localStorage.getItem('token')}`
-window.axios.defaults.headers.common['Authorization'] = JwtToken
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
+
+const JwtToken = 'rt8QsRlLT5cXdDldjs2SeppwZ9yzj0BTIZTRkuuQRS8CSi6vEi2rkGeY2YSTt8tX';
+console.log('Valor de JwtToken:', JwtToken);
+window.axios.defaults.headers.common['Authorization'] = `Bearer ${JwtToken}`;
+console.log('Encabezado de Autorización:', window.axios.defaults.headers.common['Authorization']);
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
 

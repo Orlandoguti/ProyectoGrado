@@ -30,7 +30,7 @@
                      <div class="row">
                         <div class="col-md-12">
                             <div class="main-card mb-3 card">
-                                <div class="card-header"># LISTA DE GANADOS
+                                <div class="card-header"># LISTA DE BOUCHERS
                                     <div class="btn-actions-pane-right">
                                         <div class="input-group">
                                         </div>

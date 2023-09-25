@@ -91,16 +91,16 @@
                                     <td v-text="persona.rol" class="text-center"></td>
                                     <td class="text-center">
                                         <button type="button" @click="abrirModal('persona','actualizar',persona)" class="btn btn-warning btn-sm">
-                                          <i class="icon-pencil"></i>
+                                            <i style="color: white;" class="fa fa-edit" aria-hidden="true"></i>
                                         </button> &nbsp;
                                         <template v-if="persona.condicion">
                                             <button type="button" class="btn btn-danger btn-sm" @click="desactivarUsuario(persona.id)">
-                                                <i class="icon-trash"></i>
+                                                <i class="pe-7s-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
                                             <button type="button" class="btn btn-info btn-sm" @click="activarUsuario(persona.id)">
-                                                <i class="icon-check"></i>
+                                                <i class="pe-7s-trash"></i>
                                             </button>
                                         </template>
                                     </td>

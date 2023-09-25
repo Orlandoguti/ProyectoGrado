@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -15,20 +16,21 @@ class LoginController extends Controller
     public function login(Request $request){
         $this->validateLogin($request);
 
-        if (Auth::attempt(['email' => $request->email,'password' => $request->contraseña,'condicion'=>1])){
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && $user->condicion == 1 && Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('main');
+        } elseif ($user && $user->condicion == 0) {
+            return redirect()->back()->withErrors(['message' => 'Este usuario está desactivado. Contacte al Administrador.']);
         }
 
-        return back()
-        ->withErrors(['email' => trans('auth.failed')])
-        ->withInput(request(['email']));
-
+        return redirect()->back()->withErrors(['message' => 'Los datos ingresados no coinciden con nuestros registros. Revise sus datos o contacte al Administrador.']);
     }
 
     protected function validateLogin(Request $request){
         $this->validate($request,[
             'email' => 'required|string',
-            'contraseña' => 'required|string'
+            'password' => 'required|string'
         ]);
 
     }
