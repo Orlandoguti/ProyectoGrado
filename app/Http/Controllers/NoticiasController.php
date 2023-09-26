@@ -94,7 +94,23 @@ class NoticiasController extends Controller
             return response()->json(['mensaje' => 'Error al eliminar la noticia'], 500);
         }
     }
+public function eliminarInformacion(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
 
+        try {
+            DB::beginTransaction();
+
+            $informacion = Informacion::findOrFail($request->id);
+            $informacion->delete();
+
+            DB::commit();
+            return response()->json(['mensaje' => 'Informacion eliminada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['mensaje' => 'Error al eliminar la Informacion'], 500);
+        }
+    }
 public function registrarInformacion(Request $request)
 {
     if (!$request->ajax()) return redirect('/');
@@ -121,7 +137,9 @@ public function indexInformacion(Request $request)
     if (!$request->ajax()) return redirect('/');
 
 
-        $informacion = Informacion::paginate(20);
+        $informacion = Informacion::join('personas', 'informaciones.idpersona', '=', 'personas.id')
+        ->select('informaciones.id','personas.nombre as pnombre', 'informaciones.titulo', 'informaciones.contenido', 'informaciones.fecha')
+        ->orderBy('informaciones.id', 'desc')->paginate(20);
 
         return [
             'pagination' => [

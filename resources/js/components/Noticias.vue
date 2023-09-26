@@ -79,21 +79,30 @@
                                     <div class="modal-body">
                                         <div class="main-card mb-3 card">
                                             <div class="card-body">
-                                                <form @submit.prevent="registrarNoticias">
+                                                <form @submit.prevent="registrarNoticias" ref="form" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
                                                     <div class="mb-3">
                                                       <label for="url">Imagen:</label>
-                                                      <input type="file" class="form-control" @change="obtimage" />
+                                                      <input type="file" class="form-control" @change="obtimage" required />
+                                                      <div class="invalid-feedback"> Seleccione un Imagen!</div>
+                                                      <div class="valid-feedback"> Correcto! </div>
                                                     </div>
-                                                    <div class="mb-3">
-                                                      <label for="titulo">Título:</label>
-                                                      <input type="text" class="form-control" id="titulo" v-model="titulo" />
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="validationCustom01" class="form-label">Titulo:</label>
+                                                        <input v-model="titulo" type="text" class="form-control" placeholder="Añada el titulo" required>
+                                                        <div class="invalid-feedback"> Añada un Titulo!</div>
+                                                        <div class="valid-feedback"> Correcto! </div>
                                                     </div>
                                                     <div class="mb-3">
                                                       <label for="descripcion">Descripción:</label>
-                                                      <textarea class="form-control" id="descripcion" v-model="descripcion"></textarea>
+                                                      <textarea class="form-control" id="descripcion" v-model="descripcion" required></textarea>
+                                                      <div class="invalid-feedback"> Añada una Descripción!</div>
+                                                        <div class="valid-feedback"> Correcto! </div>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary">Agregar Noticia</button>
                                                   </form>
+                                            <div class="modal-footer" style="display: flex; justify-content: center;">
+                                                <button type="button" @click="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-primary" @click="registrarNoticias()">Registrar Noticia</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="table-responsive">
@@ -170,7 +179,7 @@
                     <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
                         <p>------ AVISOS ------</p>
                     </div>
-                    <div style="display: flex; justify-content: center; margin-top: -3%; margin-bottom: 1%;"><input type="checkbox" class="inputcheck" v-model="inputHabilitado"></div>
+                    <div style="display: flex; justify-content: center; margin-top: -3%; margin-bottom: 1%;"><input type="checkbox" class="inputcheck" v-model="inputHabilitado" @click="verInformacion()"></div>
                         <div class="row" v-if="inputHabilitado == true">
                             <div class="col-md-12">
                                 <div class="main-card mb-3 card">
@@ -182,19 +191,40 @@
                                         <tr>
                                             <th class="text-center">Titulo</th>
                                             <th class="text-center">Contenido</th>
+                                            <th class="text-center">Registrado Por</th>
                                             <th class="text-center">Fecha de Registro</th>
                                             <th class="text-center">Opciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="informaciones in arrayInformaciones" :key="informaciones.id">
-                                            <td class="text-center text-muted"  v-text="informaciones.titulo"></td>
-                                            <td class="text-center text-muted"  v-text="informaciones.contenido"></td>
-                                            <td class="text-center text-muted"  v-text="informaciones.fecha"></td>
-                                            <td class="text-center text-muted"></td>
+                                            <tr v-for="informacion in arrayInformacion" :key="informacion.id">
+                                            <td class="text-center text-muted"  v-text="informacion.titulo"></td>
+                                            <td class="text-center text-muted"  v-text="informacion.contenido"></td>
+                                            <td class="text-center text-muted"  v-text="informacion.pnombre"></td>
+                                            <td class="text-center text-muted"  v-text="informacion.fecha"></td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-danger btn-sm" @click="eliminiarInformacion(informacion.id)">
+                                                  <i class="pe-7s-trash" aria-hidden="true" title="Eliminar Informacion"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="d-block text-center card-footer">
+                                    <nav>
+                                        <ul class="pagination">
+                                            <li class="page-item" v-if="pagination.current_page > 1">
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1)">Ant</a>
+                                            </li>
+                                            <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(page)" v-text="page"></a>
+                                            </li>
+                                            <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1)">Sig</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                                </div>
                           </div>
@@ -203,21 +233,20 @@
                         <div class="col-md-5">
                             <div class="main-card mb-3 card">
                                 <div class="card-body"><h5 class="card-title" style="text-align: center; color: coral;">PANEL DE INFORMACION</h5>
-                                    <form @submit.prevent="registrarInformacion()">
+                                    <form @submit.prevent="registrarInformacion()" ref="form2" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated2 }]">
                                         <div class="position-relative mb-3">
                                             <label for="exampleEmail" class="form-label">Titulo:</label>
-                                            <input v-model="titulo" name="tituloinf" id="exampleEmail" placeholder="Ingrese el titulo..." type="text" class="form-control" :disabled="!esEditable">
+                                            <input v-model="titulo" name="tituloinf" id="exampleEmail" placeholder="Ingrese el titulo..." type="text" class="form-control" :disabled="!esEditable" required>
                                         </div>
                                         <div class="position-relative mb-3">
                                             <label for="exampleText" class="form-label">Contenido:</label>
-                                            <textarea v-model="contenido" name="contenido" id="exampleText" class="form-control" :disabled="!esEditable"></textarea>
+                                            <textarea v-model="contenido" name="contenido" id="exampleText" class="form-control" :disabled="!esEditable" required></textarea>
                                         </div>
-                                            <div class="form-check"><input v-model="esEditable" type="checkbox" class="form-check-input">
-                                                <label class="form-check-label" for="exampleCheck">Editar</label>
-                                              </div>
-                                            <div style="display: flex; justify-content: center;"><button class="mt-1 btn btn-primary">Registrar</button></div>
-
                                     </form>
+                                    <div class="form-check"><input v-model="esEditable" type="checkbox" class="form-check-input">
+                                        <label class="form-check-label" for="exampleCheck">Crear Aviso</label>
+                                      </div>
+                                    <div style="display: flex; justify-content: center;"><button @click="registrarInformacion()" class="mt-1 btn btn-primary" :disabled="!esEditable">Registrar</button></div>
                                 </div>
                             </div>
                         </div>
@@ -230,6 +259,8 @@ import moment from 'moment';
 export default {
   data() {
     return {
+      formValidated: false,
+      formValidated2: false,
       inputHabilitado : false,
       imagenmin:'',
       imagen:'',
@@ -238,7 +269,7 @@ export default {
       esEditable: false,
       descripcion:'',
       arrayNoticias: [],
-      arrayInformaciones: [],
+      arrayInformacion: [],
       fecha: '',
       modal: 0,
       tituloModal: '',
@@ -305,12 +336,13 @@ export default {
                 }
                 reader.readAsDataURL(file);
             },
-            cambiarPagina(page){
+    cambiarPagina(page){
                 let me = this;
                 //Actualiza la página actual
                 me.pagination.current_page = page;
                 //Envia la petición para visualizar la data de esa página
                 me.verNoticias(page);
+                me.verInformacion(page);
             },
 
     verNoticias(page) {
@@ -327,7 +359,22 @@ export default {
           console.error(error);
         });
     },
+    verInformacion(page) {
+      // Enviar la nueva imagen al backend y guardarla en la base de datos
+      let me=this;
+      var url= '/informaciones/indexInformacion?page=' + page;
+      axios.get(url).then(function (response) {
+          var respuesta= response.data;
+          me.arrayInformacion = respuesta.informacion.data;
+          me.pagination= respuesta.pagination;
+          // Reinicia el formulario para agregar otra imagen
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
     registrarInformacion() {
+    if (this.$refs.form2.checkValidity()) {
       let me = this;
       let formData = new FormData();
       this.fecha = moment().format('YYYY-MM-DD');
@@ -343,16 +390,22 @@ export default {
         })
         .then(function (response) {
           swal("Registrado!", "El aviso ha sido registrado con éxito.", "success");
+          me.formValidated2=false;
           me.esEditable=false;
+          me.titulo='';
+          me.contenido='';
         })
         .catch(function (error) {
           swal("Error!", "No se ha podido registrar el aviso.", "warning");
           console.log(error);
         });
+    } else {
+        this.formValidated2 = true;
+      }
     },
     registrarNoticias() {
+    if (this.$refs.form.checkValidity()) {
       let me = this;
-
       let formData = new FormData();
       this.fecha = moment().format('YYYY-MM-DD');
       formData.append("imagen", this.imagen);
@@ -375,6 +428,9 @@ export default {
           swal("Error!", "No se ha podido registrar la Noticia.", "warning");
           console.log(error);
         });
+    } else {
+        this.formValidated = true;
+      }
     },
 eliminarNoticia(id) {
   let me = this;
@@ -389,10 +445,24 @@ eliminarNoticia(id) {
       console.log(error);
     });
 },
+eliminiarInformacion(id) {
+  let me = this;
+
+  axios
+    .delete('/informacion/eliminar', { data: { id: id } })
+    .then(function (response) {
+      me.verInformacion(1);
+      swal('Eliminado!', 'El registro ha sido eliminado con éxito.', 'success');
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+},
 
 
     cerrarModal() {
       this.modal = 0;
+      this.formValidated = false;
       this.tituloModal = '';
     },
     abrirModal(modelo, accion, data = []) {
@@ -414,6 +484,7 @@ eliminarNoticia(id) {
   },
   mounted() {
     this.verNoticias(1);
+    this.verInformacion(1);
   },
 };
 </script>

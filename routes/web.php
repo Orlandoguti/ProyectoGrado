@@ -74,8 +74,9 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get('/cargo/selectCargo', 'CargoController@selectCargo');
 
-        Route::post('/registrarInformacion', 'NoticiasController@registrarInformacion');
         Route::get('/informaciones/indexInformacion', 'NoticiasController@indexInformacion');
+        Route::post('/registrarInformacion', 'NoticiasController@registrarInformacion');
+        Route::delete('/informacion/eliminar', 'NoticiasController@eliminarInformacion');
 
         Route::post('/variables/actualizarTotal', 'VariablesController@actualizarTotal');
         Route::get('/variables/indexVariables', 'VariablesController@index');

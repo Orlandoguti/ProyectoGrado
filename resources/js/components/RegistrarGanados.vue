@@ -198,9 +198,8 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom01" class="form-label">ID Tarjeta:</label>
                                             <input v-model="rfidData" type="text" class="form-control" id="validationCustom01" placeholder="Registre la Tarjeta" required :disabled="!inputHabilitado">
-                                            <div class="valid-feedback">
-                                                Correcto!
-                                            </div>
+                                            <div class="invalid-feedback"> Añada un ID Tarjeta!</div>
+                                            <div class="valid-feedback"> Correcto! </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label">Habilitar Edicion ID:</label>
