@@ -94,8 +94,8 @@
                     <div class="card-header"># LISTA DE GANADOS
                         <div class="btn-actions-pane-right">
                             <div class="input-group">
-                                <input type="text" v-model="buscar" @keyup.enter="listarRfid(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                <button type="submit" @click="listarRfid(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                <input type="text" v-model="buscar" @keyup.enter="listarRfid(1,buscar)" class="form-control" placeholder="Texto a buscar">
+                                <button type="submit" @click="listarRfid(1,buscar)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                 <button type="button" class="btn btn-info" @click="abrirModal('rfid','registrar')" data-bs-toggle="modal" style="margin-left: 1%;">
                                     <i class="fa fa-plus-circle"></i>&nbsp; Registrar Ganado
                                 </button>
@@ -168,13 +168,13 @@
                         <nav>
                             <ul class="pagination">
                                 <li class="page-item" v-if="pagination.current_page > 1">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio,buscar,criterio)">Ant</a>
+                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar)">Ant</a>
                                 </li>
                                 <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio,buscar,criterio)" v-text="page"></a>
+                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar)" v-text="page"></a>
                                 </li>
                                 <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio,buscar,criterio)">Sig</a>
+                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar)">Sig</a>
                                 </li>
                             </ul>
                         </nav>
@@ -193,7 +193,7 @@
                     <div class="modal-body">
                         <div class="main-card mb-3 card">
                             <div class="card-body">
-                                <form @submit="validacionForm($event)" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
+                                <form @submit.prevent="registrarRfid" ref="form" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom01" class="form-label">ID Tarjeta:</label>
@@ -284,8 +284,10 @@ data (){
       rfidData: '',
       idpersona : 0,
       fecha : '',
+      fecharegistro:'',
       marca : '',
       nombre : '',
+      telefono : '',
       idgenero : 0,
       estado : 0,
       arrayPersona : [],
@@ -303,7 +305,6 @@ data (){
           'to' : 0,
       },
       offset : 3,
-      criterio : 'marca',
       buscar : '',
   }
 
@@ -356,6 +357,55 @@ idpersona(newVal) {
 },
 
 methods : {
+        enviarMensajeWhatsAppRegistrar() {
+        let me = this;
+        me.fecharegistro=moment().format("DD-MM-YYYY");
+        if (me.estado == 0){
+            me.estado = 'Ingresando al corral';
+            var settings = {
+                        async: true,
+                        crossDomain: true,
+                        url: "https://api.ultramsg.com/instance58594/messages/chat",
+                        method: "POST",
+                        data: {
+                        token: "zdhnpr3dhsnohb7s",
+                        to: me.telefono,
+                        body: 'Tu ganado con el IDRFID: *' + me.rfidData + '* ya fue registrado en fecha: ' + me.fecharegistro + ' y esta '+ me.estado +' puedes monitorearlo en la pagina del Sistema. Att: F.U.T.E.C.R.A.'
+                        }
+                    };
+
+                    // Realizar la solicitud POST
+                    $.ajax(settings)
+                        .done(function (response) {
+                        toastr.options = {
+                            closeButton: true,
+                            debug: false,
+                            newestOnTop: true,
+                            progressBar: true,
+                            positionClass: 'toast-top-right',
+                            preventDuplicates: false,
+                            onclick: null,
+                            showDuration: '500',
+                            hideDuration: '1000',
+                            timeOut: '5000',
+                            extendedTimeOut: '1000',
+                            showEasing: 'swing',
+                            hideEasing: 'linear',
+                            showMethod: 'fadeIn',
+                            hideMethod: 'fadeOut',
+                        };
+                        toastr.success('Se ha enviado el mensaje', 'Enviado');
+                        console.log(response);
+                        // Haz lo que necesites con la respuesta, como mostrar un mensaje de éxito
+                        })
+                        .fail(function (error) {
+                        console.error("Error al enviar el mensaje de WhatsApp:", error);
+                        // Manejar el error, si es necesario
+                        });
+                    }
+
+                },
+
 
     enviarMensajeWhatsApp(rfid) {
       var settings = {
@@ -405,16 +455,17 @@ methods : {
       this.inputDeshabilitado = false; // Cambia el valor para habilitar el input
     },
 
-getOpcionSeleccionada(idpersona) {
-  // Realiza una solicitud HTTP a tu backend para obtener los detalles de la opción seleccionada
-  axios.get(`/personas/ver/${idpersona}`).then((response) => {
-    this.nombre = response.data.nombre;
-  });
-},
+    getOpcionSeleccionada(idpersona) {
+    // Realiza una solicitud HTTP a tu backend para obtener los detalles de la opción seleccionada
+    axios.get(`/personas/ver/${idpersona}`).then((response) => {
+        this.nombre = response.data.nombre;
+        this.telefono = response.data.telefono;
+    });
+    },
 
-  listarRfid (page,buscar,criterio){
+  listarRfid (page,buscar){
       let me=this;
-      var url= '/rfid/index?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+      var url= '/rfid/index?page=' + page + '&buscar='+ buscar;
       axios.get(url).then(function (response) {
           var respuesta= response.data;
           me.arrayRfid = respuesta.rfids.data;
@@ -453,27 +504,13 @@ getOpcionSeleccionada(idpersona) {
       });
   },
 
-  cambiarPagina(page,buscar,criterio){
+  cambiarPagina(page,buscar){
       let me = this;
       //Actualiza la página actual
       me.pagination.current_page = page;
       //Envia la petición para visualizar la data de esa página
-      me.listarRfid(page,buscar,criterio);
+      me.listarRfid(page,buscar);
   },
-    validacionForm(event) {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        const form = event.currentTarget;
-
-        if (form.checkValidity()) {
-        this.formValidated = true;
-        // Lógica adicional si el formulario es válido
-        }
-
-        form.classList.add('was-validated');
-    },
     Validacion(){
         if (this.rfidData==0) {
             swal('Error!', `El ID RFID no puede estar vacio o estar en 0.`, 'warning');
@@ -482,20 +519,18 @@ getOpcionSeleccionada(idpersona) {
                 this.errorMostrarMsjValidacion =[];
 
                 if (this.rfidData == 0) this.errorMostrarMsjValidacion.push("");
-                if (!this.idgenero) this.errorMostrarMsjValidacion.push("");
-                 if (!this.idpersona) this.errorMostrarMsjValidacion.push("");
                 if (this.errorMostrarMsjValidacion.length) this.errorValidacion = 1;
 
                 return this.errorValidacion;
             },
     registrarRfid() {
             let me = this;
-            this.formValidated='true';
             // Verificar si hay un registro con el mismo RFID y estado 3
 
             if (this.Validacion()){
                     return;
                 }else{
+                    if (this.$refs.form.checkValidity()) {
                 axios.get('/rfid/verificar', {
                         params: {
                         rfidData: this.rfidData
@@ -520,17 +555,17 @@ getOpcionSeleccionada(idpersona) {
                         axios.post('/rfid/registrar', formData)
                         .then(function(response) {
                             me.cerrarModal();
-                            me.listarRfid(1, '', 'idrfid');
+                            me.enviarMensajeWhatsAppRegistrar();
+                            me.listarRfid(1,this.buscar);
                         })
                         .catch(function(error) {
                             console.log(error);
                         });
                         }
                     })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-
+                     } else {
+                    this.formValidated = true;
+                }
         }
        },
   cerrarModal(){
@@ -621,9 +656,9 @@ closeWebSocket() {
 },
 
 mounted() {
-this.listarRfid(1,this.buscar,this.criterio);
+this.listarRfid(1,this.buscar);
 setInterval(() => {
-    this.listarRfid(this.pagination.current_page, this.buscar, this.criterio);
+    this.listarRfid(this.pagination.current_page, this.buscar);
 }, 5000);
 },
 }

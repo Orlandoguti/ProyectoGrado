@@ -237,10 +237,13 @@
                                         <div class="position-relative mb-3">
                                             <label for="exampleEmail" class="form-label">Titulo:</label>
                                             <input v-model="titulo" name="tituloinf" id="exampleEmail" placeholder="Ingrese el titulo..." type="text" class="form-control" :disabled="!esEditable" required>
-                                        </div>
+                                            <div class="invalid-feedback"> Añada el Titulo de la Noticia!</div>
+                                            <div class="valid-feedback"> Correcto! </div></div>
                                         <div class="position-relative mb-3">
                                             <label for="exampleText" class="form-label">Contenido:</label>
                                             <textarea v-model="contenido" name="contenido" id="exampleText" class="form-control" :disabled="!esEditable" required></textarea>
+                                            <div class="invalid-feedback"> Añada el contenido de la Noticia!</div>
+                                            <div class="valid-feedback"> Correcto! </div>
                                         </div>
                                     </form>
                                     <div class="form-check"><input v-model="esEditable" type="checkbox" class="form-check-input">

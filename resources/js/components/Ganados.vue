@@ -135,7 +135,9 @@
                     </div>
 
                  </div>
-
+                 <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
+                    <p>------ GANADOS ------</p>
+                </div>
            <div class="row">
             <section v-if="ver==0">
             <div class="col-md-12">
