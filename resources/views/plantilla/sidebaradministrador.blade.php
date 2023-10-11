@@ -363,7 +363,7 @@
                                         <li @click="menu=8">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-id">
-                                                </i>Detalles Boucher
+                                                </i>Detalle Ingresos
                                             </a>
                                         </li>
                                     </ul>

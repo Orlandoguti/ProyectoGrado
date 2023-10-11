@@ -76,8 +76,7 @@
                                             <th class="text-center">Nombre</th>
                                             <th class="text-center">Grupo Carneo</th>
                                             <th class="text-center">Cantidad</th>
-                                            <th class="text-center">Fecha</th>
-                                            <th class="text-center">Opciones</th>
+                                            <th class="text-center">Fecha de Registro</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -87,11 +86,6 @@
                                             <td class="text-center text-muted"  v-text="lista.gnombre"></td>
                                             <td class="text-center text-muted"  v-text="lista.total_cantidad"></td>
                                             <td v-text="lista.fecha" class="text-center"></td>
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-danger btn-sm" @click="eliminarGanado(rfid.id)">
-                                                    <i class="pe-7s-trash" aria-hidden="true" title="Copy to use file-excel-o"></i>
-                                                </button>
-                                             </td>
                                            </tr>
                                         </tbody>
                                     </table>
@@ -127,14 +121,16 @@
                         <div class="modal-body">
                             <div class="main-card mb-3 card">
                                 <div class="card-body">
-                                    <form @submit="validacionForm($event)" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
+                                    <form @submit.prevent="registrarLista" ref="form" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label for="validationCustom01" class="form-label">Marca:</label>
-                                                <select class="form-control" v-model="idpersona">
-                                                    <option value="0" disabled>Seleccione al Afiliado</option>
+                                                <select class="form-control" v-model="idpersona" required>
+                                                    <option value="" disabled>Seleccione al Afiliado</option>
                                                     <option v-for="persona in arrayPersona" :key="persona.id" :value="persona.id" v-text="persona.marca"></option>
                                                 </select>
+                                                <div class="invalid-feedback"> Seleccione el Afiliado!</div>
+                                            <div class="valid-feedback"> Correcto! </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="validationCustom02" class="form-label">Nombre del Afiliado:</label>
@@ -144,7 +140,9 @@
                                         <div class="row">
                                             <div class="col-md-4 mb-3">
                                                 <label for="validationCustom05" class="form-label">Cantidad:</label>
-                                                <input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad">
+                                                <input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad" required>
+                                                <div class="invalid-feedback"> Ingrese la Cantidad!</div>
+                                            <div class="valid-feedback"> Correcto! </div>
                                             </div>
                                             <div class="col-md-4 mb-3">
                                                 <label for="validationCustom06" class="form-label">Fecha:</label>
@@ -181,7 +179,7 @@ export default {
       maxtotalfaeneo: 0,
       total: 0,
       arrayLista: [], // Array de objetos con los datos de las listas
-      idpersona: 0,
+      idpersona: '',
       errorRegistro: '',
       nombre: '',
       marca: '',
@@ -419,11 +417,12 @@ export default {
             me.listagrupo1(page,this.date1,this.date2);
         },
         registrarLista() {
+            if (this.$refs.form.checkValidity()) {
             if (this.Validacion()) {
                 return;
             } else {
                 if (this.cantidad > 3) {
-                    swal('Error!', 'La cantidad solo puede ser menor o igual a 3.', 'warning');
+                    swal('Error!', 'Solo se puede ingresar la cantidad igual o menor 3.', 'warning');
                     return;
                 }
 
@@ -441,6 +440,7 @@ export default {
                         this.errorRegistro = response.data.errorRegistro;
                         swal('Error!', this.errorRegistro, 'warning');
                     } else if (response.data.success) {
+                        window.open('/lista-pdf');
                         swal('Registrado!', 'Registro Exitoso!', 'success');
                         this.cerrarModal();
                         this.listagrupo1(1,this.date1,this.date2);
@@ -450,6 +450,9 @@ export default {
                     console.log(error);
                 });
             }
+            } else {
+              this.formValidated = true;
+                    }
         },
 
     cerrarModal() {
@@ -461,6 +464,7 @@ export default {
       this.cantidad = '';
       this.fecha = '';
       this.errorLista = 0;
+      this.this.formValidated = false;
     },
     abrirModal(modelo, accion, data = []) {
       switch (modelo) {
@@ -468,8 +472,8 @@ export default {
           switch (accion) {
             case 'registrar': {
               this.modal = 1;
-              this.tituloModal = 'Registrar Lista';
-              this.idpersona = 0;
+              this.tituloModal = 'Registrar en la Lista';
+              this.idpersona = '';
               this.idgrupo = 0;
               this.cantidad = 0;
               this.fecha = moment().format('YYYY-MM-DD');

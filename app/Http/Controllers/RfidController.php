@@ -24,36 +24,29 @@ class RfidController extends Controller
         if (!$request->ajax()) return redirect('/');
         $fecha = Carbon::now('America/La_Paz')->format('Y-m-d');
         $buscar = $request->buscar;
-        $criterio = $request->criterio;
 
-        if ($buscar==''){
+
             $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos','rfids.idgenero','=','generos.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
-            ->select('rfids.id','rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
+            ->select('rfids.id','rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo','personas.id as idpersona','personas.nombre','generos.id as idgenero','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
             ->where('rfids.fecha','=',$fecha)
             ->where('users.idrol', '=', 3)
-            ->orderBy('rfids.created_at', 'desc')
-            ->orderBy('rfids.estado', 'desc')->paginate(10);
+            ->where(function($query) use ($buscar) {
+                $query->where('personas.nombre', 'LIKE', "%$buscar%")
+                      ->orWhere('personas.num_documento', 'LIKE', "%$buscar%")
+                      ->orWhere('personas.direccion', 'LIKE', "%$buscar%")
+                      ->orWhere('personas.marca', 'LIKE', "%$buscar%")
+                      ->orWhere('generos.nombre', 'LIKE', "%$buscar%")
+                      ->orWhere('rfids.idrfid', 'LIKE', "%$buscar%");
+            })
+            ->orderBy('rfids.estado', 'asc')
+            ->orderBy('rfids.created_at', 'asc')->paginate(10);
             $total_estado0 = Rfid::where('estado', 0)->where('fecha','=', $fecha)->count();
             $total_estado1 = Rfid::where('estado', 1)->where('fecha','=', $fecha)->count();
             $total_estado2 = Rfid::where('estado', 2)->where('fecha','=', $fecha)->count();
-        }
-        else{
-            $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
-            ->join('generos','rfids.idgenero','=','generos.id')
-            ->join('users', 'personas.id', '=', 'users.id')
-            ->join('grupos','rfids.idgrupo','=','grupos.id')
-            ->select('rfids.id','rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
-            ->where('rfids.fecha','=',$fecha)
-            ->where('users.idrol', '=', 3)
-            ->where('personas.'.$criterio, 'like', '%'. $buscar . '%')->orderBy('fecha', 'desc')->paginate(10);
 
-            $total_estado0 = Rfid::where('estado', 0)->where('fecha','=', $fecha)->count();
-            $total_estado1 = Rfid::where('estado', 1)->where('fecha','=', $fecha)->count();
-            $total_estado2 = Rfid::where('estado', 2)->where('fecha','=', $fecha)->count();
-        }
 
         return [
             'pagination' => [
@@ -479,6 +472,25 @@ class RfidController extends Controller
                 $rfid->asignado = 1;
                 $rfid->save();
             }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+
+    public function update(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        try {
+            DB::beginTransaction();
+
+            $rfid = Rfid::findOrFail($request->id);
+            $rfid->idrfid = $request->idrfid;
+            $rfid->idpersona = $request->idpersona;
+            $rfid->idgenero = $request->idgenero;
+            $rfid->save();
 
             DB::commit();
         } catch (Exception $e) {

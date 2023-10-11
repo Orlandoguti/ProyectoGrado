@@ -38,6 +38,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get('/grupo/selectGrupo', 'GrupoController@selectGrupo');
         Route::get('/grupo/index', 'GrupoController@index');
         Route::post('/grupo/registrar', 'GrupoController@store');
+        Route::get('/lista-pdf', 'ListaController@pdfdetalleListagenerar')->name('pdf.generar');
         Route::post('/generar-pdf-detallelista', 'ListaController@pdfdetalleLista')->name('pdf.detallelista');
         Route::post('/generar-pdf-lista', 'ListaController@listaPdf');
 
@@ -50,6 +51,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get('/rfid/indexAfiliado', 'RfidController@indexAfiliado');
         Route::post('/rfid/ver','RfidController@autollenarRfid');
         Route::post('/rfid/registrar', 'RfidController@store');
+        Route::post('/rfid/actualizar', 'RfidController@update');
         Route::get('/rfid/verificar', 'RfidController@verificar');
         Route::post('/rfid/proceso1', 'RfidController@Proceso1');
         Route::post('/rfid/actualizarIdGeneroLista', 'RfidController@actualizarIdGeneroLista');

@@ -185,7 +185,7 @@
             <tr>
                 <th colspan="2">Total Cantidad:</th>
                 <td><?php echo $totalCantidad; ?></td>
-                <th colspan="2">Total:</th>
+                <th colspan="2">Total Dinero:</th>
                 <td><?php echo $totalCantidad * 24 . ' Bs'; ?></td>
             </tr>
         </table>

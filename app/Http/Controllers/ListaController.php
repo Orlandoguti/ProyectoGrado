@@ -28,7 +28,7 @@ class ListaController extends Controller
         $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
             ->join('generos', 'listas.idgenero', '=', 'generos.id')
-            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'listas.fecha')
+            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'personas.telefono', 'listas.fecha')
             ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
             ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
             ->where('listas.cantidad', '>', 0)
@@ -43,7 +43,7 @@ class ListaController extends Controller
             })
             ->groupBy('grupos.nombre', 'personas.nombre', 'personas.marca', 'listas.fecha')
             ->orderBy('listas.fecha')
-            ->paginate(4);
+            ->paginate(10);
 
             $listashoy = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
@@ -51,7 +51,7 @@ class ListaController extends Controller
             ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'listas.fecha')
             ->where('listas.fecha', '=', $fechahoy)
             ->where('listas.estado', '=', 0)
-            ->paginate();
+            ->get();
 
         return [
             'pagination' => [
@@ -239,6 +239,58 @@ class ListaController extends Controller
 
             }
 
+            public function pdfdetalleListagenerar(Request $request)
+            {
+                $detallelistasindex = DB::table('detalle_listas as d')
+                    ->join('personas as p', 'd.idpersona', '=', 'p.id')
+                    ->select('p.marca', 'd.id', 'p.nombre', 'd.fecha')
+                    ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].cantidad")) as cantidad_json')
+                    ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total_json')
+                    ->latest('d.id')
+                    ->first();
+
+                if ($detallelistasindex) {
+                    $detallelistasindex->id = str_pad($detallelistasindex->id, 9, '0', STR_PAD_LEFT);
+
+                    $cantidades = json_decode($detallelistasindex->cantidad_json);
+                    $totales = json_decode($detallelistasindex->total_json);
+
+                    $sumaCantidad = array_sum($cantidades);
+                    $sumaTotal = array_sum($totales);
+
+                    $detallelistasindex->cantidad = $sumaCantidad;
+                    $detallelistasindex->total = $sumaTotal;
+                }
+
+                $pdfData = [];
+
+                if ($detallelistasindex) {
+                    $detallelistas = DB::table('detalle_listas as d')
+                        ->join('personas as p', 'd.idpersona', '=', 'p.id')
+                        ->select('p.marca', 'd.id')
+                        ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].idgrupo")) as idgrupo')
+                        ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total')
+                        ->latest('d.id')
+                        ->first();
+
+                    if ($detallelistas) {
+                        $idgrupos = json_decode($detallelistas->idgrupo);
+                        $totals = json_decode($detallelistas->total);
+
+                        foreach ($cantidades as $index => $cantidad) {
+                            $pdfData[] = [
+                                'marca' => $detallelistas->marca,
+                                'total' => $totals[$index],
+                                'grupo' => $idgrupos[$index],
+                            ];
+                        }
+                    }
+                }
+
+                $pdf = \PDF::loadView('pdf.ingreso', ['pdfData' => $pdfData, 'detallelistasindex' => $detallelistasindex]);
+                return $pdf->stream('ListaPdf.pdf');
+            }
+
             public function pdfdetalleLista(Request $request)
             {
                 if (!$request->ajax()) return redirect('/');
@@ -311,7 +363,7 @@ class ListaController extends Controller
 
         $cantidadRestante = 3 - $cantidadTotal;
         if ($cantidad > $cantidadRestante) { // Usar '> 3' en lugar de '= 3'
-            $errorRegistro = 'Se ha superado el límite de cantidad permitido para esta persona y día.';
+            $errorRegistro = 'Se ha superado el límite de cantidad permitido para este afiliado y día.';
             return response()->json(['errorRegistro' => $errorRegistro]);
         }
 
@@ -363,6 +415,7 @@ class ListaController extends Controller
                 $nuevaLista->save();
 
                 $registro = [
+                    'idingreso' => $nuevaLista->id,
                     'cantidad' => $nuevaLista->cantidad,
                     'total' => $nuevaLista->total,
                     'idgrupo' => $nuevaLista->idgrupo,

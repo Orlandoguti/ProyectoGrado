@@ -223,7 +223,7 @@ watch: {
         data: {
           token: "zdhnpr3dhsnohb7s",
           to: rfid.telefono,
-          body: 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
+          body: 'Señor(a): ' + rfid.nombre + 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
         }
 
       };
@@ -340,7 +340,7 @@ watch: {
                     showMethod: 'fadeIn',
                     hideMethod: 'fadeOut',
                 };
-                toastr.success('Registrado se a actualizado la Lista.','Registrado');
+                toastr.success('Registrado se a actualizado la Lista.','Actualizado');
                 // Apagar el LED después de 1 segundo
                 setTimeout(function() {
                     me.webSocket.send('Apagar LED');
@@ -353,7 +353,7 @@ watch: {
                 me.fecha = '';
                 if (me.arrayRfid.length > 0) {
                     const rfidRecord = me.arrayRfid[0];
-                    me.enviarMensajeWhatsApp(rfidRecord); // Pass the RFID object
+                    me.enviarMensajeWhatsApp(rfidRecord);
                 }
 
                 })

@@ -27,6 +27,20 @@
                 </div>
        </section>
     <div class="row">
+        <div class="col-md-12">
+            <div class="main-card mb-3 card" style="text-align: center;">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa fa-tasks" style="margin-right: 1%;"></i>SELECCIONE EL GRUPO DE CARNEO</h5>
+                    <button v-for="grupo in arrayGrupo" :key="grupo.id" @click="seleccionarGrupo(grupo.nombre)" v-if="grupo.id >= 1 && totalesPorGrupo[grupo.nombre] > 0"
+                      class="mb-2 me-2 btn btn-success2">
+                      <i class="fa fa-cubes"></i> {{ grupo.nombre }}
+                      <span class="badge rounded-pill bg-light">
+                        {{ totalesPorGrupo[grupo.nombre] || 0 }}
+                      </span>
+                    </button>
+                  </div>
+            </div>
+        </div>
         <div class="col-md-4">
             <div class="main-card mb-3 card">
                 <div class="card-header">
@@ -67,21 +81,8 @@
                     </form>
                 </div>
             </div>
-
             </div>
             <div class="col-md-8">
-                    <div class="main-card mb-3 card" style="text-align: center;">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-tasks" style="margin-right: 1%;"></i>SELECCIONE EL GRUPO DE CARNEO</h5>
-                            <button v-for="grupo in arrayGrupo" :key="grupo.id" @click="seleccionarGrupo(grupo.nombre)" :class="{ active: grupo === grupoSeleccionado }" v-if="grupo.id >= 1 && totalesPorGrupo[grupo.nombre] > 0"
-                              class="mb-2 me-2 btn btn-success">
-                              <i class="fa fa-cubes"></i> {{ grupo.nombre }}
-                              <span class="badge rounded-pill bg-light">
-                                {{ totalesPorGrupo[grupo.nombre] || 0 }}
-                              </span>
-                            </button>
-                          </div>
-                    </div>
             <div class="main-card mb-3 card">
                 <div class="card-header"><i class="fa fa-list-ol" style="margin-right: 1%;"></i>LISTA DE GANADOS AUTORIZADOS PARA CARNEAR
                     <div class="btn-actions-pane-right">
@@ -107,9 +108,9 @@
                                 <td v-text="lista.ganados" class="text-center"></td>
                                 <td v-text="lista.fecha" class="text-center"></td>
                                 <td class="text-center">
-                                    <button type="button" @click="abrirModal('lista','actualizar',lista)" class="btn btn-success btn-sm">
+                                    <button type="button" @click="enviarMensajeWhatsApp(lista)" class="btn btn-success btn-sm">
                                         <i class="fa fa-whatsapp" aria-hidden="true"></i>
-                                    </button> &nbsp;
+                                      </button> &nbsp;
                                 </td>
                             </tr>
                         </tbody>
@@ -167,6 +168,7 @@ export default {
           arrayLista: [],
           arrayListaHoy: [],
           arrayGrupo: [],
+          grupoSeleccionado:'',
       }
 
   },
@@ -194,31 +196,31 @@ export default {
     isActived: function () {
       return this.pagination.current_page;
     },
-//Calcula los elementos de la paginación
-pagesNumber: function() {
-    if(!this.pagination.to) {
-        return [];
-    }
+    //Calcula los elementos de la paginación
+    pagesNumber: function() {
+        if(!this.pagination.to) {
+            return [];
+        }
 
-    var from = this.pagination.current_page - this.offset;
-    if(from < 1) {
-        from = 1;
-    }
+        var from = this.pagination.current_page - this.offset;
+        if(from < 1) {
+            from = 1;
+        }
 
-    var to = from + (this.offset * 2);
-    if(to >= this.pagination.last_page){
-        to = this.pagination.last_page;
-    }
+        var to = from + (this.offset * 2);
+        if(to >= this.pagination.last_page){
+            to = this.pagination.last_page;
+        }
 
-    var pagesArray = [];
-    while(from <= to) {
-        pagesArray.push(from);
-        from++;
-    }
-    return pagesArray;
+        var pagesArray = [];
+        while(from <= to) {
+            pagesArray.push(from);
+            from++;
+        }
+        return pagesArray;
 
-}
-},
+    }
+    },
 
 watch: {
     rfidData(newVal) {
@@ -229,6 +231,44 @@ watch: {
 
     },
   methods : {
+    enviarMensajeWhatsApp(lista) {
+        // Contar la cantidad de "No Encontrado" en la propiedad 'ganados' para el elemento 'lista'
+        const cantidadGenero0 = (lista.ganados.match(/No Encontrado/g) || []).length;
+
+        var settings = {
+            async: true,
+            crossDomain: true,
+            url: "https://api.ultramsg.com/instance58594/messages/chat",
+            method: "POST",
+            data: {
+            token: "zdhnpr3dhsnohb7s",
+            to: lista.telefono,
+            body: 'Señor(a): ' + lista.nombre + ' No se encuentran ' + cantidadGenero0 + ' de tus ganados en fecha ' + lista.fecha + ' Att: F.U.T.E.C.R.A.'
+            }
+        };
+        $.ajax(settings).done(function (response) {
+            toastr.options = {
+            closeButton: true,
+            debug: false,
+            newestOnTop: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+            preventDuplicates: false,
+            onclick: null,
+            showDuration: '500',
+            hideDuration: '1000',
+            timeOut: '5000',
+            extendedTimeOut: '1000',
+            showEasing: 'swing',
+            hideEasing: 'linear',
+            showMethod: 'fadeIn',
+            hideMethod: 'fadeOut',
+            };
+            toastr.success('Se ha enviado el mensaje','Enviado');
+            console.log(response);
+            // Haz lo que necesites con la respuesta, como mostrar un mensaje de éxito
+        });
+        },
 
     seleccionarGrupo(grupoId) {
         this.grupo = grupoId;
@@ -381,7 +421,7 @@ watch: {
             },
 
 
-            listaProceso1 (page){
+            listaProceso1(page) {
                 let me = this;
                 var url = `/listaProceso1?page=${page}&grupo=${this.grupo}&fechaFiltro=${this.fechaFiltro}`;
                 axios
@@ -389,20 +429,22 @@ watch: {
                     .then(function (response) {
                     var respuesta = response.data;
                     me.arrayLista = respuesta.listas.data;
-                    me.arrayListaHoy = respuesta.listashoy.data;
+                    me.arrayListaHoy = respuesta.listashoy;
                     me.pagination = respuesta.pagination;
-                            me.totalesPorGrupo = me.arrayListaHoy.reduce((acc, lista) => {
+
+                    // Calcula los totales por grupo desde los nuevos datos
+                    me.totalesPorGrupo = me.arrayListaHoy.reduce((acc, lista) => {
                         if (!acc[lista.gnombre]) {
-                            acc[lista.gnombre] = 0;
+                        acc[lista.gnombre] = 0;
                         }
                         acc[lista.gnombre]++;
                         return acc;
-                        }, {});
+                    }, {});
                     })
                     .catch(function (error) {
                     console.log(error);
                     });
-                    },
+                },
         cambiarPagina(page){
           let me = this;
           //Actualiza la página actual
@@ -447,3 +489,33 @@ beforeDestroy() {
 
 </script>
 
+<style scoped>
+
+.btn-success2 {
+    color: #fff;
+    background-color: #58cd91;
+    border-color: #28a745;
+  }
+
+  .btn-success2:hover {
+    color: #fff;
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  .btn-success2:focus, .btn-success2.focus {
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5);
+  }
+
+  .btn-success2.disabled, .btn-success2:disabled {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  .btn-success2:active{
+
+    background-color: #000000;
+    background-image: none;
+    border-color: #000000;
+  }
+</style>

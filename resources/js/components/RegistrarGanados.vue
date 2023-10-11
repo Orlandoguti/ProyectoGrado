@@ -148,11 +148,11 @@
                                 </td>
                                 <td v-text="rfid.fecha" class="text-center"></td>
                                 <td class="text-center">
-                                    <button type="button" @click="enviarMensajeWhatsApp(rfid)" class="btn btn-success btn-sm">
+                                    <button v-if="rfid.estado == 2" type="button" @click="enviarMensajeWhatsApp(rfid)" class="btn btn-success btn-sm">
                                         <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                       </button> &nbsp;
 
-                                    <button type="button" @click="abrirModal('rfid','actualizar',articulo)" class="btn btn-warning btn-sm">
+                                    <button type="button" @click="abrirModal('rfid','actualizar',rfid)" class="btn btn-warning btn-sm">
                                         <i style="color: white;" class="fa fa-edit" aria-hidden="true"></i>
                                       </button> &nbsp;
 
@@ -255,7 +255,8 @@
 
                         <div class="modal-footer">
                             <button type="button" @click="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" @click="registrarRfid()">Registrar Ganado</button>
+                            <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarRfid()">Registrar Ganado</button>
+                            <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarRfid()">Actualizar Ganado</button>
                         </div>
                     </div>
                 </div>
@@ -288,6 +289,7 @@ data (){
       marca : '',
       nombre : '',
       telefono : '',
+      id : 0,
       idgenero : 0,
       estado : 0,
       arrayPersona : [],
@@ -416,7 +418,7 @@ methods : {
         data: {
           token: "zdhnpr3dhsnohb7s",
           to: rfid.telefono,
-          body: 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
+          body: 'Señor(a): ' + rfid.nombre + 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
         }
 
       };
@@ -568,12 +570,44 @@ methods : {
                 }
         }
        },
+       actualizarRfid() {
+            let me = this;
+            // Verificar si hay un registro con el mismo RFID y estado 3
+
+            if (this.Validacion()){
+                    return;
+                }else{
+                    if (this.$refs.form.checkValidity()) {
+
+                        let formData = new FormData();
+                        formData.append('id', me.id);
+                        formData.append('idrfid', me.rfidData);
+                        formData.append('idpersona', me.idpersona);
+                        formData.append('marca', me.marca);
+                        formData.append('idgenero', me.idgenero);
+                        formData.append('fecha', me.fecha);
+
+                        axios.post('/rfid/actualizar', formData)
+                        .then(function(response) {
+                            me.cerrarModal();
+                            me.listarRfid(1,this.buscar);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+
+                     } else {
+                    this.formValidated = true;
+                }
+        }
+       },
   cerrarModal(){
       this.inputHabilitado = false;
       this.modal= false;
       this.tituloModal='';
       this.idrfid= 0;
       this.idpersona = '';
+      this.nombre = '';
       this.estado= 0;
       this.fecha = '';
       this.closeWebSocket();
@@ -598,18 +632,25 @@ methods : {
                       this.tipoAccion = 1;
                       break;
                   }
-                  case 'actualizar':
-                  {
-                      //console.log(data);
-                      this.modal = true;
-                      this.tituloModal='Actualizar Tarjeta RFID';
-                      this.tipoAccion=2;
-                      this.rfidData=data['idrfid'];
-                      this.marca=data['marca'];
-                      this.idgenero=data['idgenero'];
-                      this.estado=data['estado'];
-                      break;
-                  }
+                  case 'actualizar': {
+                        this.modal = true;
+                        this.tituloModal = 'Actualizar Tarjeta RFID';
+                        this.tipoAccion = 2;
+                        this.id=data['id'];
+                        this.rfidData = data['idrfid'];
+                        this.idpersona = data['idpersona'];
+                        if (data['estado'] === 0 ) {
+                            this.estado = 'GANADO EN EL CORRAL';
+                        } else { if (data['estado'] === 1 ) {
+                            this.estado = 'PROCESO DE FAENEADO';
+                        }else{ if (data['estado'] === 2 ) {
+                            this.estado = 'GANADO CARNEADO';
+                        }}
+                        }
+                        this.idgenero = data['idgenero'];
+                        this.fecha = data['fecha'];
+                        break;
+                        }
               }
           }
 
