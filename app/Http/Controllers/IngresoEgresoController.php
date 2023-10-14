@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Carbon\Carbon;
 use App\DetalleLista;
 use App\Egresos;
@@ -15,7 +16,8 @@ class IngresoEgresoController extends Controller
 
     public function indexIngresoEgreso(Request $request)
     {
-        $idclasegreso = $request->input('idclasegreso'); // Obtener el parámetro de filtro de grupo
+        $idclasegreso = $request->input('idclasegreso');
+        $buscar = $request->input('buscar'); // Obtener el parámetro de filtro de grupo
         $date1 = $request->date1;
         $date2 = $request->date2;
 
@@ -78,6 +80,12 @@ class IngresoEgresoController extends Controller
 
         $egresos = Egresos::join('clasegresos', 'egresos.idclasegreso', '=', 'clasegresos.id')
         ->select('egresos.id','egresos.egreso', 'egresos.monto','egresos.descripcion','egresos.respaldo','egresos.fecha','clasegresos.nombre')
+        ->where(function($query) use ($buscar) {
+            $query->where('egresos.id', 'like', '%' . $buscar . '%')
+                  ->orWhere('egresos.egreso', 'like', '%' . $buscar . '%')
+                  ->orWhere('egresos.monto', 'like', '%' . $buscar . '%')
+                  ->orWhere('egresos.fecha', 'like', '%' . $buscar . '%');
+        })
         ->when($idclasegreso, function ($query) use ($idclasegreso) {
             return $query->where('egresos.idclasegreso', $idclasegreso);
         })->orderBy('egresos.id', 'desc')
@@ -101,6 +109,12 @@ class IngresoEgresoController extends Controller
 
             $egresos = Egresos::join('clasegresos', 'egresos.idclasegreso', '=', 'clasegresos.id')
             ->select('egresos.id','egresos.egreso', 'egresos.monto','egresos.descripcion','egresos.respaldo','egresos.fecha','clasegresos.nombre')
+            ->where(function($query) use ($buscar) {
+                $query->where('egresos.id', 'like', '%' . $buscar . '%')
+                      ->orWhere('egresos.egreso', 'like', '%' . $buscar . '%')
+                      ->orWhere('egresos.monto', 'like', '%' . $buscar . '%')
+                      ->orWhere('egresos.fecha', 'like', '%' . $buscar . '%');
+            })
             ->when($idclasegreso, function ($query) use ($idclasegreso) {
                 // Aplicar el filtro de grupo solo si se proporciona un grupo
                 return $query->where('egresos.idclasegreso', $idclasegreso);
@@ -126,10 +140,17 @@ class IngresoEgresoController extends Controller
                 if (!$request->ajax()) return redirect('/');
                 $date1 = $request->date1;
                 $date2 = $request->date2;
+                $buscar = $request->input('buscar');
                 $idclasegreso = $request->input('idclasegreso'); // Obtener el parámetro de filtro de grupo
                 if ($date1 == '' && $date2 == ''){
                     $egresos = Egresos::join('clasegresos', 'egresos.idclasegreso', '=', 'clasegresos.id')
                     ->select('egresos.id','egresos.egreso', 'egresos.monto','egresos.descripcion','egresos.respaldo','egresos.fecha','clasegresos.nombre')
+                    ->where(function($query) use ($buscar) {
+                        $query->where('egresos.id', 'like', '%' . $buscar . '%')
+                              ->orWhere('egresos.egreso', 'like', '%' . $buscar . '%')
+                              ->orWhere('egresos.monto', 'like', '%' . $buscar . '%')
+                              ->orWhere('egresos.fecha', 'like', '%' . $buscar . '%');
+                    })
                     ->when($idclasegreso, function ($query) use ($idclasegreso) {
                         // Aplicar el filtro de grupo solo si se proporciona un grupo
                         return $query->where('egresos.idclasegreso', $idclasegreso);
@@ -138,6 +159,12 @@ class IngresoEgresoController extends Controller
                     }else{
                         $egresos = Egresos::join('clasegresos', 'egresos.idclasegreso', '=', 'clasegresos.id')
                         ->select('egresos.id','egresos.egreso', 'egresos.monto','egresos.descripcion','egresos.respaldo','egresos.fecha','clasegresos.nombre')
+                        ->where(function($query) use ($buscar) {
+                            $query->where('egresos.id', 'like', '%' . $buscar . '%')
+                                  ->orWhere('egresos.egreso', 'like', '%' . $buscar . '%')
+                                  ->orWhere('egresos.monto', 'like', '%' . $buscar . '%')
+                                  ->orWhere('egresos.fecha', 'like', '%' . $buscar . '%');
+                        })
                         ->when($idclasegreso, function ($query) use ($idclasegreso) {
                             // Aplicar el filtro de grupo solo si se proporciona un grupo
                             return $query->where('egresos.idclasegreso', $idclasegreso);
@@ -151,40 +178,30 @@ class IngresoEgresoController extends Controller
             }
 
             public function storeEgreso(Request $request)
-            {
-                if (!$request->ajax()) {
-                    return redirect('/');
-                }
+                {
+                    if (!$request->ajax()) return redirect('/');
 
-                try {
-                    DB::beginTransaction();
                     $mytime = Carbon::now('America/La_Paz');
-                    $detalles = json_decode($request->input('data'), true); // Decode JSON data
 
-                  foreach ($detalles as $index => $det) {
                     $egreso = new Egresos();
-                    $egreso->idclasegreso = $det['idclasegreso'];
-                    $egreso->egreso = $det['egreso'];
-                    $egreso->monto = $det['monto'];
-                    $egreso->descripcion = $det['descripcion'];
-                    $egreso->respaldo = time() . "_" . $det['nombrerespaldo'];
-                    $egreso->fecha = $mytime->toDateTimeString();
+                    $egreso->idclasegreso = $request->idclasegreso;
+                    $egreso->egreso = $request->egreso;
+                    $egreso->monto = $request->monto;
+                    $egreso->descripcion = $request->descripcion;
 
-                    // Check for specific file upload for the current detail
-                      if ($request->hasFile('respaldo')) {
-                        $respaldo = $request->file('respaldo')[$index];
-                        $fileName = time() . "_" . $respaldo->getClientOriginalName();
-                        $respaldo->move(public_path('/respaldos/sueldos/'), $fileName);
+                    if ($request->hasFile('respaldo')) {
+                        $fileData = $request->file('respaldo');
+                        $fileName = time()."_".$fileData->getClientOriginalName();
+                        $fileData->move(public_path().'/respaldos/sueldos/', $fileName);
+                        $egreso->respaldo = $fileName;
                     }
+
+                    $egreso->fecha = $mytime->toDateTimeString();
                     $egreso->save();
-                }
+
                     DB::commit();
                     return response()->json(['message' => 'Egreso registered successfully.']);
-                } catch (\Exception $e) {
-                    DB::rollBack();
-                    return response()->json(['error' => 'An error occurred while registering the Egreso.']);
                 }
-            }
 
 
     public function index(Request $request)
@@ -235,6 +252,48 @@ class IngresoEgresoController extends Controller
         return ['clasegresos' => $clasegresos];
     }
 
+    public function eliminar($id)
+    {
+        $egreso = Egresos::find($id);
 
+        if (!$egreso) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+
+        $egreso->delete();
+
+        return response()->json(['message' => 'Registro eliminado correctamente']);
+    }
+
+    public function update(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        try {
+            DB::beginTransaction();
+
+            $clasegresos = ClasEgresos::findOrFail($request->id);
+            $clasegresos->id = $request->idrfid;
+            $clasegresos->nombre = $request->nombre;
+            $clasegresos->detalle = $request->detalle;
+            $clasegresos->save();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+    public function eliminarclasegreso($id)
+    {
+        $clasegresos = ClasEgresos::find($id);
+
+        if (!$clasegresos) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+
+        $clasegresos->delete();
+
+        return response()->json(['message' => 'Registro eliminado correctamente']);
+    }
 
 }

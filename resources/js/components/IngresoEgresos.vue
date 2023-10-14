@@ -121,6 +121,7 @@
                                 <div class="card-header"># LISTA DE EGRESOS
                                     <div class="btn-actions-pane-right">
                                         <div class="input-group">
+                                            <input type="text" v-model="buscar" @keyup="listarEgreso(1,buscar,date1,date2)" class="form-control" placeholder="Texto a buscar">
                                             <select class="form-control" v-model="idclasegreso" @click="listarEgreso(1,date1,date2)">
                                                 <option value='' disabled>Filtro de Egreso</option>
                                                 <option value=''>Ninguno</option>
@@ -166,8 +167,11 @@
                                             <td class="text-center text-muted"  v-text="egreso.descripcion"></td>
                                             <td class="text-center text-muted"  v-text="egreso.fecha"></td>
                                             <td class="text-center text-muted">
-                                                <button type="button" class="btn btn-warning btn-sm" @click="verRespaldo(egreso.respaldo)">
-                                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                <button type="button" class="btn btn-warning btn-sm" title="Abrir Respaldo" @click="verRespaldo(egreso.respaldo)">
+                                                    <i class="fa fa-regular fa-folder-open" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-sm" title="Eliminar Registro" @click="eliminarEgreso(egreso.id)">
+                                                    <i class="pe-7s-trash" aria-hidden="true"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -178,13 +182,13 @@
                                     <nav>
                                         <ul class="pagination">
                                             <li class="page-item" v-if="pagination.current_page > 1">
-                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1)">Ant</a>
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,date1,date2)">Ant</a>
                                             </li>
                                             <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(page)" v-text="page"></a>
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,date1,date2)" v-text="page"></a>
                                             </li>
                                             <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1)">Sig</a>
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,date1,date2)">Sig</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -204,6 +208,7 @@
                                 <div class="modal-body">
                                     <div class="main-card mb-3 card">
                                         <div class="card-body">
+                                            <form @submit.prevent="registrarEgreso" ref="form" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
                                                 <div class="row">
                                                     <div class="col-md-4 mb-3">
                                                     <label for="validationCustom04" class="form-label">Clasificacion del Egreso:</label>
@@ -211,83 +216,38 @@
                                                         <option value="" disabled>Seleccione la Clasificacion</option>
                                                         <option v-if="clasegreso.id >= 1" v-for="clasegreso in arrayClasEgreso" :key="clasegreso.id" :value="clasegreso.id" v-text="clasegreso.nombre" ></option>
                                                     </select>
+                                                    <div class="invalid-feedback"> Seleccione la Clasificacion!</div>
+                                                    <div class="valid-feedback"> Correcto! </div>
                                                     </div>
                                                     <div class="col-md-4 mb-3">
                                                         <label class="form-label">Egreso: <span style="color: red;" v-show="egreso==0"></span></label>
-                                                        <input type="text" value="0" class="form-control" v-model="egreso" placeholder="Ingrese Egreso....">
+                                                        <input type="text" value="0" class="form-control" v-model="egreso" placeholder="Ingrese Egreso...." required>
+                                                        <div class="invalid-feedback"> Ingrese Nombre de Egreso!</div>
+                                                        <div class="valid-feedback"> Correcto! </div>
                                                     </div>
                                                     <div class="col-md-4 mb-3">
                                                         <label for="validationCustom05" class="form-label">Monto:</label>
-                                                        <input type="text" v-model="formattedMonto" @input="updateMonto" class="form-control" placeholder="Monto">
+                                                        <input type="text" v-model="formattedMonto" @input="updateMonto" class="form-control" placeholder="Monto" required>
+                                                        <div class="invalid-feedback"> Ingrese el Monto!</div>
+                                                        <div class="valid-feedback"> Correcto! </div>
                                                     </div>
                                                     <div class="col-md-4 mb-3">
                                                         <label for="validationCustom01" class="form-label">Descripcion:</label>
-                                                        <input type="text" value="0" class="form-control" v-model="descripcion" placeholder="Ingrese Detalle...">
+                                                        <input type="text" value="0" class="form-control" v-model="descripcion" placeholder="Ingrese Detalle..." required>
+                                                        <div class="invalid-feedback"> Ingrese la Descripcion del Egreso!</div>
+                                                        <div class="valid-feedback"> Correcto! </div>
                                                   </div>
                                                   <div class="col-md-6 mb-3">
                                                     <label for="validationCustom01" class="form-label">Respaldo:</label>
-                                                    <input type="file" @change="handleFileChange" ref="respaldoInput" class="form-control" placeholder="Ingrese Respaldo...">
+                                                    <input type="file" ref="respaldoInput" @change="onFileChange" class="form-control" placeholder="Ingrese Respaldo..." required>
+                                                    <div class="invalid-feedback">Suba el Respaldo!</div>
+                                                    <div class="valid-feedback">Correcto!</div>
+                                                  </div>
                                                 </div>
-                                                </div>
-                                                <div class="row" style="display: flex; justify-content: center;">
-                                                  <div class="col-md-2 mb-3">
-                                                    <div class="form-group">
-                                                        <button @click="agregarDetalle()" class="btn btn-success form-control btnagregar"><i class="fa fa-plus-circle"></i></button>
-                                                    </div>
-                                                </div>
-                                                </div>
+                                            </form>
+                                         </div>
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                            <div class="table-responsive">
-                                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-center">Clasificacion</th>
-                                                            <th class="text-center">Egreso</th>
-                                                            <th class="text-center">Monto</th>
-                                                            <th class="text-center">Descripcion</th>
-                                                            <th class="text-center">Respaldo</th>
-                                                            <th class="text-center">Opciones</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody v-if="arrayDetalle.length">
-                                                        <tr v-for="(detalle,index) in arrayDetalle" :key="detalle.id">
-                                                          <td class="text-center text-muted">
-                                                            <div class="widget-content p-0">
-                                                                <div class="widget-content-wrapper">
-                                                                    <div class="widget-content-left flex2">
-                                                                        <span v-text="detalle.nombreClaseEgresos" class="widget-heading"></span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                          </td>
-                                                          <td class="text-center text-muted" v-text="detalle.egreso"></td>
-                                                          <td class="text-center text-muted" v-text="detalle.monto"></td>
-                                                          <td class="text-center text-muted" v-text="detalle.descripcion"></td>
-                                                          <td class="text-center text-muted">
-                                                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                                          </td>
-                                                          <td class="text-center text-muted">
-                                                            <button @click="eliminarDetalle(index)" type="button" class="btn btn-danger btn-sm">
-                                                                <i class="fa-solid fa-x fa-spin"></i>
-                                                            </button>
-                                                          </td>
-                                                        </tr>
-                                                      </tbody>
-                                                    <tbody v-else>
-                                                        <tr>
-                                                            <td class="text-center text-muted" colspan="6">
-                                                                No hay Egresos agregados
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="modal-footer">
                                         <button type="button" @click="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                         <button type="button" class="btn btn-primary" @click="registrarEgreso()">Registrar Egreso</button>
@@ -315,6 +275,7 @@ export default {
         tipoAccion: 0,
         egreso: '',
         monto: 0,
+        buscar: '',
         clasegreso:'',
         idclasegreso:'',
         descripcion: '',
@@ -331,7 +292,8 @@ export default {
         offset: 3,
         arrayDetalle : [],
         chartData: [],
-        formattedMonto: 0
+        formattedMonto: 0,
+        formValidated: false,
     };
   },
 
@@ -383,6 +345,10 @@ export default {
     },
   },
   methods: {
+    onFileChange(event) {
+      // Actualiza la propiedad 'respaldo' con el archivo seleccionado
+      this.respaldo = event.target.files[0];
+    },
 
     verDetalleChartGrafico() {
       this.verDetalleChart = 0;
@@ -399,7 +365,8 @@ export default {
         const requestData = {
             date1: date1,
             date2: date2,
-            idclasegreso: this.idclasegreso
+            idclasegreso: this.idclasegreso,
+            buscar: this.buscar
         };
 
         axios.post('/generar-pdf-egreso', requestData, { responseType: 'blob' })
@@ -423,79 +390,60 @@ export default {
         const parts = this.monto.toLocaleString().split(".");
         this.formattedMonto = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (parts[1] ? "." + parts[1] : "");
     },
-    registrarEgreso() {
-    const formData = new FormData();
-
-    formData.append('data', JSON.stringify(this.arrayDetalle)); // Convert array to JSON string
-    for (const detalle of this.arrayDetalle) {
-        formData.append('respaldo[]', detalle.respaldo); // Append each file to the FormData
-    }
-
-    axios.post('/egreso/registrar', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
-        },
-    }).then((response) => {
-        swal(
-            'Registrado!',
-            'El Egreso ha sido registrado con éxito.',
-            'success'
-        );
-        this.modal = 0;
-        this.indexChart();
-        this.listarEgreso(1,this.date1,this.date2);
-    }).catch((error) => {
-        console.error(error);
-        swal(
-            'Error!',
-            'Hubo un problema al registrar el Egreso.',
-            'error'
-        );
-    });
-},
-
-        handleFileChange(event) {
-            const selectedFile = event.target.files[0]; // Get the selected file
-            if (selectedFile) {
-                this.nombrerespaldo = selectedFile.name; // Extract and store the filename
-                this.respaldo = selectedFile; // Store the file in respaldo
-            }
-        },
-        agregarDetalle() {
-            let me = this;
-            const selectedClasEgreso = me.arrayClasEgreso.find(clasegreso => clasegreso.id === me.idclasegreso);
-
-            if (me.monto > me.total_saldo_efectivo || me.monto == 'NaN') {
-                swal('Error!', 'El Monto Supera el Efectivo.', 'error');
-            } else if(this.$refs.respaldoInput.value == ''){
-                swal('Error!', 'Cargue el respaldo.', 'error');
-            }else {
-                me.arrayDetalle.push({
-                    monto: me.monto,
-                    idclasegreso: selectedClasEgreso.id,
-                    nombreClaseEgresos: selectedClasEgreso.nombre,
-                    descripcion: me.descripcion === "" ? "Sin Detalles" : me.descripcion,
-                    egreso: me.egreso,
-                    nombrerespaldo: me.nombrerespaldo, // Include the uploaded file in the object
-                    respaldo: me.respaldo,
+        registrarEgreso() {
+            if (this.$refs.form.checkValidity()) {
+                if (this.monto > this.total_saldo_efectivo || this.monto == 'NaN') {
+                    Swal.fire('Error!', 'El Monto Supera el Efectivo.', 'error');
+                } else{
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn2 btn-success',
+                        cancelButton: 'btn2 btn-danger'
+                    },
+                    buttonsStyling: false
                 });
+                swalWithBootstrapButtons.fire({
+                    title: 'Registrar!',
+                    text: "Estás Seguro de Registrar este Egreso?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, Registrar!',
+                    cancelButtonText: 'No, Cancelar!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let me = this;
+                        let formData = new FormData();
+                        formData.append('idclasegreso', me.idclasegreso);
+                        formData.append('egreso', me.egreso);
+                        formData.append('monto', me.monto);
+                        formData.append('descripcion', me.descripcion);
+                        formData.append('respaldo', this.respaldo);
 
-                // Limpiar campos después de agregar el detalle
-                me.idclasegreso = '';
-                me.respaldo = null; // Reset the file input
-                me.nombrerespaldo = '';
-                me.descripcion = '';
-                me.monto = 0;
-                me.egreso = '';
-                me.formattedMonto = 0;
-                this.$refs.respaldoInput.value = '';
-            }
-        },
-        eliminarDetalle(index){
-                let me = this;
-                me.arrayDetalle.splice(index, 1);
+                        axios.post('/egreso/registrar', formData).then((response) => {
+                            Swal.fire(
+                                'Registrado!',
+                                'Se ha registrado el Egreso!',
+                                'success'
+                            );
+                            this.cerrarModal();
+                            this.listarEgreso(1, this.date1, this.date2);
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                    }
+                    })
+                }
+            } else {
+                Swal.fire('Validacion!', 'Porfavor llena todos los campos!', 'warning');
+                this.formValidated = true;
+             }
             },
-
 
     indexChart() {
   // Obtener la fecha actual (opcional, si quieres mostrar los datos de la fecha actual por defecto)
@@ -509,9 +457,9 @@ export default {
             console.error('Error fetching data:', error);
             });
         },
-    listarEgreso(page,date1,date2) {
+    listarEgreso(page,buscar,date1,date2) {
     let me = this;
-    var url = `/IngresoEgreso/indexIngresoEgreso?page=${page}&date1=${date1}&date2=${date2}&idclasegreso=${this.idclasegreso}`;
+    var url = `/IngresoEgreso/indexIngresoEgreso?page=${page}&buscar=${buscar}&date1=${date1}&date2=${date2}&idclasegreso=${this.idclasegreso}`;
     axios
         .get(url)
         .then(function (response) {
@@ -619,6 +567,13 @@ export default {
     }
 
     },
+    cambiarPagina(page,buscar) {
+            let me = this;
+            // Actualiza la página actual
+            me.pagination.current_page = page;
+            // Envía la petición para visualizar la data de esa página
+            me.listarEgreso(page,buscar,this.date1,this.date2);
+        },
     abrirModal(modelo, accion, data = []) {
         this.selectClasEgreso();
       switch (modelo) {
@@ -637,13 +592,56 @@ export default {
     },
     cerrarModal() {
       this.modal = 0;
+      this.formValidated = false;
       this.tituloModal = '';
       this.cantidad = '';
+      this.idclasegreso = '';
+      this.egreso = '';
+      this.formattedMonto = 0;
+      this.descripcion = '';
+      this.$refs.respaldoInput.value = '';
     },
+
+    eliminarEgreso(id){
+        const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn2 btn-success',
+                        cancelButton: 'btn2 btn-danger'
+                    },
+                    buttonsStyling: false
+                });
+                swalWithBootstrapButtons.fire({
+                    title: 'Eliminar!',
+                    text: "Estás Seguro de Eliminar este Registro?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, Eliminar!',
+                    cancelButtonText: 'No, Cancelar!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+            axios.delete(`/egreso/eliminar/${id}`)
+                .then(response => {
+                this.listarEgreso(1,this.buscar='',this.date1='',this.date2='');
+                Swal.fire(
+                            'Eliminado!',
+                            'El Registro se ha sido eliminado con éxito.',
+                            'warning'
+                            )
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    } else if (
+                                        /* Read more about handling dismissals below */
+                                        result.dismiss === Swal.DismissReason.cancel
+                                    ) {
+                    }
+                })
+            },
   },
   mounted() {
     this.selectClasEgreso();
-    this.listarEgreso(1,this.date1,this.date2);
+    this.listarEgreso(1,this.buscar,this.date1,this.date2);
     this.indexChart();
   },
 };

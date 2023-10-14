@@ -339,8 +339,7 @@ export default {
 
                 this.errorValidacion=0;
                 this.errorMostrarMsjValidacion =[];
-                if (this.cantidad <= 0) this.errorMostrarMsjValidacion.push(""), swal('Error!', `La cantidad no puede ser menor a 0 o igual!`, 'warning');
-                if (this.idpersona == 0) this.errorMostrarMsjValidacion.push(""),swal('Error!', `Seleccione una Marca!`, 'warning');
+                if (this.cantidad <= 0) this.errorMostrarMsjValidacion.push(""), Swal.fire('Error!', `La cantidad no puede ser menor a 0 o igual!`, 'warning');
                 if (this.errorMostrarMsjValidacion.length) this.errorValidacion = 1;
 
                 return this.errorValidacion;
@@ -422,9 +421,26 @@ export default {
                 return;
             } else {
                 if (this.cantidad > 3) {
-                    swal('Error!', 'Solo se puede ingresar la cantidad igual o menor 3.', 'warning');
+                    Swal.fire('Error!', 'Solo se puede ingresar la cantidad igual o menor 3.', 'warning');
                     return;
                 }
+            const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn2 btn-success',
+                        cancelButton: 'btn2 btn-danger'
+                    },
+                    buttonsStyling: false
+                });
+                swalWithBootstrapButtons.fire({
+                    title: 'Registrar!',
+                    text: "Estás Seguro de Registrar este Ingreso?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, Registrar!',
+                    cancelButtonText: 'No, Cancelar!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
 
                 const datosLista = {
                     cantidad: this.cantidad,
@@ -438,19 +454,26 @@ export default {
                 .then((response) => {
                     if (response.data.errorRegistro) {
                         this.errorRegistro = response.data.errorRegistro;
-                        swal('Error!', this.errorRegistro, 'warning');
+                        Swal.fire('Error!', this.errorRegistro, 'warning');
                     } else if (response.data.success) {
                         window.open('/lista-pdf');
-                        swal('Registrado!', 'Registro Exitoso!', 'success');
+                        Swal.fire('Registrado!', 'Registro Exitoso!', 'success');
+                        this.listagrupo1(1,this.date1,this.date2,this.grupo,this.fmarca);
                         this.cerrarModal();
-                        this.listagrupo1(1,this.date1,this.date2);
                     }
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-            }
+                } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                    }
+                })
+                }
             } else {
+              Swal.fire('Validacion!', 'Porfavor llena todos los campos!', 'warning');
               this.formValidated = true;
                     }
         },

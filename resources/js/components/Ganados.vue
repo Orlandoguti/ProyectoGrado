@@ -906,19 +906,41 @@ methods : {
 
 
   eliminarGanado(id){
-
-        axios.delete(`/rfid/eliminar/${id}`)
-            .then(response => {
-            this.listarRfid(1,this.buscar='',this.date1='',this.date2='');
-            this.fetchChartDataFromDatabase(this.date1,this.date2);
-            swal(
-                        'Eliminado!',
-                        'El Registro se ha sido eliminado con éxito.',
-                        'warning'
-                        )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
+    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn2 btn-success',
+                        cancelButton: 'btn2 btn-danger'
+                    },
+                    buttonsStyling: false
+                });
+                swalWithBootstrapButtons.fire({
+                    title: 'Eliminar!',
+                    text: "Estás Seguro de Eliminar este Registro?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, Eliminar!',
+                    cancelButtonText: 'No, Cancelar!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                axios.delete(`/rfid/eliminar/${id}`)
+                    .then(response => {
+                    this.listarRfid(1,this.buscar='',this.date1='',this.date2='');
+                    this.fetchChartDataFromDatabase(this.date1,this.date2);
+                    Swal.fire(
+                                'Eliminado!',
+                                'El Registro se ha sido eliminado con éxito.',
+                                'warning'
+                                )
+                            }).catch(function (error) {
+                                console.log(error);
+                            });
+                        } else if (
+                                /* Read more about handling dismissals below */
+                                result.dismiss === Swal.DismissReason.cancel
+                            ) {
+                            }
+                            })
                 },
 
 },

@@ -30,9 +30,12 @@
                      <div class="row">
                         <div class="col-md-12">
                             <div class="main-card mb-3 card">
-                                <div class="card-header"># LISTA DE BOUCHERS
+                                <div class="card-header"># LISTA DE BOUCHERS DE INGRESOS
                                     <div class="btn-actions-pane-right">
                                         <div class="input-group">
+                                            <input type="text" v-model="buscar" @keyup="detallelista(1,buscar)" class="form-control" placeholder="Texto a buscar">
+                                            <button type="submit" @click="detallelista(1,buscar)" @change="fetchChartDataFromDatabase()" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                            <button type="submit" @click="generatePdf(buscar)" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Copy to use file-pdf-o"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +61,10 @@
                                             <td class="text-center text-muted"><span>{{detallelista.total}} Bs.</span></td>
                                             <td v-text="detallelista.fecha" class="text-center"></td>
                                             <td class="text-center">
-                                                <button type="submit" @click="generarPDF(detallelista.id)" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Copy to use file-pdf-o"></i></button>
+                                                <button type="button" @click="generarPDF(detallelista.id)" class="btn btn-danger btn-sm"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Copy to use file-pdf-o"></i></button>
+                                                <button type="button" class="btn btn-info btn-sm" @click="eliminarIngreso(detallelista.id)">
+                                                    <i class="pe-7s-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -68,13 +74,13 @@
                                     <nav>
                                         <ul class="pagination">
                                             <li class="page-item" v-if="pagination.current_page > 1">
-                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1)">Ant</a>
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,this.buscar)">Ant</a>
                                             </li>
                                             <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(page)" v-text="page"></a>
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar)" v-text="page"></a>
                                             </li>
                                             <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1)">Sig</a>
+                                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,this.buscar)">Sig</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -82,72 +88,6 @@
                             </div>
                         </div>
                     </div>
-                <!-- Fin ejemplo de tabla Listado -->
-            <!--Inicio del modal agregar/actualizar-->
-            <div class="modal fade bd-example-modal-lg" :class="{'mostrar' : modal}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" style="margin-top: 10%;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Generar Lista</h5>
-                            <button type="button" @click="cerrarModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="main-card mb-3 card">
-                                <div class="card-body">
-                                    <form @submit="validacionForm($event)" enctype="multipart/form-data" :class="['needs-validation', { 'was-validated': formValidated }]">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationCustom01" class="form-label">Marca:</label>
-                                                <select class="form-control" v-model="idpersona">
-                                                    <option value="0" disabled>Seleccione al Afiliado</option>
-                                                    <option v-for="persona in arrayPersona" :key="persona.id" :value="persona.id" v-text="persona.marca"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationCustom02" class="form-label">Nombre del Afiliado:</label>
-                                                <input type="text" v-model="nombre" class="form-control" placeholder="Marca de la persona" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="validationCustom04" class="form-label">Grupo del Ganado:</label>
-                                                <select class="form-control" v-model="idgrupo">
-                                                    <option value="0" disabled>Seleccione el grupo de Faeneado</option>
-                                                    <option v-for="grupo in arrayGrupo" :key="grupo.id" :value="grupo.id" v-text="grupo.nombre" v-if="grupo.id >= 1"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="validationCustom05" class="form-label">Cantidad:</label>
-                                                <input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad">
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="validationCustom06" class="form-label">Fecha:</label>
-                                                <input type="date" v-model="fecha" class="form-control" placeholder="Fecha" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                             <div class="col-md-3 mb-3">
-                                                <label for="validationCustom01" class="form-label">Total:</label>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                  <input type="text" :value="total" class="form-control" placeholder="Total" disabled>
-                                            </div>
-                                        </div>
-                                        <div v-show="errorValidacion"></div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" @click="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary" @click="registrarLista()">Registrar Lista</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Fin del modal-->
             </section>
 </template>
 
@@ -159,6 +99,7 @@ export default {
       arrayDetalleLista: [],
       cantidad:'',
       fecha:'',
+      buscar:'',
       total:'',
       pagination: {
         total: 0,
@@ -169,6 +110,7 @@ export default {
         to: 0,
       },
       offset: 3,
+      formValidated: false,
       buscar:'',
     };
   },
@@ -202,6 +144,40 @@ export default {
     },
   },
   methods: {
+    eliminarIngreso(id){
+        const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn2 btn-success',
+                        cancelButton: 'btn2 btn-danger'
+                    },
+                    buttonsStyling: false
+                });
+                swalWithBootstrapButtons.fire({
+                    title: 'Eliminar!',
+                    text: "Estás Seguro de Eliminar este Ingreso?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, Eliminar!',
+                    cancelButtonText: 'No, Cancelar!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+        axios.delete(`/ingreso/eliminar/${id}`)
+            .then(response => {
+            this.detallelista(1,this.buscar);
+             Swal.fire(
+                        'Eliminado!',
+                        'El Registro se ha sido eliminado con éxito.',
+                        'warning'
+                        )
+            console.error(error.response.data.message);
+            }); } else if (
+                                /* Read more about handling dismissals below */
+                                result.dismiss === Swal.DismissReason.cancel
+                            ) {
+                            }
+                            })
+    },
         generarPDF(id) {
         const requestData ={
             id: id
@@ -217,9 +193,9 @@ export default {
                 console.error('Error generating PDF:', error);
             });
     },
-    detallelista(page) {
+    detallelista(page,buscar) {
     let me = this;
-    var url = `/detallelista?page=${page}`;
+    var url = `/detallelista?page=${page}&buscar=${buscar}`;
     axios
         .get(url)
         .then(function (response) {
@@ -231,45 +207,32 @@ export default {
         console.log(error);
         });
     },
-    cambiarPagina(page) {
+    generatePdf(buscar) {
+        const requestData = {
+            buscar: buscar,
+        };
+
+        axios.post('/Detallelistapdfindex', requestData, { responseType: 'blob' })
+            .then((response) => {
+                const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+                window.open(pdfUrl, '_blank');
+            })
+            .catch((error) => {
+                console.error('Error generating PDF:', error);
+            });
+    },
+    cambiarPagina(page,buscar) {
             let me = this;
             // Actualiza la página actual
             me.pagination.current_page = page;
             // Envía la petición para visualizar la data de esa página
-            me.detallelista(page);
+            me.detallelista(page,buscar);
         },
 
-    cerrarModal() {
-      this.modal = 0;
-      this.tituloModal = '';
-      this.idpersona = '';
-      this.idgrupo = '';
-      this.estado = '';
-      this.cantidad = '';
-      this.fecha = '';
-      this.errorLista = 0;
-    },
-    abrirModal(modelo, accion, data = []) {
-      switch (modelo) {
-        case 'lista': {
-          switch (accion) {
-            case 'registrar': {
-              this.modal = 1;
-              this.tituloModal = 'Registrar Lista';
-              this.idpersona = 0;
-              this.idgrupo = 0;
-              this.cantidad = 0;
-              this.fecha = moment().format('YYYY-MM-DD');
-              this.tipoAccion = 1;
-              break;
-            }
-          }
-        }
-      }
-    },
   },
   mounted() {
-    this.detallelista(1);
+    this.detallelista(1,this.buscar);
   },
 };
 </script>

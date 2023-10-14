@@ -154,6 +154,7 @@
                 <table id="facarticulo">
                     <thead>
                         <tr id="fa">
+                            <th>ID</th>
                             <th>Clasificacion</th>
                             <th>Egreso</th>
                             <th>Monto</th>
@@ -167,6 +168,7 @@
 
                         foreach ($egresos as $e) {
                             echo '<tr>';
+                            echo '<td>' . $e->id . '</td>';
                             echo '<td>' . $e->nombre . '</td>';
                             echo '<td>' . $e->egreso . '</td>';
                             echo '<td>' . $e->monto . '</td>';

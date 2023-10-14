@@ -55,7 +55,15 @@
                                     <td class="text-center text-muted"  v-text="grupo.nombre"></td>
                                     <td class="text-center text-muted"  v-text="grupo.detalle"></td>
                                     <td class="text-center text-muted"  v-text="grupo.fecharegistro"></td>
-                                    <td class="text-center text-muted" ></td>
+                                    <td class="text-center text-muted" >
+                                        <button type="button" @click="abrirModal('grupo','actualizar',grupo)" class="btn btn-warning btn-sm">
+                                            <i style="color: white;" class="fa fa-edit" aria-hidden="true"></i>
+                                          </button> &nbsp;
+
+                                            <button type="button" class="btn btn-danger btn-sm" @click="eliminarGrupo(grupo.id)">
+                                                <i class="pe-7s-trash"></i>
+                                            </button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -82,7 +90,7 @@
                         <div class="modal-dialog modal-lg" style="margin-top: 10%;">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Crear Grupo</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle" v-text="tituloModal"></h5>
                                     <button type="button" @click="cerrarModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     </button>
                                 </div>
@@ -105,7 +113,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" @click="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-primary" @click="registrarGrupo()">Registrar Grupo</button>
+                                        <button type="button" class="btn btn-primary" v-if="tipoAccion==1" @click="registrarGrupo()">Registrar Grupo</button>
+                                        <button type="button" class="btn btn-primary" v-if="tipoAccion==2" @click="actualizarGrupo()">Actualizar Grupo</button>
                                     </div>
                                 </div>
                             </div>
@@ -165,19 +174,46 @@ export default {
     },
   },
   methods: {
-    registrarGrupo(){
+    actualizarGrupo(){
+        let me= this;
+        let formData = new FormData();
+                        formData.append('id', me.id);
+                        formData.append('nombre', me.nombre);
+                        formData.append('detalle', me.detalle);
+
+                        axios.post('/grupo/actualizar', formData)
+                        .then(function(response) {
+                            me.cerrarModal();
+                            me.listarRfid(1,this.buscar);
+                            Swal.fire(
+                                'Registrado!',
+                                'El Grupo ha sido registrado con éxito.',
+                                'success'
+                            );
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                            Swal.fire(
+                            'Error!',
+                            'Hubo un problema al registrar el Grupo.',
+                            'error'
+                        );
+                        });
+            },
+
+            registrarGrupo(){
                 axios.post('/grupo/registrar', {
             'nombre': this.nombre,
             'detalle': this.detalle
         }).then(function(response) {
-            swal(
+            Swal.fire(
                 'Registrado!',
                 'El Grupo ha sido registrado con éxito.',
                 'success'
             );
         }).catch(function(error) {
             console.error(error);
-            swal(
+            Swal.fire(
                 'Error!',
                 'Hubo un problema al registrar el Grupo.',
                 'error'
@@ -207,7 +243,7 @@ export default {
         });
     },
 
-    abrirModal(modelo, accion) {
+    abrirModal(modelo, accion, data = []) {
       switch (modelo) {
         case 'grupo': {
           switch (accion) {
@@ -217,6 +253,14 @@ export default {
               this.tipoAccion = 1;
               this.nombre = '';
               this.detalle = '';
+              break;
+            }
+            case 'actualizar': {
+              this.modal = 1;
+              this.tituloModal = 'Actualizar Grupo';
+              this.tipoAccion = 2;
+              this.nombre = data['nombre'];
+              this.detalle = data['detalle'];
               break;
             }
           }

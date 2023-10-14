@@ -190,7 +190,7 @@ class ListaController extends Controller
         public function Detallelistaindex(Request $request)
         {
             if (!$request->ajax()) return redirect('/');
-
+            $buscar = $request->buscar;
 
             $detalleListas = DB::table('detalle_listas as d')
             ->join('personas as p', 'd.idpersona', '=', 'p.id')
@@ -199,7 +199,12 @@ class ListaController extends Controller
             ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total_json')
             ->groupBy('p.marca', 'd.id', 'd.fecha', 'p.nombre')
             ->orderBy('d.id', 'desc')
-            ->paginate(10);
+            ->where(function($query) use ($buscar) {
+                $query->where('p.marca', 'like', '%' . $buscar . '%')
+                      ->orWhere('p.nombre', 'like', '%' . $buscar . '%')
+                      ->orWhere('d.fecha', 'like', '%' . $buscar . '%')
+                      ->orWhere('d.id', 'like', '%' . $buscar . '%');
+            })->paginate(10);
 
         // Debug para verificar los valores extraídos del JSON
         foreach ($detalleListas as $detalle) {
@@ -236,6 +241,47 @@ class ListaController extends Controller
 
             ];
 
+
+            }
+
+            public function Detallelistapdfindex(Request $request)
+            {
+
+                $buscar = $request->buscar;
+
+                $detalleListas = DB::table('detalle_listas as d')
+                    ->join('personas as p', 'd.idpersona', '=', 'p.id')
+                    ->select('d.id', 'p.marca', 'd.fecha', 'p.nombre')
+                    ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].cantidad")) as cantidad_json')
+                    ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total_json')
+                    ->groupBy('p.marca', 'd.id', 'd.fecha', 'p.nombre')
+                    ->orderBy('d.id', 'desc')
+                    ->where(function($query) use ($buscar) {
+                        $query->where('p.marca', 'like', '%' . $buscar . '%')
+                              ->orWhere('p.nombre', 'like', '%' . $buscar . '%')
+                              ->orWhere('d.fecha', 'like', '%' . $buscar . '%')
+                              ->orWhere('d.id', 'like', '%' . $buscar . '%');
+                    })->get();
+            // Debug para verificar los valores extraídos del JSON
+            foreach ($detalleListas as $detalle) {
+                // Formatear el id con ceros a la izquierda
+                $detalle->id = str_pad($detalle->id, 9, '0', STR_PAD_LEFT);
+
+                // Decodificar los valores JSON extraídos
+                $cantidades = json_decode($detalle->cantidad_json);
+                $totales = json_decode($detalle->total_json);
+
+                // Calcular la suma de cantidades y totales
+                $sumaCantidad = array_sum($cantidades);
+                $sumaTotal = array_sum($totales);
+
+                // Actualizar las propiedades del objeto $detalle
+                $detalle->cantidad = $sumaCantidad;
+                $detalle->total = $sumaTotal;
+            }
+
+            $pdf = \PDF::loadView('pdf.detalleIngresopdf', ['detalleListas' => $detalleListas]);
+            return $pdf->stream('DetalleIngresoPdf.pdf');
 
             }
 
@@ -437,5 +483,30 @@ class ListaController extends Controller
                 'success' => "Se han registrado $cantidad listas en los grupos.",
                 'registros' => $registros, // Agregar el arreglo de registros
             ]);
+        }
+
+        public function eliminar($id)
+        {
+            // Paso 1: Obtener el registro de DetallesLista
+            $detalleIngreso = DetalleLista::find($id);
+
+            if (!$detalleIngreso) {
+                return response()->json(['message' => 'Registro no encontrado'], 404);
+            }
+
+            // Paso 2: Decodificar el JSON y obtener los valores de "idingreso"
+            $jsonDetalle = json_decode($detalleIngreso->detalle, true);
+
+            if ($jsonDetalle && is_array($jsonDetalle['registros'])) {
+                $idingresos = array_column($jsonDetalle['registros'], 'idingreso');
+
+                // Paso 3: Eliminar registros en la tabla Listas
+                Lista::whereIn('id', $idingresos)->delete();
+            }
+
+            // Paso 4: Finalmente, eliminar el registro de DetallesLista
+            $detalleIngreso->delete();
+
+            return response()->json(['message' => 'Registro eliminado correctamente']);
         }
 }

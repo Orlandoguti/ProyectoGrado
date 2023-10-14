@@ -51,24 +51,33 @@ const app = new Vue({
 
 //Salir
 $('.btn-exit').on('click', function(){
-    swal({
-        title: "¿Estás seguro?",
-        text: "Quieres salir del sistema y cerrar la sesión actual",
-        type: "warning",
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            cancelButton: 'btn2 btn-danger',
+            confirmButton: 'btn2 btn-info'
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: 'Salir!',
+        text: 'Quieres salir del sistema y cerrar la sesión actual',
+        imageUrl: './fonts/exit-icon.png',
         showCancelButton: true,
-        confirmButtonColor: "#5cb85c",
-        confirmButtonText: "Si, salir",
-        cancelButtonText: "No, cancelar",
-        animation: "slide-from-top",
-        closeOnConfirm: false
-    },function(){
-        window.location.href='logout';
+        cancelButtonText: 'No, Salir!',
+        confirmButtonText: 'Si, Salir!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'logout';
 
-        swal(
-            'Sesion Cerrada!',
-            'Gracias Por Ingresar al sistema'
-            )
-
-    }
-   );
+            Swal.fire(
+                'Sesion Cerrada!',
+                'Gracias Por Ingresar al Sistema',
+                'success'
+            );
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            // El usuario canceló la acción
+        }
+    });
 });

@@ -32,6 +32,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post('/lista/store', 'ListaController@store');
         Route::get('/listagrupo1', 'ListaController@listagrupo1');
         Route::get('/detallelista', 'ListaController@Detallelistaindex');
+
         Route::get('/listaProceso1', 'ListaController@listaProceso1');
         Route::get('/listaVerificar', 'RfidController@listaVerificar');
         Route::get('/genero/selectGenero', 'GeneroController@selectGenero');
@@ -41,7 +42,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get('/lista-pdf', 'ListaController@pdfdetalleListagenerar')->name('pdf.generar');
         Route::post('/generar-pdf-detallelista', 'ListaController@pdfdetalleLista')->name('pdf.detallelista');
         Route::post('/generar-pdf-lista', 'ListaController@listaPdf');
-
+        Route::delete('/ingreso/eliminar/{id}', 'ListaController@eliminar');
+        Route::post('/Detallelistapdfindex', 'ListaController@Detallelistapdfindex')->name('pdf.generar');
         Route::get('/persona/selectPersona', 'PersonaController@selectPersona');
         Route::get('/personas/ver/{id}','PersonaController@autollenarPersona');
 
@@ -84,6 +86,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get('/variables/indexVariables', 'VariablesController@index');
 
         Route::get('/IngresoEgreso/indexIngresoEgreso', 'IngresoEgresoController@indexIngresoEgreso');
+        Route::delete('/egreso/eliminar/{id}', 'IngresoEgresoController@eliminar');
         Route::post('/egreso/registrar', 'IngresoEgresoController@storeEgreso');
         Route::get('/clasegresos/index', 'IngresoEgresoController@index');
         Route::post('/clasegresos/registrar', 'IngresoEgresoController@storeclasegresos');
@@ -95,6 +98,11 @@ Route::group(['middleware' => ['guest']], function () {
         });
         Route::get('/google/authorize', 'GoogleController@authorize');
         Route::get('/google/callback', 'GoogleController@callback');
+
+        Route::post('/grupo/actualizar', 'GrupoController@update');
+        Route::delete('/grupo/eliminar/{id}', 'GrupoController@eliminar');
+        Route::post('/clasegreso/actualizar', 'IngresoEgresoController@update');
+        Route::delete('/clasegreso/eliminarclasegreso/{id}', 'IngresoEgresoController@eliminarclasegreso');
 
 
     });

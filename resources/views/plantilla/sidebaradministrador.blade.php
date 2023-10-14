@@ -350,7 +350,7 @@
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
-                                        Gestion de Lista
+                                        Gestion Listas
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
@@ -372,7 +372,7 @@
                                 <li @click="menu=9">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-cash">
-                                        </i>Gestion Egreso
+                                        </i>Gestion Egresos
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">GESTION DE USUARIOS</li>

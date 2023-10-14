@@ -56,5 +56,22 @@ class GrupoController extends Controller
 
         return ['grupos' => $grupos];
     }
+    public function update(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
 
+        try {
+            DB::beginTransaction();
+
+            $grupos = Grupo::findOrFail($request->id);
+            $grupos->id = $request->idrfid;
+            $grupos->nombre = $request->nombre;
+            $grupos->detalle = $request->detalle;
+            $grupos->save();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
 }

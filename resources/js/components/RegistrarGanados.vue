@@ -231,9 +231,8 @@
                                                 <option value="" disabled>Seleccione el Genero</option>
                                                 <option v-if="genero.id >= 1" v-for="genero in arrayGenero" :key="genero.id" :value="genero.id" v-text="genero.nombre" ></option>
                                             </select>
-                                            <div class="invalid-feedback">
-                                                Porfavor Ingrese el Genero!
-                                            </div>
+                                            <div class="invalid-feedback"> Porfavor Ingrese el Genero!</div>
+                                            <div class="valid-feedback"> Correcto!</div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="validationCustom05" class="form-label">Estado del Ganado:</label>
@@ -396,7 +395,7 @@ methods : {
                             showMethod: 'fadeIn',
                             hideMethod: 'fadeOut',
                         };
-                        toastr.success('Se ha enviado el mensaje', 'Enviado');
+                        toastr.success('Se ha informado al dueño del ganado. ','Mensaje Enviado');
                         console.log(response);
                         // Haz lo que necesites con la respuesta, como mostrar un mensaje de éxito
                         })
@@ -515,7 +514,7 @@ methods : {
   },
     Validacion(){
         if (this.rfidData==0) {
-            swal('Error!', `El ID RFID no puede estar vacio o estar en 0.`, 'warning');
+            Swal.fire('Error!', `El ID RFID no puede estar vacio o estar en 0.`, 'warning');
         }
                 this.errorValidacion=0;
                 this.errorMostrarMsjValidacion =[];
@@ -543,7 +542,7 @@ methods : {
 
                         if (registros.length > 0) {
                         // Mostrar alerta de que ya existe un registro con el mismo RFID y estado 3
-                        swal('Error!', `El ID Tarjeta está registrado con una Marca.`, 'warning');
+                        Swal.fire('Error!', `El ID Tarjeta está registrado con una Marca.`, 'warning');
                         } else {
                         // No hay registros existentes, proceder con el registro
                         let formData = new FormData();
@@ -557,6 +556,7 @@ methods : {
                         axios.post('/rfid/registrar', formData)
                         .then(function(response) {
                             me.cerrarModal();
+                            toastr.info('Se ha registrado el ganado.','Registrado');
                             me.enviarMensajeWhatsAppRegistrar();
                             me.listarRfid(1,this.buscar);
                         })
@@ -566,6 +566,7 @@ methods : {
                         }
                     })
                      } else {
+                        Swal.fire('Validacion!', 'Porfavor llena todos los campos!', 'warning');
                     this.formValidated = true;
                 }
         }
@@ -661,16 +662,39 @@ methods : {
 
 
   eliminarGanado(id){
-        axios.delete(`/rfid/eliminar/${id}`)
-            .then(response => {
-            this.listarRfid(1,'','marca');
-             swal(
-                        'Eliminado!',
-                        'El Registro se ha sido eliminado con éxito.',
-                        'warning'
-                        )
-            console.error(error.response.data.message);
-            });
+    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn2 btn-success',
+                        cancelButton: 'btn2 btn-danger'
+                    },
+                    buttonsStyling: false
+                });
+                swalWithBootstrapButtons.fire({
+                    title: 'Eliminar!',
+                    text: "Estás Seguro de Eliminar este Registro?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, Eliminar!',
+                    cancelButtonText: 'No, Cancelar!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                axios.delete(`/rfid/eliminar/${id}`)
+                    .then(response => {
+                    this.listarRfid(1,'','marca');
+                    Swal.fire(
+                                'Eliminado!',
+                                'El Registro se ha sido eliminado con éxito.',
+                                'warning'
+                                )
+                    console.error(error.response.data.message);
+                    });
+                } else if (
+                                        /* Read more about handling dismissals below */
+                                        result.dismiss === Swal.DismissReason.cancel
+                                    ) {
+                                    }
+                                    })
     },
   initializeWebSocket() {
   this.webSocket = new WebSocket('ws://192.168.100.116:81/', ['arduino']);
