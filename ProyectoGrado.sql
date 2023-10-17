@@ -17,8 +17,8 @@
 -- Volcando estructura para tabla proyecto_grado.cargos
 CREATE TABLE IF NOT EXISTS `cargos` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) DEFAULT NULL,
-  `descripcion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `descripcion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `condicion` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -28,8 +28,7 @@ INSERT INTO `cargos` (`id`, `nombre`, `descripcion`, `condicion`) VALUES
 	(0, 'Sin Cargo', 'Usuario sin cargo', 1),
 	(1, 'Administrador de Area', 'Se encarga de administrar todas las areas de trabajo.', 1),
 	(2, 'Arreador', 'Se encarga de gestionar los ganados registrar.', 1),
-	(3, 'Faeneador', 'Se encarga de gestionar los ganados registrar.', 1),
-	(4, 'Control de Corral', 'Se encarga de corral de los ganados.', 1);
+	(3, 'Faeneador', 'Se encarga de gestionar los ganados registrar.', 1);
 
 -- Volcando estructura para tabla proyecto_grado.clasegresos
 CREATE TABLE IF NOT EXISTS `clasegresos` (
@@ -59,22 +58,12 @@ CREATE TABLE IF NOT EXISTS `detalle_listas` (
   PRIMARY KEY (`id`),
   KEY `idpersona` (`idpersona`),
   CONSTRAINT `FK_detalle_listas_personas` FOREIGN KEY (`idpersona`) REFERENCES `personas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla proyecto_grado.detalle_listas: ~11 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.detalle_listas: ~0 rows (aproximadamente)
 INSERT INTO `detalle_listas` (`id`, `idpersona`, `detalle`, `fecha`, `created_at`, `updated_at`) VALUES
-	(000000215, 52, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 00:37:11', '2023-09-10 00:37:11'),
-	(000000216, 51, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 00:47:46', '2023-09-10 00:47:46'),
-	(000000217, 48, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 00:47:52', '2023-09-10 00:47:52'),
-	(000000218, 42, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":2,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":2,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 00:47:57', '2023-09-10 00:47:57'),
-	(000000219, 52, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 00:53:49', '2023-09-10 00:53:49'),
-	(000000220, 52, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 00:57:40', '2023-09-10 00:57:40'),
-	(000000221, 51, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 01:04:59', '2023-09-10 01:04:59'),
-	(000000222, 48, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-09"}]}', '2023-09-09', '2023-09-10 01:05:05', '2023-09-10 01:05:05'),
-	(000000223, 52, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"}]}', '2023-09-10', '2023-09-10 22:39:15', '2023-09-10 22:39:15'),
-	(000000224, 51, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"}]}', '2023-09-10', '2023-09-10 22:39:20', '2023-09-10 22:39:20'),
-	(000000225, 48, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"}]}', '2023-09-10', '2023-09-10 22:39:25', '2023-09-10 22:39:25'),
-	(000000226, 44, '{"registros":[{"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":2,"fecha":"2023-09-10"},{"cantidad":1,"total":24,"idgrupo":2,"fecha":"2023-09-10"}]}', '2023-09-10', '2023-09-10 22:39:30', '2023-09-10 22:39:30');
+	(000000277, 52, '{"registros":[{"idingreso":10563,"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-10-12"},{"idingreso":10564,"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-10-12"},{"idingreso":10565,"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-10-12"}]}', '2023-10-12', '2023-10-12 23:07:24', '2023-10-12 23:07:24'),
+	(000000278, 62, '{"registros":[{"idingreso":10566,"cantidad":1,"total":24,"idgrupo":1,"fecha":"2023-10-15"}]}', '2023-10-15', '2023-10-15 15:10:37', '2023-10-15 15:10:37');
 
 -- Volcando estructura para tabla proyecto_grado.egresos
 CREATE TABLE IF NOT EXISTS `egresos` (
@@ -90,11 +79,20 @@ CREATE TABLE IF NOT EXISTS `egresos` (
   PRIMARY KEY (`id`),
   KEY `idclasegreso` (`idclasegreso`),
   CONSTRAINT `FK1_idclasegreso` FOREIGN KEY (`idclasegreso`) REFERENCES `clasegresos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla proyecto_grado.egresos: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.egresos: ~10 rows (aproximadamente)
 INSERT INTO `egresos` (`id`, `idclasegreso`, `egreso`, `monto`, `respaldo`, `descripcion`, `fecha`, `updated_at`, `created_at`) VALUES
-	(96, 7, 'Sueldo Mes de Agosto', 35, '1694309237_My project-1.png', 'Sin Detalles', '2023-09-09', '2023-09-10 01:27:17', '2023-09-10 01:27:17');
+	(96, 7, 'Sueldo Mes de Agosto', 35, '1694309237_My project-1.png', 'Sin Detalles', '2023-09-09', '2023-09-10 01:27:17', '2023-09-10 01:27:17'),
+	(97, 10, 'Desenbolso para Pago de Colas', 700, '1696287748_toro2der-removebg-preview.png', 'Sin Detalles', '2023-10-02', '2023-10-02 23:02:28', '2023-10-02 23:02:28'),
+	(98, 7, 'qweqw', 123, '1697072473_1693361733_ANA APAZA EJEMPLO TRABAJO DE GRADO.docx', 'asdasd', '2023-10-11', '2023-10-12 01:01:13', '2023-10-12 01:01:13'),
+	(99, 10, 'adasdas', 0, '1697072900_Avatar-Profile-PNG-Image-File.png', 'asdasdas', '2023-10-11', '2023-10-12 01:08:20', '2023-10-12 01:08:20'),
+	(100, 10, '123123', 123, '1697073089_pngwing.com.png', 'asdasd', '2023-10-11', '2023-10-12 01:11:29', '2023-10-12 01:11:29'),
+	(101, 10, 'asdsad', 123, '1697073258_DOCUMENTO FINAL DE PROYECTO DE GRADO - DEYNAR ADIR MAMANI TANGARA.pdf', 'asdasd', '2023-10-11', '2023-10-12 01:14:18', '2023-10-12 01:14:18'),
+	(102, 10, 'asdasd', 123, '1697073321_My project-1.jpg', 'adasd', '2023-10-11', '2023-10-12 01:15:21', '2023-10-12 01:15:21'),
+	(103, 9, 'asdasd', 123, '1697073696_toro2der-removebg-preview.png', 'adasd', '2023-10-11', '2023-10-12 01:21:36', '2023-10-12 01:21:36'),
+	(104, 7, '22222', 12, '1697073743_toro2der-removebg-preview.png', '2222', '2023-10-11', '2023-10-12 01:22:23', '2023-10-12 01:22:23'),
+	(105, 10, 'cccc', 123, '1697073830_My project-1.png', 'ccccc', '2023-10-11', '2023-10-12 01:23:50', '2023-10-12 01:23:50');
 
 -- Volcando estructura para tabla proyecto_grado.generos
 CREATE TABLE IF NOT EXISTS `generos` (
@@ -105,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `generos` (
 
 -- Volcando datos para la tabla proyecto_grado.generos: ~3 rows (aproximadamente)
 INSERT INTO `generos` (`id`, `nombre`) VALUES
-	(0, 'Sin Asignar'),
+	(0, 'No Encontrado'),
 	(1, 'Toro'),
 	(2, 'Vaca');
 
@@ -139,9 +137,15 @@ CREATE TABLE IF NOT EXISTS `informaciones` (
   PRIMARY KEY (`id`),
   KEY `id_persona` (`idpersona`) USING BTREE,
   CONSTRAINT `FK_informaciones_personas` FOREIGN KEY (`idpersona`) REFERENCES `personas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla proyecto_grado.informaciones: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.informaciones: ~6 rows (aproximadamente)
+INSERT INTO `informaciones` (`id`, `idpersona`, `titulo`, `contenido`, `fecha`) VALUES
+	(8, 1, 'Paro Civico 15/08/2023', 'agwqweascz123124151', '2023-09-25'),
+	(9, 1, 'APMPLIADO JUEVES  08/08/2023', '12456', '2023-09-25'),
+	(10, 1, 'HolA', '123456', '2023-09-25'),
+	(11, 1, 'papappa', '123456', '2023-09-25'),
+	(13, 1, 'papappa123124', 'asdasdasdas', '2023-09-25');
 
 -- Volcando estructura para tabla proyecto_grado.listas
 CREATE TABLE IF NOT EXISTS `listas` (
@@ -163,43 +167,14 @@ CREATE TABLE IF NOT EXISTS `listas` (
   CONSTRAINT `grupo_ibfk_2` FOREIGN KEY (`idgrupo`) REFERENCES `grupos` (`id`),
   CONSTRAINT `idgenero` FOREIGN KEY (`idgenero`) REFERENCES `generos` (`id`),
   CONSTRAINT `listas_ibfk_1` FOREIGN KEY (`idpersona`) REFERENCES `personas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10431 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=10567 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla proyecto_grado.listas: ~33 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.listas: ~2 rows (aproximadamente)
 INSERT INTO `listas` (`id`, `idgrupo`, `idpersona`, `idgenero`, `estado`, `cantidad`, `total`, `cantidad_registrada`, `fecha`, `created_at`, `updated_at`) VALUES
-	(10395, 1, 52, 1, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:37:11', '2023-09-10 00:37:11'),
-	(10396, 1, 52, 2, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:37:11', '2023-09-10 00:37:11'),
-	(10397, 1, 52, 2, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:37:11', '2023-09-10 00:37:11'),
-	(10398, 1, 51, 0, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:46', '2023-09-10 00:47:46'),
-	(10399, 1, 51, 0, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:46', '2023-09-10 00:47:46'),
-	(10400, 1, 51, 0, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:46', '2023-09-10 00:47:46'),
-	(10401, 1, 48, 0, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:52', '2023-09-10 00:47:52'),
-	(10402, 1, 48, 0, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:52', '2023-09-10 00:47:52'),
-	(10403, 1, 48, 0, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:52', '2023-09-10 00:47:52'),
-	(10404, 1, 42, 1, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:57', '2023-09-10 22:27:18'),
-	(10405, 2, 42, 2, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:57', '2023-09-10 22:28:07'),
-	(10406, 2, 42, 0, 0, 1, 24, 1, '2023-09-08', '2023-09-10 00:47:57', '2023-09-10 00:47:57'),
-	(10410, 1, 52, 2, 1, 0, 24, 1, '2023-09-09', '2023-09-10 00:57:40', '2023-09-10 00:57:40'),
-	(10411, 1, 52, 1, 1, 0, 24, 1, '2023-09-09', '2023-09-10 00:57:40', '2023-09-10 00:57:40'),
-	(10412, 1, 52, 1, 0, 1, 24, 1, '2023-09-09', '2023-09-10 00:57:40', '2023-09-10 00:57:40'),
-	(10413, 1, 51, 0, 0, 1, 24, 1, '2023-09-09', '2023-09-10 01:04:59', '2023-09-10 01:04:59'),
-	(10414, 1, 51, 0, 0, 1, 24, 1, '2023-09-09', '2023-09-10 01:04:59', '2023-09-10 01:04:59'),
-	(10415, 1, 51, 0, 0, 1, 24, 1, '2023-09-09', '2023-09-10 01:04:59', '2023-09-10 01:04:59'),
-	(10416, 1, 48, 0, 0, 1, 24, 1, '2023-09-09', '2023-09-10 01:05:05', '2023-09-10 01:05:05'),
-	(10417, 1, 48, 0, 0, 1, 24, 1, '2023-09-09', '2023-09-10 01:05:05', '2023-09-10 01:05:05'),
-	(10418, 1, 48, 0, 0, 1, 24, 1, '2023-09-09', '2023-09-10 01:05:05', '2023-09-10 01:05:05'),
-	(10419, 1, 52, 1, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:15', '2023-09-10 22:39:15'),
-	(10420, 1, 52, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:15', '2023-09-10 22:39:15'),
-	(10421, 1, 52, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:15', '2023-09-10 22:39:15'),
-	(10422, 1, 51, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:20', '2023-09-10 22:39:20'),
-	(10423, 1, 51, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:20', '2023-09-10 22:39:20'),
-	(10424, 1, 51, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:20', '2023-09-10 22:39:20'),
-	(10425, 1, 48, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:25', '2023-09-10 22:39:25'),
-	(10426, 1, 48, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:25', '2023-09-10 22:39:25'),
-	(10427, 1, 48, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:25', '2023-09-10 22:39:25'),
-	(10428, 1, 44, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:30', '2023-09-10 22:39:30'),
-	(10429, 2, 44, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:30', '2023-09-10 22:39:30'),
-	(10430, 2, 44, 0, 0, 1, 24, 1, '2023-09-10', '2023-09-10 22:39:30', '2023-09-10 22:39:30');
+	(10563, 1, 52, 0, 0, 1, 24, 1, '2023-10-12', '2023-10-12 23:07:24', '2023-10-12 23:07:24'),
+	(10564, 1, 52, 0, 0, 1, 24, 1, '2023-10-12', '2023-10-12 23:07:24', '2023-10-12 23:07:24'),
+	(10565, 1, 52, 0, 0, 1, 24, 1, '2023-10-12', '2023-10-12 23:07:24', '2023-10-12 23:07:24'),
+	(10566, 1, 62, 1, 1, 0, 24, 1, '2023-10-15', '2023-10-15 15:10:37', '2023-10-15 15:12:17');
 
 -- Volcando estructura para tabla proyecto_grado.noticias
 CREATE TABLE IF NOT EXISTS `noticias` (
@@ -212,16 +187,15 @@ CREATE TABLE IF NOT EXISTS `noticias` (
   PRIMARY KEY (`id`),
   KEY `id_persona` (`idpersona`) USING BTREE,
   CONSTRAINT `FK_noticias_personas` FOREIGN KEY (`idpersona`) REFERENCES `personas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla proyecto_grado.noticias: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.noticias: ~5 rows (aproximadamente)
 INSERT INTO `noticias` (`id`, `idpersona`, `imagen`, `titulo`, `descripcion`, `fecha`) VALUES
 	(1, 1, '1691195752_futecra-8-nov.jpg', 'Marcha 6 de Marzo', 'Este Lunes 6 de marzo se realizo la marcha por las fiestas patrias al rededor de la avenida 6 de marzo rumbo ala plaza libertad de la 16 de julio.', NULL),
 	(3, 1, '1691196027_futecra-El-Alto.png', 'Festividad 06 de Marzo', 'Se tiene el agradecimiento de toda la poblacion para las festividades del dia de la paz.', NULL),
 	(4, 1, '1691196114_0000_CARNE_EL_ALTO.jpg', 'Carne de Altura', 'Hoy 05 de mayo nos visita el canal 11 Red Uno para presentar la carne de primera que ofrecemos en el Matadero Municipal de Los Andes.', NULL),
 	(5, 1, '1691196221_alcaldesa-con-medios-PRENSA-RENUEVA..jpeg', 'Visita de La Alcaldesa', 'Hoy 17 de Mayo nos visita la alcaldesa de el Alto en la inaguracion del campeonato interno que se realizara en el Establecimiento.', NULL),
-	(8, 1, '1691196348_eva-futecra-scaled.jpg', 'Campeones de F.U.T.E.C.R.A', 'Hoy celebramos el triunfo de la sociedad Tiendas y Friales en el campeonato del Matadero Municipal de los Andes junto a nuestra alcaldesa Eva Copa.', NULL),
-	(10, 1, '1695254905_toro2der-removebg-preview.png', 'Fiesta de San Antonio', 'hola soy una noticia', NULL);
+	(8, 1, '1691196348_eva-futecra-scaled.jpg', 'Campeones de F.U.T.E.C.R.A', 'Hoy celebramos el triunfo de la sociedad Tiendas y Friales en el campeonato del Matadero Municipal de los Andes junto a nuestra alcaldesa Eva Copa.', NULL);
 
 -- Volcando estructura para tabla proyecto_grado.personas
 CREATE TABLE IF NOT EXISTS `personas` (
@@ -239,18 +213,25 @@ CREATE TABLE IF NOT EXISTS `personas` (
   UNIQUE KEY `personas_nombre_unique` (`nombre`),
   KEY `idcargo` (`idcargo`),
   CONSTRAINT `FK_personas_cargos` FOREIGN KEY (`idcargo`) REFERENCES `cargos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla proyecto_grado.personas: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.personas: ~12 rows (aproximadamente)
 INSERT INTO `personas` (`id`, `idcargo`, `nombre`, `marca`, `num_documento`, `direccion`, `telefono`, `imagen`, `created_at`, `updated_at`) VALUES
-	(1, 0, 'Orlando Marvin Gutierrez Hidalgo', 'Sin Marca', '13116407', 'Z: Pedro Domingo Murillo', '69849349', 'orlando.jpg', '2023-07-26 14:12:26', '2023-07-28 02:53:15'),
+	(1, 1, 'Orlando Marvin Gutierrez Hidalgo', 'Sin Marca', '13116407', 'Z: Pedro Domingo Murillo', '69849349', 'orlando.jpg', '2023-07-26 14:12:26', '2023-10-12 23:26:54'),
 	(42, 0, 'Milenka Pocoaca Mmani', 'MP', '13085252', 'Pedro Domingo Murillo', '67023449', 'avatarafiliado.png', '2023-07-29 01:12:36', '2023-07-29 01:12:36'),
 	(43, 2, 'Cristian Condori Suxo', 'Sin Marca', '100452455', 'Vinto', '62345458', 'avatartrabajador.png', '2023-07-29 01:49:05', '2023-07-29 01:49:05'),
-	(44, 0, 'Jhonatan Luis Gutierrez Hidalgo', 'JG', '13116405', 'Pedro Domingo Murillo', '67323523', 'avatarafiliado.png', '2023-07-29 01:50:39', '2023-07-29 01:50:39'),
-	(45, 3, 'Deynar Adir Mamani Tangara', 'Sin Marca', '15451452', 'Senkata', '68958456', 'avatartrabajador.png', '2023-07-29 01:58:33', '2023-07-29 01:58:33'),
+	(44, 0, 'Jhonatan Luis Gutierrez Hidalgo', 'JG', '13116405', 'Pedro Domingo Murillo', '69849349', 'avatarafiliado.png', '2023-07-29 01:50:39', '2023-07-29 01:50:39'),
+	(45, 3, 'Deynar Adir Mamani Tangara', 'Sin Marca', '15451452', 'Senkata', '69849349', 'avatartrabajador.png', '2023-07-29 01:58:33', '2023-07-29 01:58:33'),
 	(48, 0, 'Javier Figueredo Choque', 'JF', '12457565', 'Santiago II', '62548145', 'avatarafiliado.png', '2023-07-29 02:01:34', '2023-07-29 02:01:34'),
-	(51, 0, 'Deynar Adir Mamani Colque', 'DAT', '15156446', 'Senkata', '452546522', 'avatarafiliado.png', '2023-08-15 21:44:13', '2023-08-15 21:44:13'),
-	(52, 0, 'Ariel Wilson Hidalgo', 'AW', '12345648', '16 de Julio', '75273121', 'avatarafiliado.png', '2023-08-15 21:45:27', '2023-08-15 21:45:27');
+	(51, 0, 'Deynar Adir Mamani Colque', 'DAT', '15156446', 'Senkata', '69849349', 'avatarafiliado.png', '2023-08-15 21:44:13', '2023-08-15 21:44:13'),
+	(52, 0, 'Ariel Wilson Hidalgo', 'AW', '12345648', '16 de Julio', '69849349', 'avatarafiliado.png', '2023-08-15 21:45:27', '2023-08-15 21:45:27'),
+	(54, 2, 'Roberto', 'Sin Marca', '13116407', 'Z:Ballivian', '69849349', 'avatartrabajador.png', '2023-10-13 01:05:01', '2023-10-13 01:05:01'),
+	(55, 2, 'Nombre Haaaa', 'Sin Marca', '12345678', '12345678', '12345678', 'avatartrabajador.png', '2023-10-13 01:23:24', '2023-10-13 01:23:24'),
+	(56, NULL, 'Pepito Perez', 'PP', '13085252', 'Z:Villa Tunari', '67023449', 'avatarafiliado.png', '2023-10-13 01:40:39', '2023-10-13 01:40:39'),
+	(59, 3, 'Pepito Perez Perez', 'Sin Marca', '11111111', 'iiiiiiiiii', '11111111', 'avatartrabajador.png', '2023-10-13 01:45:54', '2023-10-13 01:45:54'),
+	(60, NULL, 'Alaaa Usss', 'AU', '12345678', '123456ASD', '11111111', 'avatarafiliado.png', '2023-10-13 01:48:23', '2023-10-13 01:48:23'),
+	(61, 2, 'Jorge Parrra', 'Sin Marca', '12345678', 'Zona:Villa Bala', '12345678', 'avatartrabajador.png', '2023-10-13 03:27:36', '2023-10-13 03:29:58'),
+	(62, NULL, 'Janeth Flora Hidallgo', 'JGF', '12457841', 'Z: Villa Tunari', '62293735', 'avatarafiliado.png', '2023-10-15 15:02:28', '2023-10-15 15:02:28');
 
 -- Volcando estructura para tabla proyecto_grado.rfids
 CREATE TABLE IF NOT EXISTS `rfids` (
@@ -280,9 +261,9 @@ CREATE TABLE IF NOT EXISTS `rfids` (
   CONSTRAINT `id_faeneo` FOREIGN KEY (`idfaeneo`) REFERENCES `personas` (`id`),
   CONSTRAINT `id_procesofaeneo` FOREIGN KEY (`idprocesofaeneo`) REFERENCES `personas` (`id`),
   CONSTRAINT `id_registro` FOREIGN KEY (`idregistro`) REFERENCES `personas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla proyecto_grado.rfids: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.rfids: ~32 rows (aproximadamente)
 INSERT INTO `rfids` (`id`, `idrfid`, `idpersona`, `idgenero`, `idgrupo`, `asignado`, `estado`, `fecha`, `created_at`, `updated_at`, `idregistro`, `idprocesofaeneo`, `idfaeneo`) VALUES
 	(56, '0000AW', 52, 1, 1, 1, 2, '2023-09-09', '2023-09-10 00:36:30', '2023-09-10 00:37:11', 1, NULL, NULL),
 	(57, '0001AW', 52, 2, 2, 1, 2, '2023-09-09', '2023-09-10 00:36:42', '2023-09-10 00:37:11', 1, NULL, NULL),
@@ -292,7 +273,30 @@ INSERT INTO `rfids` (`id`, `idrfid`, `idpersona`, `idgenero`, `idgrupo`, `asigna
 	(61, '0002AW', 52, 1, 2, 1, 0, '2023-09-09', '2023-09-10 00:36:55', '2023-09-10 00:57:40', 1, NULL, NULL),
 	(62, '000MP', 42, 1, 0, 1, 0, '2023-09-10', '2023-09-10 22:27:18', '2023-09-10 22:27:18', 1, NULL, NULL),
 	(63, '0002MP', 42, 2, 0, 1, 0, '2023-09-10', '2023-09-10 22:28:07', '2023-09-10 22:28:07', 1, NULL, NULL),
-	(64, '0000AW', 52, 1, 0, 1, 0, '2023-09-10', '2023-09-10 22:28:17', '2023-09-10 22:39:15', 1, NULL, NULL);
+	(64, '0000AW', 52, 1, 0, 1, 0, '2023-09-10', '2023-09-10 22:28:17', '2023-09-10 22:39:15', 1, NULL, NULL),
+	(66, 'B6EEC1F7', 48, 1, 0, 1, 0, '2023-10-09', '2023-10-10 00:24:27', '2023-10-10 00:24:27', 1, NULL, NULL),
+	(67, '0aaa', NULL, NULL, 0, 0, 0, '2023-10-09', '2023-10-10 00:26:58', '2023-10-10 00:26:58', 1, NULL, NULL),
+	(68, 'asdasda', 52, NULL, 0, 1, 0, '2023-10-09', '2023-10-10 00:27:11', '2023-10-10 00:27:11', 1, NULL, NULL),
+	(69, 'asdasdas', 44, 1, 0, 1, 0, '2023-10-09', '2023-10-10 00:27:27', '2023-10-10 22:42:42', 1, NULL, NULL),
+	(70, '0asdas', NULL, NULL, 0, 0, 0, '2023-10-09', '2023-10-10 00:27:34', '2023-10-10 00:27:34', 1, NULL, NULL),
+	(71, 'asdq31231', 52, NULL, 0, 1, 0, '2023-10-09', '2023-10-10 00:28:09', '2023-10-10 00:28:09', 1, NULL, NULL),
+	(72, 'B6EEC1F71', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 00:33:28', '2023-10-10 00:33:28', 1, NULL, NULL),
+	(73, 'B6EEC1F72', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 00:36:36', '2023-10-10 00:36:36', 1, NULL, NULL),
+	(74, '123124124', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 00:44:06', '2023-10-10 00:44:06', 1, NULL, NULL),
+	(75, '1235dsfsdfsd', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 00:45:22', '2023-10-10 00:45:22', 1, NULL, NULL),
+	(76, '123214', 51, 2, 0, 1, 0, '2023-10-09', '2023-10-10 00:48:03', '2023-10-10 00:48:03', 1, NULL, NULL),
+	(77, '123124', 51, 2, 0, 1, 0, '2023-10-09', '2023-10-10 00:49:05', '2023-10-10 00:49:05', 1, NULL, NULL),
+	(78, '123124asdasdasd', 51, 2, 0, 1, 0, '2023-10-09', '2023-10-10 00:57:58', '2023-10-10 00:57:58', 1, NULL, NULL),
+	(79, '123124124asdasd', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 01:07:00', '2023-10-10 01:07:00', 1, NULL, NULL),
+	(80, '123qwer', 52, 2, 0, 1, 0, '2023-10-09', '2023-10-10 01:10:21', '2023-10-10 01:10:21', 1, NULL, NULL),
+	(81, 'nmvcbnc', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 01:13:35', '2023-10-10 01:13:35', 1, NULL, NULL),
+	(82, 'lkhjkh', 51, 2, 0, 1, 0, '2023-10-09', '2023-10-10 01:16:15', '2023-10-10 12:45:35', 1, NULL, NULL),
+	(83, 'MMMP123', 42, 1, 0, 1, 0, '2023-10-09', '2023-10-10 01:17:09', '2023-10-10 01:17:09', 1, NULL, NULL),
+	(84, 'B6EEC1F77', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 01:19:14', '2023-10-10 12:45:35', 1, NULL, NULL),
+	(85, 'B6EEC1F777123', 51, 1, 0, 1, 0, '2023-10-09', '2023-10-10 01:20:05', '2023-10-10 12:45:35', 1, NULL, NULL),
+	(86, '00005G', 51, 1, 0, 1, 0, '2023-10-10', '2023-10-10 20:56:56', '2023-10-10 21:46:53', 1, NULL, NULL),
+	(96, 'asdasdas123', 56, 1, 0, 0, 0, '2023-10-14', '2023-10-14 12:11:39', '2023-10-14 12:11:39', 1, NULL, NULL),
+	(97, 'D08F6E32', 62, 1, 1, 2, 2, '2023-10-15', '2023-10-15 15:08:12', '2023-10-15 15:12:48', 1, 1, 1);
 
 -- Volcando estructura para tabla proyecto_grado.roles
 CREATE TABLE IF NOT EXISTS `roles` (
@@ -325,16 +329,23 @@ CREATE TABLE IF NOT EXISTS `users` (
   CONSTRAINT `users_id_foreign` FOREIGN KEY (`id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla proyecto_grado.users: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla proyecto_grado.users: ~14 rows (aproximadamente)
 INSERT INTO `users` (`id`, `idrol`, `email`, `password`, `condicion`, `remember_token`) VALUES
-	(1, 1, 'orlandoguti698@gmail.com', '$2y$10$5rdXqTGusMZu3UnlEIgUqejhdhaqCUAXS1XuNNAMLaJX17qrhHlmy', 1, NULL),
-	(42, 3, 'milenkapocoaca18@gmail.com', '$2y$10$FfvD2RpRCjlkU92/K3xkm.sbTA7.d/7KcfbRZ7xPVB1xrudtI/iWq', 0, NULL),
-	(43, 2, 'cris@gmail.com', '$2y$10$5rH2fDauuJ/VldI9F.QXCuZnSVyvRYtqLC2kQEZdpANoURFnXBG32', 0, NULL),
-	(44, 3, 'jonathan@gmail.com', '$2y$10$6.3DohbbvA4QH7rskL3sD.TRoI8pZxcjXNiLRRznyWlzUgyW14596', 0, NULL),
+	(1, 1, 'orlandoguti698@gmail.com', '$2y$10$kGNjUHYP0GrXx5ihKRF0uuTbCgzmF0ZnvzRXtQFrBBt/KyTTuSVcy', 1, NULL),
+	(42, 3, 'milenkapocoaca18@gmail.com', '$2y$10$FfvD2RpRCjlkU92/K3xkm.sbTA7.d/7KcfbRZ7xPVB1xrudtI/iWq', 1, NULL),
+	(43, 2, 'cris@gmail.com', '$2y$10$5rH2fDauuJ/VldI9F.QXCuZnSVyvRYtqLC2kQEZdpANoURFnXBG32', 1, NULL),
+	(44, 3, 'jonathan@gmail.com', '$2y$10$6.3DohbbvA4QH7rskL3sD.TRoI8pZxcjXNiLRRznyWlzUgyW14596', 1, NULL),
 	(45, 2, 'deynar@gmail.com', '$2y$10$ZVyQDnOkIB0Wbww8NI1aruOtqxEoqBOPTZF.a8QPGx.X4.McqHRAS', 1, NULL),
-	(48, 3, 'javi@gmail.com', '$2y$10$beK/l8.PT0y8uZtUeSSnKeHPEWQS8RYpJDZr/E6fNETikfNQJaJoW', 0, NULL),
-	(51, 3, 'deynaradir@gmail.com', '$2y$10$4O/vKTwAeu6J9UzjiMADKuXc0cs2qGHeYoa9B456ERDwyUuoGcPau', 0, NULL),
-	(52, 3, 'ariel@gmail.com', '$2y$10$w0ai5VKYIa3zoyPmlSy66uMPqOmzBuwwQ1cNXymzaY4HhjcaRW7Wu', 0, NULL);
+	(48, 3, 'javi@gmail.com', '$2y$10$beK/l8.PT0y8uZtUeSSnKeHPEWQS8RYpJDZr/E6fNETikfNQJaJoW', 1, NULL),
+	(51, 3, 'deynaradir@gmail.com', '$2y$10$4O/vKTwAeu6J9UzjiMADKuXc0cs2qGHeYoa9B456ERDwyUuoGcPau', 1, NULL),
+	(52, 3, 'ariel@gmail.com', '$2y$10$nNUls37HG0YnyywP.Dgzd.UfNxGRsC8BPMI.0kiN/Ir4wuB4Dtsvm', 1, NULL),
+	(54, 2, 'roberto@gmail.com', '$2y$10$mec36kECkykb8fLwPZBMkejKj6fGYfiK.rF3n8TrfjPnnAzUXUchu', 1, NULL),
+	(55, 2, '123456@132', '$2y$10$7GmvsdLx.PqXpOUkAvAqm.CQkGwukVEEhMhQc6kUcCveMMR6cyVBO', 1, NULL),
+	(56, 3, 'pepitoperez@gmail.com', '$2y$10$qlmJAZ0DYtH4Yk8Sfvs.WOhuYCdYLBLOjeoYDJ/6nPAVobzoklu2G', 1, NULL),
+	(59, 2, 'iiiiii@gmail.com', '$2y$10$t.sQ7Lpu4j7pPtNGGE2fFeGfzvMpNALvitoePpQ7R5.BeQ76lbGGi', 1, NULL),
+	(60, 3, '123456@GMAIL.COM', '$2y$10$zYbD.Zkg8pAbJfMSenRO8eaD9Aaah5ObvveHTHVHBU.Nj33wjjsTu', 1, NULL),
+	(61, 2, 'jorgeparra@gmail.com', '$2y$10$/c7q1S7Brq/rF4/yT0jUZ.M6uViRRwBVzkO5DGHWa37Z2ea9SuvTq', 1, NULL),
+	(62, 3, 'janeth@gmail.com', '$2y$10$8Fmcf4jEWhACyPXefyka7e39Vwcpnwmx5EORrh7pyCGEmLbJXE3rO', 1, NULL);
 
 -- Volcando estructura para tabla proyecto_grado.variables
 CREATE TABLE IF NOT EXISTS `variables` (
@@ -349,7 +360,7 @@ CREATE TABLE IF NOT EXISTS `variables` (
 
 -- Volcando datos para la tabla proyecto_grado.variables: ~0 rows (aproximadamente)
 INSERT INTO `variables` (`egresos`, `ingresos`, `totalfaeneo`, `updated_at`, `id_persona`) VALUES
-	(35, 792, '10', '2023-08-28 02:22:19', NULL);
+	(2835, 96, '5', '2023-10-10 21:46:37', 1);
 
 -- Volcando estructura para disparador proyecto_grado.UpdateEgresos
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
