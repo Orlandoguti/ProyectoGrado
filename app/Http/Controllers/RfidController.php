@@ -47,7 +47,7 @@ class RfidController extends Controller
                 return $query->where('rfids.estado', $festado);
             })
             ->orderBy('rfids.estado', 'asc')
-            ->orderBy('rfids.created_at', 'asc')->paginate(10);
+            ->orderBy('rfids.created_at', 'desc')->paginate(10);
             $total_estado0 = Rfid::where('estado', 0)->where('fecha','=', $fecha)->count();
             $total_estado1 = Rfid::where('estado', 1)->where('fecha','=', $fecha)->count();
             $total_estado2 = Rfid::where('estado', 2)->where('fecha','=', $fecha)->count();
@@ -78,13 +78,31 @@ class RfidController extends Controller
             ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
             ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha','rfids.updated_at as fechaupdate')
             ->where('users.idrol', '=', 3)
+            ->whereIn('rfids.estado', [0, 1])
             ->where('personas.marca','=', $marca)
             ->orderBy('rfids.created_at', 'desc')
-            ->orderBy('rfids.estado', 'desc')->paginate(10);
+            ->orderBy('rfids.estado', 'desc')->paginate(10);        
 
-        $total_estado0 = Rfid::where('estado', 0)->where('fecha', '=', $fecha)->count();
-        $total_estado1 = Rfid::where('estado', 1)->where('fecha', '=', $fecha)->count();
-        $total_estado2 = Rfid::where('estado', 2)->where('fecha', '=', $fecha)->count();
+        $total_estado0 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+        ->join('users', 'personas.id', '=', 'users.id')
+        ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+        ->where('estado', 0)
+        ->where('users.idrol', '=', 3)
+        ->where('personas.marca','=', $marca)->count();
+
+        $total_estado1 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+        ->join('users', 'personas.id', '=', 'users.id')
+        ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+        ->where('estado', 1)
+        ->where('users.idrol', '=', 3)
+        ->where('personas.marca','=', $marca)->count();
+
+        $total_estado2 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+        ->join('users', 'personas.id', '=', 'users.id')
+        ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+        ->where('estado', 2)
+        ->where('users.idrol', '=', 3)
+        ->where('personas.marca','=', $marca)->count();
 
         return [
             'pagination' => [
@@ -685,6 +703,44 @@ class RfidController extends Controller
             return ['chartData'=> $chartData,'chartData1'=> $chartData1,'total_toros'=> $total_toros,'total_vacas'=> $total_vacas];
 
 
+    }
+
+    public function indexlistaAfiliado(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $marca = Auth::user()->persona->marca;
+
+
+        $rfidslista = Rfid::leftJoin('personas', 'rfids.idpersona', '=', 'personas.id')
+            ->leftJoin('users', 'personas.id', '=', 'users.id')
+            ->leftJoin('generos', 'rfids.idgenero', '=', 'generos.id')
+            ->leftJoin('grupos', 'rfids.idgrupo', '=', 'grupos.id')
+            ->leftJoin('personas as faeneo', 'rfids.idfaeneo', '=', 'faeneo.id')
+            ->select( 'faeneo.nombre as idfaeneo','rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha','rfids.updated_at as fechaupdate')
+            ->where('users.idrol', '=', 3)
+            ->where('rfids.estado', '=', 2)
+            ->where('personas.marca','=', $marca)
+            ->orderBy('rfids.created_at', 'desc')
+            ->orderBy('rfids.estado', 'desc')->paginate(10);        
+
+        $total_estado2 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
+        ->join('users', 'personas.id', '=', 'users.id')
+        ->join('generos', 'rfids.idgenero', '=', 'generos.id')
+        ->where('estado', 2)
+        ->where('users.idrol', '=', 3)
+        ->where('personas.marca','=', $marca)->count();
+
+        return [
+            'pagination' => [
+                'total'        => $rfidslista->total(),
+                'current_page' => $rfidslista->currentPage(),
+                'per_page'     => $rfidslista->perPage(),
+                'last_page'    => $rfidslista->lastPage(),
+                'from'         => $rfidslista->firstItem(),
+                'to'           => $rfidslista->lastItem(),
+            ],
+            'rfidslista' => $rfidslista,'total_estado2' => $total_estado2
+        ];
     }
 
 }

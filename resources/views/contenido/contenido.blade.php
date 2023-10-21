@@ -93,6 +93,9 @@
                 <template v-if="menu==1">
                     <afiliado-ganado></afiliado-ganado>
                 </template>
+                <template v-if="menu==2">
+                    <lista-afiliado-ganado></lista-afiliado-ganado>
+                </template>
 
                 @else
 

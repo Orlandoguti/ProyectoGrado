@@ -29,6 +29,7 @@ window.User = User
 Vue.component('ganados', require('./components/Ganados.vue').default);
 Vue.component('corrales', require('./components/Corrales.vue').default);
 Vue.component('afiliado-ganado', require('./components/GanadosAfiliados.vue').default);
+Vue.component('lista-afiliado-ganado', require('./components/ListaGanadosAfiliados.vue').default);
 Vue.component('registrar-ganado', require('./components/RegistrarGanados.vue').default);
 Vue.component('rfid-read', require('./components/RfidRead.vue').default);
 Vue.component('rfid-procesofinal', require('./components/ProcesoFinal.vue').default);

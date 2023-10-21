@@ -307,7 +307,7 @@
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-server"></i>
-                                        Lista de Ganados
+                                        Administracion
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
@@ -315,6 +315,12 @@
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-menu"></i>
                                                 Mis Ganados
+                                            </a>
+                                        </li>
+                                        <li @click="menu=2">
+                                            <a href="#">
+                                                <i class="metismenu-icon pe-7s-menu"></i>
+                                                Mis Ganados Faeneados
                                             </a>
                                         </li>
                                     </ul>

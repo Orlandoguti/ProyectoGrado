@@ -562,9 +562,9 @@ methods : {
                         formData.append('fecha', me.fecha);
 
                         axios.post('/rfid/registrar', formData)
-                        .then(function(response) {
-                            me.cerrarModal();
-                            toastr.info('Se ha registrado el ganado.','Registrado');
+                        .then(function(response) { 
+                            me.cerrarModal(); 
+                            toastr.info('Se ha registrado el ganado.','Registrado');                            
                             me.enviarMensajeWhatsAppRegistrar();
                             me.listarRfid(1,this.buscar);
                         })
@@ -705,7 +705,7 @@ methods : {
                                     })
     },
   initializeWebSocket() {
-  this.webSocket = new WebSocket('ws://192.168.100.116:81/', ['arduino']);
+  this.webSocket = new WebSocket('wss://192.168.100.116:81/', ['arduino']);
 
   this.webSocket.onopen = () => {
     console.log('Connected to WebSocket server');

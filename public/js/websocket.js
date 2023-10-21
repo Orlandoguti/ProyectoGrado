@@ -1,5 +1,5 @@
 function initializeWebSocket() {
-    const webSocket = new WebSocket('ws://192.168.100.128:81/', ['arduino']);
+    const webSocket = new WebSocket('wss://192.168.100.128:81/', ['arduino']);
 
     webSocket.onopen = () => {
       console.log('Connected to WebSocket server');

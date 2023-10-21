@@ -51,6 +51,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get('/rfid/verInformacion', 'RfidController@verInformacion');
         Route::get('/rfid/indexAdministrador', 'RfidController@indexAdministrador');
         Route::get('/rfid/indexAfiliado', 'RfidController@indexAfiliado');
+        Route::get('/rfid/indexlistaAfiliado', 'RfidController@indexlistaAfiliado');
         Route::post('/rfid/ver','RfidController@autollenarRfid');
         Route::post('/rfid/registrar', 'RfidController@store');
         Route::post('/rfid/actualizar', 'RfidController@update');

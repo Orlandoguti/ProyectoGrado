@@ -32,7 +32,7 @@
                         <div class="widget-content-outer">
                             <div class="widget-content-wrapper">
                                 <div class="widget-content-left">
-                                    <div class="widget-heading">Total Mis Ganados Carneados</div>
+                                    <div class="widget-heading">Total Mis Ganados Faeneados</div>
                                     <div class="widget-subheading">Federacion Unica de Trabajadores en Carne y Ramas Anexas.</div>
                                 </div>
                                 <div class="widget-content-right">
@@ -93,7 +93,7 @@
             <div style="text-align: center; font-weight: bold; color: chocolate; font-size: 1.5rem;">
                 <p>{{ formattedDate }}</p>
             </div>
-            <div class="col-md-12">
+            <div v-if="arrayRfid.length" class="col-md-12">
                 <div class="row justify-content-start">
                     <div style="text-align: center;" class="col-md-4" v-for="(rfid, index) in arrayRfid" :key="rfid.id">
                         <div class="cardafiliado">
@@ -128,6 +128,12 @@
                     </div>
                 </div>
             </div>
+            <div v-else class="col-md-12" style="display: flex; justify-content: center; text-align: center;">
+                <div>                    
+                <img width="700" class="rounded-circle" src="/img/plantilla/sin_registros.png" alt="">
+                                                <h5>No se Encontraron Registros</h5>
+                </div>
+            </div>      
         </div>
     <div>
 </div>
