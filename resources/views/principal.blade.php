@@ -15,7 +15,7 @@
 <link href="css/pe-icon-7-stroke.min.css" rel="stylesheet" type="text/css" media="all" />
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 <script src="https://apis.google.com/js/platform.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 

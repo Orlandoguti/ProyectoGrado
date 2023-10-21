@@ -433,7 +433,7 @@ totalRegistros() {
 
   }
 },
-watch: {
+/*watch: {
   date1: function(newDate1) {
     this.fetchChartDataFromDatabase(this.date1, this.date2);
   },
@@ -442,10 +442,8 @@ watch: {
     // Aquí puedes llamar a la función para actualizar los gráficos con la nueva fecha date2
     this.fetchChartDataFromDatabase(this.date1, this.date2);
   },
-},
-methods : {
-
-   
+},*/
+methods : {   
 
     generatePdf(date1, date2, buscar,festado) {
         const requestData = {

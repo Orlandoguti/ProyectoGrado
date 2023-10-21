@@ -226,10 +226,10 @@ watch: {
       var settings = {
         async: true,
         crossDomain: true,
-        url: "https://api.ultramsg.com/instance58594/messages/chat",
+        url: "https://api.ultramsg.com/instance65365/messages/chat",
         method: "POST",
         data: {
-          token: "zdhnpr3dhsnohb7s",
+          token: "kwpdjhrs6i7owtjo",
           to: rfid.telefono,
           body: 'Señor(a): ' + rfid.nombre + 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
         }

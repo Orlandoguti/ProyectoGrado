@@ -122,14 +122,14 @@
                                     <div class="btn-actions-pane-right">
                                         <div class="input-group">
                                             <input type="text" v-model="buscar" @keyup="listarEgreso(1,buscar,date1,date2)" class="form-control" placeholder="Texto a buscar">
-                                            <select class="form-control" v-model="idclasegreso" @click="listarEgreso(1,date1,date2)">
+                                            <select class="form-control" v-model="idclasegreso" @click="listarEgreso(1,buscar,date1,date2)">
                                                 <option value='' disabled>Filtro de Egreso</option>
                                                 <option value=''>Ninguno</option>
                                                 <option v-for="idclasegreso in arrayClasEgreso" :key="idclasegreso.id"  :value="idclasegreso.id"  v-text="idclasegreso.nombre"></option>
                                               </select>
-                                            <input type="date" v-model="date1" @change="listarEgreso(1,date1,date2)"  class="form-control" placeholder="Ingrese la Fecha">
+                                            <input type="date" v-model="date1" @change="listarEgreso(1,buscar,date1,date2)"  class="form-control" placeholder="Ingrese la Fecha">
                                             <span style="display: flex; align-items: center;">-</span>
-                                            <input type="date" v-model="date2" @change="listarEgreso(1,date1,date2)" class="form-control" placeholder="Ingrese la Fecha">
+                                            <input type="date" v-model="date2" @change="listarEgreso(1,buscar,date1,date2)" class="form-control" placeholder="Ingrese la Fecha">
                                             <button type="button" class="btn btn-info" @click="abrirModal('egreso','registrar')" data-bs-toggle="modal" style="margin-left: 1%;">
                                                 <i class="fa fa-plus-circle"></i>&nbsp; Generar Egreso
                                             </button>

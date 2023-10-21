@@ -130,6 +130,16 @@
             width: 100%;
             height:50px;
         }
+        footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: right;
+        }
+
+        footer p {
+            margin: 0;
+        }
     </style>
     <body>
         <header>
@@ -188,7 +198,10 @@
                 <th colspan="5">Total Monto:</th>
                 <td><?php echo $totalMonto . ' Bs'; ?></td>
             </tr>
-        </table>
-    </body>
+        </table>        
+    <footer>
+            <p>Reporte generado por: {{ $nombreusuario }}</p>
+    </footer>
+    </body>    
 </html>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Carbon\Carbon;
 use App\DetalleLista;
@@ -142,6 +143,7 @@ class IngresoEgresoController extends Controller
                 $date2 = $request->date2;
                 $buscar = $request->input('buscar');
                 $idclasegreso = $request->input('idclasegreso'); // Obtener el parámetro de filtro de grupo
+                $nombreusuario = Auth::user()->persona->nombre;
                 if ($date1 == '' && $date2 == ''){
                     $egresos = Egresos::join('clasegresos', 'egresos.idclasegreso', '=', 'clasegresos.id')
                     ->select('egresos.id','egresos.egreso', 'egresos.monto','egresos.descripcion','egresos.respaldo','egresos.fecha','clasegresos.nombre')
@@ -173,7 +175,7 @@ class IngresoEgresoController extends Controller
                         ->get();
                     }
 
-                $pdf = \PDF::loadView('pdf.egresopdf', ['egresos' => $egresos]);
+                $pdf = \PDF::loadView('pdf.egresopdf', ['egresos' => $egresos,'nombreusuario'=> $nombreusuario]);
                 return $pdf->stream('EgresoPdf.pdf');
             }
 

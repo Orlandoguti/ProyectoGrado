@@ -246,10 +246,10 @@ watch: {
         var settings = {
             async: true,
             crossDomain: true,
-            url: "https://api.ultramsg.com/instance58594/messages/chat",
+            url: "https://api.ultramsg.com/instance65365/messages/chat",
             method: "POST",
             data: {
-            token: "zdhnpr3dhsnohb7s",
+            token: "kwpdjhrs6i7owtjo",
             to: lista.telefono,
             body: 'Señor(a): ' + lista.nombre + ' No se encuentran ' + cantidadGenero0 + ' de tus ganados en fecha ' + lista.fecha + ' Att: F.U.T.E.C.R.A.'
             }
