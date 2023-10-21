@@ -273,7 +273,6 @@ class IngresoEgresoController extends Controller
             DB::beginTransaction();
 
             $clasegresos = ClasEgresos::findOrFail($request->id);
-            $clasegresos->id = $request->idrfid;
             $clasegresos->nombre = $request->nombre;
             $clasegresos->detalle = $request->detalle;
             $clasegresos->save();

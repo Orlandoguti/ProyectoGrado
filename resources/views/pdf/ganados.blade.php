@@ -164,6 +164,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                        $total_estado0 = 0;
+                        $total_estado1 = 0;
+                        $total_estado2 = 0;
+                        ?>
                         @foreach ($rfids as $r)
                         <tr>
                             <td>{{$r->idrfid}}</td>
@@ -172,30 +177,35 @@
                             <td>{{$r->gnombre}}</td>
                             <td>{{$r->grunombre}}</td>
                             <td>
-                            <?php if ($r->estado==0 )
-                            {
-                                echo 'Ganado en Corral';
-                            } else {
-                                echo 'Ganado Carneado';
-                            }
-                            ?>
+                                <?php
+                                if ($r->estado == 0) {
+                                    echo 'Ganado en Corral';
+                                    $total_estado0++;
+                                } elseif ($r->estado == 1) {
+                                    echo 'Ganado en Proceso de Faneo';
+                                    $total_estado1++;
+                                } elseif ($r->estado == 2) {
+                                    echo 'Ganado Carneado';
+                                    $total_estado2++;
+                                }
+                                ?>
                             </td>
                             <td>{{$r->fecha}}</td>
-
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-        </section>
-        <table class="izquierda">
-        <tr>
-        <th colspan="5">Total Ganados en Corral:</th>
-        <td>{{ $total_estado0 }}</td>
-        <th colspan="5">Total Ganados en Proceso de Faneo:</th>
-        <td>{{ $total_estado1 }}</td>
-        <th colspan="5">Total Ganados Carneados:</th>
-        <td>{{ $total_estado2 }}</td>
-        </table>
+                </div>
+                </section>
+                <table class="izquierda">
+                    <tr>
+                        <th colspan="5">Total Ganados en Corral:</th>
+                        <td>{{ $total_estado0 }}</td>
+                        <th colspan="5">Total Ganados en Proceso de Faneo:</th>
+                        <td>{{ $total_estado1 }}</td>
+                        <th colspan="5">Total Ganados Carneados:</th>
+                        <td>{{ $total_estado2 }}</td>
+                    </tr>
+                </table>
     </body>
 </html>

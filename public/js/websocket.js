@@ -1,5 +1,5 @@
 function initializeWebSocket() {
-    const webSocket = new WebSocket('ws://192.168.100.117:81/', ['arduino']);
+    const webSocket = new WebSocket('ws://192.168.100.128:81/', ['arduino']);
 
     webSocket.onopen = () => {
       console.log('Connected to WebSocket server');
@@ -16,6 +16,8 @@ function initializeWebSocket() {
       const data = JSON.parse(event.data); // Parsear el mensaje JSON
       document.dispatchEvent(new CustomEvent('temperatureUpdate', { detail: data.temperature }));
       document.dispatchEvent(new CustomEvent('humidityUpdate', { detail: data.humidity }));
+      document.dispatchEvent(new CustomEvent('temperatureUpdate2', { detail: data.temperature2 }));
+      document.dispatchEvent(new CustomEvent('humidityUpdate2', { detail: data.humidity2 }));
       document.dispatchEvent(new CustomEvent('waterLevelUpdate', { detail: data.waterLevelStr }));
 
     };

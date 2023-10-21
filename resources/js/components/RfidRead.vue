@@ -100,7 +100,7 @@
                             <th class="text-center">Opciones</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="arrayListaFiltrada.length">
                             <tr v-for="lista in arrayListaFiltrada" :key="lista.id">
                                 <td v-text="lista.gnombre" class="text-center"></td>
                                 <td v-text="lista.marca" class="text-center"></td>
@@ -113,6 +113,14 @@
                                       </button> &nbsp;
                                 </td>
                             </tr>
+                        </tbody>
+                        <tbody v-else>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">
+                                        <img width="670" class="rounded-circle" src="/img/plantilla/sin_registros.png" alt="">
+                                        <h5>No se Encontraron Registros</h5>
+                                    </td>
+                                </tr>
                         </tbody>
                     </table>
                 </div>

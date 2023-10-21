@@ -8,7 +8,7 @@
                                         <i class="pe-7s-cash icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>LISTA DE GRUPOS
+                                    <div>LISTA DE CLASIFICACION
                                         <div class="page-title-subheading">F.U.T.E.C.R.A.
                                         </div>
                                     </div>
@@ -32,7 +32,7 @@
                         <div class="card-header"># CLASIFICACION DE EGRESOS
                             <div class="btn-actions-pane-right">
                                 <div class="input-group">
-                                    <button type="button" class="btn btn-info" @click="abrirModal('grupo','registrar')" data-bs-toggle="modal" style="margin-left: 1%;">
+                                    <button type="button" class="btn btn-info" @click="abrirModal('clasegreso','registrar')" data-bs-toggle="modal" style="margin-left: 1%;">
                                         <i class="fa fa-plus-circle"></i>&nbsp; Crear clasificacion
                                     </button>
                                    </div>
@@ -55,7 +55,15 @@
                                     <td class="text-center text-muted"  v-text="clasegreso.nombre"></td>
                                     <td class="text-center text-muted"  v-text="clasegreso.detalle"></td>
                                     <td class="text-center text-muted"  v-text="clasegreso.fecharegistro"></td>
-                                    <td class="text-center text-muted" ></td>
+                                    <td class="text-center text-muted" >
+                                      <button type="button" @click="abrirModal('clasegreso','actualizar',clasegreso)" class="btn btn-warning btn-sm">
+                                            <i style="color: white;" class="fa fa-edit" aria-hidden="true"></i>
+                                          </button> &nbsp;
+
+                                            <button type="button" class="btn btn-danger btn-sm" @click="eliminarClasegreso(clasegreso.id)">
+                                                <i class="pe-7s-trash"></i>
+                                            </button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -82,7 +90,7 @@
                         <div class="modal-dialog modal-lg" style="margin-top: 10%;">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Crear Grupo</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle" v-text="tituloModal"></h5>
                                     <button type="button" @click="cerrarModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     </button>
                                 </div>
@@ -92,11 +100,11 @@
                                                 <div class="row" style="justify-content: center;">
                                                     <div class="col-md-4 mb-4">
                                                         <label class="form-label">Nombre: <span style="color: red;" v-show="nombre==''"></span></label>
-                                                        <input type="text" value="0" class="form-control" v-model="nombre" placeholder="Ingrese Nombre de Grupo....">
+                                                        <input type="text" value="0" class="form-control" v-model="nombre" placeholder="Ingrese Nombre de Clasegreso....">
                                                     </div>
                                                     <div class="col-md-4 mb-4">
-                                                        <label class="form-label">Detalle de Grupo: <span style="color: red;" v-show="detalle==''"></span></label>
-                                                        <input type="text" value="0" class="form-control" v-model="detalle" placeholder="Ingrese Detalle del Grupo....">
+                                                        <label class="form-label">Detalle de Clasificacion: <span style="color: red;" v-show="detalle==''"></span></label>
+                                                        <input type="text" value="0" class="form-control" v-model="detalle" placeholder="Ingrese Detalle de Clasificacion....">
                                                     </div>
 
                                                 </div>
@@ -105,7 +113,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" @click="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-primary" @click="registrarGrupo()">Registrar Clasificacion</button>
+                                        <button type="button" class="btn btn-primary" v-if="tipoAccion==1" @click="registrarClasegreso()">Registrar Clasificacion</button>
+                                        <button type="button" class="btn btn-primary" v-if="tipoAccion==2" @click="actualizarClasegreso()">Actualizar Clasificacion</button>
                                     </div>
                                 </div>
                             </div>
@@ -165,24 +174,108 @@ export default {
     },
   },
   methods: {
-    registrarGrupo(){
+    registrarClasegreso(){
                 axios.post('/clasegresos/registrar', {
             'nombre': this.nombre,
             'detalle': this.detalle
         }).then(function(response) {
-            swal(
+            Swal.fire(
                 'Registrado!',
-                'El Grupo ha sido registrado con éxito.',
+                'La Clasificacion ha sido registrado con éxito.',
                 'success'
             );
         }).catch(function(error) {
             console.error(error);
-            swal(
+            Swal.fire(
                 'Error!',
-                'Hubo un problema al registrar el Grupo.',
+                'Hubo un problema al registrar la Clasificacion.',
                 'error'
             );
         });
+            },
+            eliminarClasegreso(id){
+            const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn2 btn-success',
+                                cancelButton: 'btn2 btn-danger'
+                            },
+                            buttonsStyling: false
+                        });
+                        swalWithBootstrapButtons.fire({
+                            title: 'Eliminar!',
+                            text: "Estás Seguro de Eliminar este Registro?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, Eliminar!',
+                            cancelButtonText: 'No, Cancelar!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                        axios.delete(`/clasegreso/eliminarclasegreso/${id}`)
+                            .then(response => {
+                            this.indexClasEgreso(1);
+                            Swal.fire(
+                                        'Eliminado!',
+                                        'El Registro se ha sido eliminado con éxito.',
+                                        'warning'
+                                        )
+                            console.error(error.response.data.message);
+                            });
+                        } else if (
+                                                /* Read more about handling dismissals below */
+                                                result.dismiss === Swal.DismissReason.cancel
+                                            ) {
+                                            }
+                                            })
+            },
+            actualizarClasegreso(){
+        const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn2 btn-success',
+                                cancelButton: 'btn2 btn-danger'
+                            },
+                            buttonsStyling: false
+                        });
+                        swalWithBootstrapButtons.fire({
+                            title: 'Actualizar!',
+                            text: "Estás Seguro de Actualizar esta Clasificacion?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, Actualizar!',
+                            cancelButtonText: 'No, Cancelar!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+        let me= this;
+        let formData = new FormData();
+                        formData.append('id', me.id);
+                        formData.append('nombre', me.nombre);
+                        formData.append('detalle', me.detalle);
+
+                        axios.post('/clasegreso/actualizar', formData)
+                        .then(function(response) {
+                            me.cerrarModal();                            
+                            Swal.fire(
+                                'Actualizado!',
+                                'La Clasificacion ha sido actualizado con éxito.',
+                                'success'
+                            );
+                            me.indexClasEgreso(1);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                            Swal.fire(
+                            'Error!',
+                            'Hubo un problema al actualizar la Clasificacion.',
+                            'error'
+                        );
+                        });
+                    } else if (
+                                                /* Read more about handling dismissals below */
+                                                result.dismiss === Swal.DismissReason.cancel
+                                            ) {
+                                            }
+                                            })
             },
     cambiarPagina(page) {
             let me = this;
@@ -207,20 +300,30 @@ export default {
         });
     },
 
-    abrirModal(modelo, accion) {
+    abrirModal(modelo, accion,data = []) {
       switch (modelo) {
-        case 'grupo': {
+        case 'clasegreso': {
           switch (accion) {
             case 'registrar': {
               this.modal = 1;
-              this.tituloModal = 'Crear Grupo';
+              this.tituloModal = 'Crear Clasificacion';
               this.tipoAccion = 1;
               this.nombre = '';
               this.detalle = '';
               break;
             }
+            case 'actualizar': {
+              this.modal = 1;
+              this.tituloModal = 'Actualizar Clasificacion';
+              this.tipoAccion = 2;
+              this.id = data['id'];
+              this.nombre = data['nombre'];
+              this.detalle = data['detalle'];
+              break;
+            }
           }
         }
+        
       }
     },
     cerrarModal() {

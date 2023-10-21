@@ -64,7 +64,7 @@ class GrupoController extends Controller
             DB::beginTransaction();
 
             $grupos = Grupo::findOrFail($request->id);
-            $grupos->id = $request->idrfid;
+            $grupos->id = $request->id;
             $grupos->nombre = $request->nombre;
             $grupos->detalle = $request->detalle;
             $grupos->save();
@@ -73,5 +73,17 @@ class GrupoController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
         }
+    }
+    public function eliminar($id)
+    {
+        $grupos = Grupo::find($id);
+
+        if (!$grupos) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+
+        $grupos->delete();
+
+        return response()->json(['message' => 'Registro eliminado correctamente']);
     }
 }

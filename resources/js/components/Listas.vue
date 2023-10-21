@@ -79,7 +79,7 @@
                                             <th class="text-center">Fecha de Registro</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="arrayListaFiltrada.length">
                                             <tr v-for="lista in arrayListaFiltrada" :key="lista.id">
                                             <td class="text-center text-muted"  v-text="lista.marca"></td>
                                             <td class="text-center text-muted"  v-text="lista.nombre"></td>
@@ -88,6 +88,14 @@
                                             <td v-text="lista.fecha" class="text-center"></td>
                                            </tr>
                                         </tbody>
+                                        <tbody v-else>
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">
+                                                <img width="700" class="rounded-circle" src="/img/plantilla/sin_registros.png" alt="">
+                                                <h5>No se Encontraron Registros</h5>
+                                            </td>
+                                        </tr>
+                                      </tbody> 
                                     </table>
                                 </div>
                                 <div class="d-block text-center card-footer">

@@ -27,24 +27,6 @@
                     </div>
            </section>
            <div class="row">
-                <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Toros</h5>
-                            <canvas id="doughnut-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Vacas</h5>
-                            <canvas id="doughnut-chart2"></canvas>
-                        </div>
-                    </div>
-                </div>
-         </div>
-            <div class="row">
                 <div class="col-md-6 col-xl-6">
                     <div class="card mb-3 widget-content">
                         <div class="widget-content-outer">
@@ -76,13 +58,30 @@
                     </div>
                 </div>
             </div>
+           <div class="row">
+                <div class="col-md-6">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Toros</h5>
+                            <canvas id="doughnut-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Vacas</h5>
+                            <canvas id="doughnut-chart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+         </div>            
             <div class="row">
                     <div class="col-md-6">
                      <div class="main-card mb-3 card">
                         <div class="card-body" style="text-align: center;">
-                            <h5 class="card-title">Nivel de Agua Corral de Toros</h5>
                             <div style="display: flex; justify-content: center;">
-                                <canvas id="nivelagua"></canvas>
+                                <canvas id="line-chart"></canvas>
                             </div>
                         </div>
                         <div class="card-body" style="text-align: center;">
@@ -96,15 +95,36 @@
                     <div class="col-md-6">
                         <div class="main-card mb-3 card">
                             <div class="card-body" style="text-align: center;">
-                                <h5 class="card-title">Nivel de Agua Corral de Vacas</h5>
                                 <div style="display: flex; justify-content: center;">
-                                    <canvas id="nivelagua2"></canvas>
+                                    <canvas id="line-chart2"></canvas>
                                 </div>
                             </div>
                             <div class="card-body" style="text-align: center;">
                                 <h5 class="card-title">Temperatura y Humedad</h5>
                                 <div style="display: flex; justify-content: center;">
                                     <div id="gauge-chart2"></div>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                     <div class="main-card mb-3 card">
+                        <div class="card-body" style="text-align: center;">
+                            <h5 class="card-title">Nivel de Agua Corral de Toros</h5>
+                            <div style="display: flex; justify-content: center;">
+                                <canvas id="nivelagua"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-md-6">
+                        <div class="main-card mb-3 card">
+                            <div class="card-body" style="text-align: center;">
+                                <h5 class="card-title">Nivel de Agua Corral de Vacas</h5>
+                                <div style="display: flex; justify-content: center;">
+                                    <canvas id="nivelagua2"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -131,11 +151,196 @@ data (){
       humidity: '',    // Aquí almacenaremos las humedades
       chartData:[],
       chartData1:[],
+      temperature: [],
+      humidity: [],
+      chart: null,
+      temperature2: [],
+      humidity2: [],
+      chart2: null,
       fecha : '',
   }
 
 },
 methods : {
+    LineChart() {
+        const ctx = document.getElementById('line-chart').getContext('2d');
+
+        this.chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+            {
+                label: "Temperatura",
+                data: [],
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 2,
+                fill: false,
+            },
+            {
+                label: "Humedad",
+                data: [],
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 2,
+                fill: false,
+            },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+            x: {
+                type: 'time',
+                time: {
+                parser: 'YYYY-MM-DDTHH:mm:ss',
+                tooltipFormat: 'YYYY-MM-DDTHH:mm:ss',
+                unit: 'hour',
+                displayFormats: {
+                    hour: 'YYYY-MM-DDTHH:mm:ss',
+                },
+                },
+                title: {
+                display: true,
+                text: 'Tiempo',
+                },
+            },
+            y: {
+                display: true,
+                title: {
+                display: true,
+                text: 'Valores',
+                },
+            },
+            },
+        },
+        });
+
+        // Llama a la función para agregar datos en tiempo real
+        this.startRealTimeUpdates();
+        },
+
+        startRealTimeUpdates() {
+        setInterval(() => {
+            // Simula la obtención de nuevos datos en tiempo real
+            const newTemperature = this.temperature;
+            const newHumidity = this.humidity;
+
+            // Formatea la fecha y hora actual con Moment.js
+            const currentTime = moment();
+
+            // Agrega los nuevos datos al gráfico con la marca de tiempo formateada
+            this.chart.data.labels.push(currentTime.format('HH:mm:ss'));
+            this.chart.data.datasets[0].data.push({
+            x: currentTime,
+            y: newTemperature,
+            });
+            this.chart.data.datasets[1].data.push({
+            x: currentTime,
+            y: newHumidity,
+            });
+
+            // Limita la cantidad de puntos de datos mostrados en el gráfico
+            if (this.chart.data.labels.length > 10) {
+            this.chart.data.labels.shift();
+            this.chart.data.datasets[0].data.shift();
+            this.chart.data.datasets[1].data.shift();
+            }
+
+            // Actualiza el gráfico con los nuevos datos
+            this.chart.update();
+        }, 2000); // Actualiza cada 2 segundos
+        },
+
+        LineChart2() {
+        const ctx = document.getElementById('line-chart2').getContext('2d');
+
+        this.chart2 = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+            {
+                label: "Temperatura",
+                data: [],
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 2,
+                fill: false,
+            },
+            {
+                label: "Humedad",
+                data: [],
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 2,
+                fill: false,
+            },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+            x: {
+                type: 'time',
+                time: {
+                parser: 'YYYY-MM-DDTHH:mm:ss',
+                tooltipFormat: 'YYYY-MM-DDTHH:mm:ss',
+                unit: 'hour',
+                displayFormats: {
+                    hour: 'YYYY-MM-DDTHH:mm:ss',
+                },
+                },
+                title: {
+                display: true,
+                text: 'Tiempo',
+                },
+            },
+            y: {
+                display: true,
+                title: {
+                display: true,
+                text: 'Valores',
+                },
+            },
+            },
+        },
+        });
+
+        // Llama a la función para agregar datos en tiempo real
+        this.startRealTimeUpdates2();
+        },
+
+        startRealTimeUpdates2() {
+        setInterval(() => {
+            // Simula la obtención de nuevos datos en tiempo real
+            const newTemperature = this.temperature2;
+            const newHumidity = this.humidity2;
+
+            // Formatea la fecha y hora actual con Moment.js
+            const currentTime = moment();
+
+            // Agrega los nuevos datos al gráfico con la marca de tiempo formateada
+            this.chart2.data.labels.push(currentTime.format('HH:mm:ss'));
+            this.chart2.data.datasets[0].data.push({
+            x: currentTime,
+            y: newTemperature,
+            });
+            this.chart2.data.datasets[1].data.push({
+            x: currentTime,
+            y: newHumidity,
+            });
+
+            // Limita la cantidad de puntos de datos mostrados en el gráfico
+            if (this.chart2.data.labels.length > 10) {
+            this.chart2.data.labels.shift();
+            this.chart2.data.datasets[0].data.shift();
+            this.chart2.data.datasets[1].data.shift();
+            }
+
+            // Actualiza el gráfico con los nuevos datos
+            this.chart2.update();
+        }, 2000); // Actualiza cada 2 segundos
+        },
+
+        
     fetchChartDataFromDatabase() {
   // Obtener la fecha actual (opcional, si quieres mostrar los datos de la fecha actual por defecto)
         axios
@@ -145,6 +350,8 @@ methods : {
             this.chartData1 = response.data.chartData1;
             this.ChartDoughnut();
             this.ChartDoughnut1();
+            this.LineChart();
+            this.LineChart2();
             })
             .catch((error) => {
             console.error('Error fetching data:', error);
@@ -247,6 +454,12 @@ methods : {
         });
         document.addEventListener('humidityUpdate', (event) => {
         this.humidity = event.detail;
+        });
+        document.addEventListener('temperatureUpdate2', (event) => {
+      this.temperature2 = event.detail;
+        });
+        document.addEventListener('humidityUpdate2', (event) => {
+        this.humidity2 = event.detail;
         });
         document.addEventListener('waterLevelUpdate', (event) => {
         this.waterLevelStr = event.detail;
@@ -362,7 +575,7 @@ methods : {
       }
     },
     drawChart2() {
-        if (this.temperature === '' && this.humidity === '') {
+        if (this.temperature2 === '' && this.humidity2 === '') {
 
         const defaultData = google.visualization.arrayToDataTable([
         ["Label", "Value"],
@@ -383,8 +596,8 @@ methods : {
         } else {
         const data = google.visualization.arrayToDataTable([
         ["Label", "Value"],
-        ["Temperatura", this.temperature],
-        ["Humedad", this.humidity],
+        ["Temperatura", this.temperature2],
+        ["Humedad", this.humidity2],
         ]);
 
 

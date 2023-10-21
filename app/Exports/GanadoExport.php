@@ -16,16 +16,17 @@ use Illuminate\Http\Request;
 
 class GanadoExport implements FromView, ShouldAutoSize
 {
-    protected $date1, $date2, $buscar;
+    protected $date1, $date2, $buscar,$festado;
 
-    function __construct($date1,$date2,$buscar) {
+    function __construct($date1,$date2,$buscar,$festado) {
         $this->date1 = $date1;
         $this->date2 = $date2;
         $this->buscar = $buscar;
+        $this->festado = $festado;
  }
      public function view(): View
     {
-        if ($this->date1 != '' && $this->date2 != '' && $this ->buscar != '' || $this->buscar == '' && $this->date1 != '' && $this->date2 != '') {
+        if ($this->date1 != '' && $this->date2 != '' && $this ->buscar != '' && $this ->festado != '' || $this->buscar == '' && $this->festado == '' && $this->date1 != '' && $this->date2 != '') {
             return view('exports.ganadoexcel', [
                 'rfids' => DB::table('rfids')
                     ->join('personas', 'rfids.idpersona', '=', 'personas.id')
@@ -42,10 +43,13 @@ class GanadoExport implements FromView, ShouldAutoSize
                             ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
                     })
                     ->whereBetween('rfids.fecha', [$this->date1, $this->date2])
+                    ->where(function ($query) {
+                        $query->where('rfids.estado', '=',$this->festado);
+                    })
                     ->orderByDesc('rfids.created_at')
                     ->orderBy('rfids.estado')
                     ->orderBy('rfids.idgrupo')
-                    ->paginate(10),
+                    ->get(),
                     'total_estado0' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
@@ -104,8 +108,11 @@ class GanadoExport implements FromView, ShouldAutoSize
                             ->orWhere('personas.direccion', 'like', '%' . $this->buscar . '%')
                             ->orWhere('personas.telefono', 'like', '%' . $this->buscar . '%');
                     })
+                    ->where(function ($query) {
+                        $query->where('rfids.estado', '=',$this->festado);
+                    })
                     ->orderBy('rfids.created_at', 'desc')
-                    ->orderBy('rfids.estado', 'desc')->paginate(10),
+                    ->orderBy('rfids.estado', 'desc')->get(),
 
                     'total_estado0' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')

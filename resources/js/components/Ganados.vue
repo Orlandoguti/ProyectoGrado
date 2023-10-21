@@ -88,8 +88,34 @@
                     </div>
                 </div>
             </div>
+            <div class="row">                
+               <div class="col-md-6" style="margin-bottom: 2%;">
+                <div class="main-card mb-3 card">
+                       <div class="card-body">
+                           <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Mes</h5>
+                           <canvas id="line-chart2"></canvas>
+                    </div>
+                   </div>
+               </div>               
+                <div class="col-md-6">
+                    <div class="main-card mb-3 card">
+                       <div class="card-body">
+                           <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Marca</h5>
+                           <canvas id="polar-chart"></canvas>
+                       </div>
+                   </div>
+               </div>
+            </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Mes y Marca</h5>
+                        <canvas id="stacked-bars-chart"></canvas>
+                    </div>
+                </div>
+                </div>                
+                <div class="col-md-6">
                     <div class="main-card mb-3 card">
                         <div class="card-body">
                             <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Grupo</h5>
@@ -97,24 +123,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                <div class="main-card mb-3 card">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="pe-7s-display1" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados Carneados por Mes</h5>
-                        <canvas id="stacked-bars-chart"></canvas>
-                    </div>
-                </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                       <div class="card-body">
-                           <h5 class="card-title"><i class="pe-7s-graph" aria-hidden="true" title="Copy to use file-excel-o"></i> Total Ganados por Marca</h5>
-                           <canvas id="polar-chart"></canvas>
-                       </div>
-                   </div>
-               </div>
             </div>
             <div class="row">
              <div class="col-md-6">
@@ -145,13 +153,20 @@
                     <div class="card-header"><i class="pe-7s-note2" aria-hidden="true"></i> LISTA DE GANADOS
                         <div class="btn-actions-pane-right">
                             <div class="input-group">
+                                <select class="form-control" v-model="festado" @click="listarRfid(1,buscar,date1,date2)">
+                                    <option value="" disabled>Filtro por Estado</option>
+                                    <option value="">Ninguno</option>
+                                    <option value="00">Ganado en el Corral</option>
+                                    <option value="1">Ganado en Proceso Faeneo</option>
+                                    <option value="2">Ganado Faeneado</option>                                    
+                                </select>
                                 <input type="date" v-model="date1"  class="form-control" placeholder="Ingrese la Fecha">
                                 <span style="display: flex; align-items: center;">-</span>
                                 <input type="date" v-model="date2" @change="listarRfid(1,buscar,date1,date2)" class="form-control" placeholder="Ingrese la Fecha">
                                 <input type="text" v-model="buscar" @keyup="listarRfid(1,buscar,date1,date2)" class="form-control" placeholder="Texto a buscar">
                                 <button type="submit" @click="listarRfid(1,buscar,date1='',date2='')" @change="fetchChartDataFromDatabase()" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                 <button type="submit" @click="generatePdf(date1,date2,buscar)" class="btn btn-danger"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Copy to use file-pdf-o"></i></button>
-                                <button type="submit" @click="excelVenta(date1,date2,buscar)" class="btn btn-success"><i class="fa fa-download" aria-hidden="true" title="Copy to use file-excel-o"></i></button>
+                                <button type="submit" @click="excelVenta(date1,date2,buscar,festado)" class="btn btn-success"><i class="fa fa-download" aria-hidden="true" title="Copy to use file-excel-o"></i></button>
                            </div>
                         </div>
                     </div>
@@ -201,7 +216,7 @@
                                 </td>
                                 <td v-text="rfid.fecha" class="text-center"></td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-info btn-sm" @click="verGanado(rfid.id)">
+                                    <button v-if="rfid.estado == 2 || rfid.estado == 1" type="button" class="btn btn-info btn-sm" @click="verGanado(rfid.id)">
                                         <i style="color: black;" class="fa fa-eye" aria-hidden="true" title="Copy to use file-excel-o"></i>
                                     </button>
                                         <button type="button" class="btn btn-danger btn-sm" @click="eliminarGanado(rfid.id)">
@@ -211,12 +226,13 @@
                             </tr>
                             </tbody>
                             <tbody v-else>
-                                <tr>
-                                    <td colspan="7" class="text-center">
-                                        No hay Registros
-                                    </td>
-                                </tr>
-                            </tbody>
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">
+                                                <img width="700" class="rounded-circle" src="/img/plantilla/sin_registros.png" alt="">
+                                                <h5>No se Encontraron Registros</h5>
+                                            </td>
+                                        </tr>
+                             </tbody> 
                         </table>
                     </div>
                     <div class="d-block text-center card-footer">
@@ -337,6 +353,7 @@ data (){
     idrfid:'',
     grunombre:'',
     gnombre:'',
+    festado:'',
     updated_at:'',
     idregistro:'',
     idprocesofaeneo:'',
@@ -346,6 +363,7 @@ data (){
         chartData3 : [],
         chartData4 : [],
         chartData5 : [],
+        chartData6 : [],
       totalestado0:'',
       totalestado1:'',
       totalestado2:'',
@@ -427,11 +445,14 @@ watch: {
 },
 methods : {
 
-    generatePdf(date1, date2, buscar) {
+   
+
+    generatePdf(date1, date2, buscar,festado) {
         const requestData = {
             date1: date1,
             date2: date2,
             buscar: buscar,
+            festado: this.festado,
         };
 
         axios.post('/rfid/pdf', requestData, { responseType: 'blob' })
@@ -445,8 +466,8 @@ methods : {
             });
     },
 
-    excelVenta(date1,date2,buscar){
-                window.open('rfid/excel?'+ 'date1='+ date1 + '&date2='+ date2 + '&buscar='+ buscar,'_blank');
+    excelVenta(date1,date2,buscar,festado){
+                window.open('rfid/excel?'+ 'date1='+ date1 + '&date2='+ date2 + '&buscar='+ buscar + '&festado='+ this.festado,'_blank');
             },
     fetchChartDataFromDatabase(date1,date2) {
   // Obtener la fecha actual (opcional, si quieres mostrar los datos de la fecha actual por defecto)
@@ -459,10 +480,12 @@ methods : {
             this.chartData3 = response.data.chartData3;
             this.chartData4 = response.data.chartData4;
             this.chartData5 = response.data.chartData5;
+            this.chartData6 = response.data.chartData6;
             this.polarChart();
             this.PieChart();
             this.BarChart();
             this.LineChart();
+            this.LineChart2();
             this.BarVerticalChart();
             })
             .catch((error) => {
@@ -704,18 +727,18 @@ methods : {
                             datasets.push(totalsByGroup[group]);
                         }
                     }
-
-
                     var configmyBar = {
                         data: {
                             datasets: datasets,
                             labels: monthNames,
                         },
+                        
                         options: {
                             responsive: true,
                             legend: {
                                 position: 'right',
                             },
+                                                      
                             title: {
                                 display: false,
                                 text: ''
@@ -837,10 +860,67 @@ methods : {
                 }
             },
 
+            LineChart2() {
+                console.log(this.chartData6); // Verifica que los datos estén llegando correctamente
+
+                var ctx = document.getElementById('line-chart2');
+
+                if (ctx && this.chartData6.length > 0) {
+
+                    // Nombres de los meses (solo las primeras tres letras)
+                    var monthNames = [
+                        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                    ];
+                    var color = '#1353ec50'; // Rojo
+
+                   var configLine = {
+                    data: {
+                        labels: this.chartData6.map((data) => monthNames[Number(data.mes) - 1]),
+                        datasets: [
+                            {
+                                data: this.chartData6.map((data) => data.total),
+                                backgroundColor: color,
+                                label: 'Total Faeneos por Mes',
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,                       
+                        title: {
+                            display: true,
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                            x: {
+                                display: true,
+                            },
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        animation: {
+                            animateRotate: false,
+                            animateScale: true,
+                        },
+                    },
+                };
+
+                    new Chart(ctx, {
+                        type: 'line', // Cambiamos el tipo de gráfico a línea
+                        data: configLine.data,
+                        options: configLine.options,
+                    });
+                }
+            },
+
 
   listarRfid (page,buscar,date1,date2){
       let me=this;
-      var url= '/rfid/indexAdministrador?page=' + page + '&buscar='+ buscar + '&date1=' + date1 + '&date2='+ date2 ;
+      var url = '/rfid/indexAdministrador?page=' + page + '&buscar=' + buscar + '&date1=' + date1 + '&date2=' + date2 + '&festado=' + this.festado;
       axios.get(url).then(function (response) {
           var respuesta= response.data;
           me.arrayRfid = respuesta.rfids.data;

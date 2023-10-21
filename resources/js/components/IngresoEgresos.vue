@@ -227,9 +227,8 @@
                                                     </div>
                                                     <div class="col-md-4 mb-3">
                                                         <label for="validationCustom05" class="form-label">Monto:</label>
-                                                        <input type="text" v-model="formattedMonto" @input="updateMonto" class="form-control" placeholder="Monto" required>
+                                                        <input type="text" v-model="formattedMonto" @input="updateMonto" class="form-control" placeholder="Monto" style="border: 1px solid #ced4da; background-repeat: no-repeat; background-position: right calc(0.35em + 0.1875rem) center; background-image: url(/public/fonts/binoculars-solid.svg);" required>
                                                         <div class="invalid-feedback"> Ingrese el Monto!</div>
-                                                        <div class="valid-feedback"> Correcto! </div>
                                                     </div>
                                                     <div class="col-md-4 mb-3">
                                                         <label for="validationCustom01" class="form-label">Descripcion:</label>

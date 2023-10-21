@@ -175,6 +175,23 @@ export default {
   },
   methods: {
     actualizarGrupo(){
+        const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn2 btn-success',
+                                cancelButton: 'btn2 btn-danger'
+                            },
+                            buttonsStyling: false
+                        });
+                        swalWithBootstrapButtons.fire({
+                            title: 'Actualizar!',
+                            text: "Estás Seguro de Actualizar este Grupo?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, Actualizar!',
+                            cancelButtonText: 'No, Cancelar!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
         let me= this;
         let formData = new FormData();
                         formData.append('id', me.id);
@@ -183,42 +200,107 @@ export default {
 
                         axios.post('/grupo/actualizar', formData)
                         .then(function(response) {
-                            me.cerrarModal();
-                            me.listarRfid(1,this.buscar);
+                            me.cerrarModal();                            
                             Swal.fire(
-                                'Registrado!',
-                                'El Grupo ha sido registrado con éxito.',
+                                'Actualizado!',
+                                'El Grupo ha sido actualizado con éxito.',
                                 'success'
                             );
+                            me.indexGrupo(1);
                         })
                         .catch(function(error) {
                             console.log(error);
                             Swal.fire(
                             'Error!',
-                            'Hubo un problema al registrar el Grupo.',
+                            'Hubo un problema al actualizar el Grupo.',
                             'error'
                         );
                         });
+                    } else if (
+                                                /* Read more about handling dismissals below */
+                                                result.dismiss === Swal.DismissReason.cancel
+                                            ) {
+                                            }
+                                            })
             },
 
             registrarGrupo(){
+                const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn2 btn-success',
+                                cancelButton: 'btn2 btn-danger'
+                            },
+                            buttonsStyling: false
+                        });
+                        swalWithBootstrapButtons.fire({
+                            title: 'Registrar!',
+                            text: "Estás Seguro de Registrar este Grupo?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, Registrar!',
+                            cancelButtonText: 'No, Cancelar!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
                 axios.post('/grupo/registrar', {
-            'nombre': this.nombre,
-            'detalle': this.detalle
-        }).then(function(response) {
-            Swal.fire(
-                'Registrado!',
-                'El Grupo ha sido registrado con éxito.',
-                'success'
-            );
-        }).catch(function(error) {
-            console.error(error);
-            Swal.fire(
-                'Error!',
-                'Hubo un problema al registrar el Grupo.',
-                'error'
-            );
-        });
+                    'nombre': this.nombre,
+                    'detalle': this.detalle
+                }).then(function(response) {
+                    Swal.fire(
+                        'Registrado!',
+                        'El Grupo ha sido registrado con éxito.',
+                        'success'
+                    );
+                }).catch(function(error) {
+                    console.error(error);
+                    Swal.fire(
+                        'Error!',
+                        'Hubo un problema al registrar el Grupo.',
+                        'error'
+                    );
+                });
+            } else if (
+                                                /* Read more about handling dismissals below */
+                                                result.dismiss === Swal.DismissReason.cancel
+                                            ) {
+                                            }
+                                            })
+            },
+
+            eliminarGrupo(id){
+            const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn2 btn-success',
+                                cancelButton: 'btn2 btn-danger'
+                            },
+                            buttonsStyling: false
+                        });
+                        swalWithBootstrapButtons.fire({
+                            title: 'Eliminar!',
+                            text: "Estás Seguro de Eliminar este Registro?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, Eliminar!',
+                            cancelButtonText: 'No, Cancelar!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                        axios.delete(`/grupo/eliminar/${id}`)
+                            .then(response => {
+                            this.indexGrupo(1);
+                            Swal.fire(
+                                        'Eliminado!',
+                                        'El Registro se ha sido eliminado con éxito.',
+                                        'warning'
+                                        )
+                            console.error(error.response.data.message);
+                            });
+                        } else if (
+                                                /* Read more about handling dismissals below */
+                                                result.dismiss === Swal.DismissReason.cancel
+                                            ) {
+                                            }
+                                            })
             },
     cambiarPagina(page) {
             let me = this;
@@ -259,6 +341,7 @@ export default {
               this.modal = 1;
               this.tituloModal = 'Actualizar Grupo';
               this.tipoAccion = 2;
+              this.id = data['id'];
               this.nombre = data['nombre'];
               this.detalle = data['detalle'];
               break;

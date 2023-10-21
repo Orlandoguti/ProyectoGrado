@@ -24,6 +24,7 @@ class RfidController extends Controller
         if (!$request->ajax()) return redirect('/');
         $fecha = Carbon::now('America/La_Paz')->format('Y-m-d');
         $buscar = $request->buscar;
+        $festado = $request->input('festado');
 
 
             $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
@@ -40,6 +41,10 @@ class RfidController extends Controller
                       ->orWhere('personas.marca', 'LIKE', "%$buscar%")
                       ->orWhere('generos.nombre', 'LIKE', "%$buscar%")
                       ->orWhere('rfids.idrfid', 'LIKE', "%$buscar%");
+            })
+            ->when($festado, function ($query) use ($festado) {
+                // Aplicar el filtro de fecha solo si se proporciona una fecha
+                return $query->where('rfids.estado', $festado);
             })
             ->orderBy('rfids.estado', 'asc')
             ->orderBy('rfids.created_at', 'asc')->paginate(10);
@@ -100,6 +105,7 @@ class RfidController extends Controller
         $date2 = $request->date2;
         $id = $request->id;
         $buscar = $request->buscar;
+        $festado = $request->input('festado');
 
         if ($date1 !='' && $date2 !=''){
 
@@ -108,8 +114,8 @@ class RfidController extends Controller
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos', 'rfids.idgenero', '=', 'generos.id')
             ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-            ->select('rfids.id', 'rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
-            ->where(function($query) use ($buscar) {
+            ->select('rfids.id', 'rfids.idrfid', 'rfids.idregistro', 'rfids.idprocesofaeneo', 'rfids.idfaeneo', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+            ->where(function ($query) use ($buscar) {
                 $query->where('personas.nombre', 'like', '%' . $buscar . '%')
                     ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
                     ->orWhere('grupos.nombre', 'like', '%' . $buscar . '%')
@@ -118,7 +124,12 @@ class RfidController extends Controller
                     ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
                     ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
             })
-            ->whereBetween('rfids.fecha', [$date1, $date2])
+            ->when($date1 != '' && $date2 != '', function ($query) use ($date1, $date2) {
+                $query->whereBetween('rfids.fecha', [$date1, $date2]);
+            })
+            ->when($festado != '', function ($query) use ($festado) {
+                return $query->where('rfids.estado', $festado);
+            })
             ->where('users.idrol', '=', 3)
             ->orderByDesc('rfids.created_at')
             ->orderBy('rfids.estado')
@@ -171,6 +182,12 @@ class RfidController extends Controller
             ->groupBy('g.nombre', DB::raw('MONTH(r.fecha)'))
             ->get();
 
+            $chartData6 = DB::table('rfids as r')
+            ->selectRaw('COUNT(r.id) as total, MONTH(r.fecha) as mes')
+            ->where('r.estado', 2)
+            ->groupBy(DB::raw('MONTH(r.fecha)'))
+            ->get();
+
         }
         else{
 
@@ -188,7 +205,11 @@ class RfidController extends Controller
                     ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
                     ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
             })
-            ->where('users.idrol', '=', 3)
+            ->where('users.idrol', '=', 3)             
+            ->when($festado, function ($query) use ($festado) {
+                // Aplicar el filtro de grupo solo si se proporciona un grupo
+                return $query->where('rfids.estado', $festado);
+            })        
             ->orderBy('rfids.created_at', 'desc')
             ->orderBy('rfids.estado', 'desc')->paginate(10);
             $total_estado0 = Rfid::where('estado', 0)->count();
@@ -233,6 +254,12 @@ class RfidController extends Controller
             ->groupBy('g.nombre', DB::raw('MONTH(r.fecha)'))
             ->get();
 
+            $chartData6 = DB::table('rfids as r')
+            ->selectRaw('COUNT(r.id) as total, MONTH(r.fecha) as mes')
+            ->where('r.estado', 2)
+            ->groupBy(DB::raw('MONTH(r.fecha)'))
+            ->get();
+
 
         }
 
@@ -246,7 +273,7 @@ class RfidController extends Controller
                 'from'         => $rfids->firstItem(),
                 'to'           => $rfids->lastItem(),
             ],
-            'rfids' => $rfids,'total_estado0'=> $total_estado0,'total_estado1'=> $total_estado1,'total_estado2'=> $total_estado2,'chartData' => $chartData,'chartData2' => $chartData2,'chartData3' => $chartData3,'chartData4' => $chartData4,'chartData5' => $chartData5
+            'rfids' => $rfids,'total_estado0'=> $total_estado0,'total_estado1'=> $total_estado1,'total_estado2'=> $total_estado2,'chartData' => $chartData,'chartData2' => $chartData2,'chartData3' => $chartData3,'chartData4' => $chartData4,'chartData5' => $chartData5,'chartData6' => $chartData6
         ];
     }
 
@@ -295,6 +322,7 @@ class RfidController extends Controller
         $date1 = $request->date1;
         $date2 = $request->date2;
         $buscar = $request->buscar;
+        $festado = $request->input('festado');
 
         if ($date1 !='' && $date2 !='' && $buscar != '' || $date1 !='' && $date2 !='' && $buscar == '' ){
 
@@ -313,54 +341,14 @@ class RfidController extends Controller
                     ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
             })
             ->whereBetween('rfids.fecha', [$date1, $date2])
+            ->when($festado, function ($query) use ($festado) {
+                // Aplicar el filtro de grupo solo si se proporciona un grupo
+                return $query->where('rfids.estado', $festado);
+            })
             ->orderByDesc('rfids.created_at')
             ->orderBy('rfids.estado')
             ->orderBy('rfids.idgrupo')
-            ->paginate(10);
-
-            $total_estado0 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
-            ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-            ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-            ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
-            ->where(function($query) use ($buscar) {
-                $query->where('personas.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('grupos.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.marca', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.num_documento', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
-            })
-            ->where('estado', 0)->whereBetween('fecha', [$date1, $date2])->count();
-            $total_estado1 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
-            ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-            ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-            ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
-            ->where(function($query) use ($buscar) {
-                $query->where('personas.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('grupos.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.marca', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.num_documento', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
-            })
-            ->where('estado', 1)->whereBetween('fecha', [$date1, $date2])->count();
-            $total_estado2 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
-            ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-            ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-            ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
-            ->where(function($query) use ($buscar) {
-                $query->where('personas.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('grupos.nombre', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.marca', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.num_documento', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
-                    ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
-            })
-            ->where('estado', 2)->whereBetween('fecha', [$date1, $date2])->count();
-
+            ->get();
         }
         else{
                 $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
@@ -376,53 +364,15 @@ class RfidController extends Controller
                         ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
                         ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
                 })
+                ->when($festado, function ($query) use ($festado) {
+                    // Aplicar el filtro de grupo solo si se proporciona un grupo
+                    return $query->where('rfids.estado', $festado);
+                })
                 ->orderBy('rfids.created_at', 'desc')
-                ->orderBy('rfids.estado', 'desc')->paginate(10);
-                $total_estado0 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
-                ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-                ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
-                ->where(function($query) use ($buscar) {
-                    $query->where('personas.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('grupos.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.marca', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.num_documento', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
-                })
-                ->where('estado', 0)->count();
-                $total_estado1 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
-                ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-                ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
-                ->where(function($query) use ($buscar) {
-                    $query->where('personas.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('grupos.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.marca', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.num_documento', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
-                })
-                ->where('estado', 1)->count();
-                $total_estado2 = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
-                ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-                ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
-                ->where(function($query) use ($buscar) {
-                    $query->where('personas.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('grupos.nombre', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.marca', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.num_documento', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.direccion', 'like', '%' . $buscar . '%')
-                        ->orWhere('personas.telefono', 'like', '%' . $buscar . '%');
-                })
-                ->where('estado', 2)->count();
+                ->orderBy('rfids.estado', 'desc')->get();             
             }
 
-        $pdf = \PDF::loadView('pdf.ganados', ['rfids' => $rfids, 'total_estado0' => $total_estado0, 'total_estado1' => $total_estado1, 'total_estado2' => $total_estado2]);
+        $pdf = \PDF::loadView('pdf.ganados', ['rfids' => $rfids]);
         return $pdf->stream('ListaPdf'.$mytime.'.pdf');
     }
 
@@ -431,9 +381,10 @@ class RfidController extends Controller
         $buscar = $request->buscar;
         $date1 =  $request->date1;
         $date2 = $request->date2;
+        $festado = $request->festado;
         ob_end_clean();
         ob_start();
-        return Excel::download(new GanadoExport($date1,$date2,$buscar),'ReporteGanado'.$mytime.'.xlsx');
+        return Excel::download(new GanadoExport($date1,$date2,$buscar,$festado),'ReporteGanado'.$mytime.'.xlsx');
     }
 
 

@@ -88,7 +88,7 @@
                             <th class="text-center">Fecha Ingreso</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="arrayRfid.length">
                             <tr v-for="rfid in arrayRfid"  :key="rfid.id">
                             <td class="text-center text-muted"  v-text="rfid.idrfid"></td>
                             <td>
@@ -122,6 +122,14 @@
                             <td v-text="rfid.fecha" class="text-center"></td>
                         </tr>
                         </tbody>
+                        <tbody v-else>
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">
+                                                <img width="700" class="rounded-circle" src="/img/plantilla/sin_registros.png" alt="">
+                                                <h5>No se Encontraron Registros</h5>
+                                            </td>
+                                        </tr>
+                        </tbody> 
                     </table>
                 </div>
                 <div class="d-block text-center card-footer">
