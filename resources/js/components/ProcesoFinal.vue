@@ -317,7 +317,8 @@ watch: {
         // Verificar si la marca en la lista es la misma que la marca en la lectura RFID
         axios.get('/procesofinal/listaVerificar', {
             params: {
-                idpersona: this.idpersona
+                idpersona: this.idpersona,
+                idrfid: this.rfidData
             }
         })
             .then(response => {

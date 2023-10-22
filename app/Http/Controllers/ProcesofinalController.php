@@ -31,7 +31,6 @@ class ProcesofinalController extends Controller
 
         $rfid = Rfid::where('idrfid', $rfidData)
             ->where('estado', 1)
-            ->where('fecha', $fechaActual)
             ->first();
 
             $rfid->estado = 2;
@@ -83,11 +82,11 @@ class ProcesofinalController extends Controller
     public function listaVerificar(Request $request)
         {
         $idpersona = $request->input('idpersona');
-        $fechaActual = Carbon::now()->format('Y-m-d');
+        $idrfid = $request->input('idrfid');
 
         $rfid = Rfid::where('idpersona', $idpersona)
             ->where('estado', '=', 1)
-            ->whereDate('fecha', $fechaActual)
+            ->where('idrfid', '=', $idrfid)
             ->get();
 
         return response()->json(['arrayListaFiltrada' => $rfid]);

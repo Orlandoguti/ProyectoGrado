@@ -31,14 +31,7 @@
                 <a  @click="toggleInputDisabled()"><span>Cantidad Maxima de Faeneo por Grupo</span></a>
                 <div class="col-md-1">
                             <div class="main-card mb-3 card">
-                            <select style="text-align: center; color: coral;" class="form-control" v-model="maxtotalfaeneo" @change="actualizarmaxfaeneo()" :disabled="inputDisabled">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="40">40</option>
-                            <option value="50">50</option>
-                        </select>
+                            <input type="number" style="text-align: center; color: coral;" class="form-control" v-model="maxtotalfaeneo" @change="actualizarmaxfaeneo()" :disabled="inputDisabled">
                         </div>
                     </div>
                 </div>
@@ -142,7 +135,7 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="validationCustom02" class="form-label">Nombre del Afiliado:</label>
-                                                <input type="text" v-model="nombre" class="form-control" placeholder="Marca de la persona" disabled>
+                                                <input :value="nombre + ' ' + apellidoP + ' ' + apellidoM" type="text" class="form-control" id="validationCustom03" placeholder="Nombre del Afiliado" required disabled>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -190,6 +183,8 @@ export default {
       idpersona: '',
       errorRegistro: '',
       nombre: '',
+      apellidoP: '',
+      apellidoM: '',
       marca: '',
       genombre: '',
       grupo: '',
@@ -361,6 +356,8 @@ export default {
       // Realiza una solicitud HTTP a tu backend para obtener los detalles de la opción seleccionada
       axios.get(`/personas/ver/${idpersona}`).then((response) => {
         this.nombre = response.data.nombre;
+        this.apellidoP = response.data.apellidoP;
+        this.apellidoM = response.data.apellidoM;
       });
     },
     selectPersona() {
@@ -490,6 +487,9 @@ export default {
       this.modal = 0;
       this.tituloModal = '';
       this.idpersona = '';
+      this.nombre = '';
+      this.apellidoP = '';
+      this.apellidoM = '';
       this.idgrupo = '';
       this.estado = '';
       this.cantidad = '';

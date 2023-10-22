@@ -187,11 +187,11 @@
                                               <h2 v-text="tituloModal"></h2> <h2>Trabajador</h2>
                                              <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                   <span style="font-weight: 700;"> CI:</span> <input type="text" v-model="num_documento" class="form-control" placeholder="Número de CI" pattern=".{8,}" title="Debe contener al menos 8 caracteres" required>
+                                                   <span style="font-weight: 700;"> CI:</span> <input type="text" v-model="num_documento" class="form-control" placeholder="Número de CI" pattern="^[0-9]{8,}$" title="Solo numeros y Debe contener al menos 8 caracteres" required>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <span style="font-weight: 700;"> Celular:</span><input type="text" v-model="telefono" class="form-control" placeholder="Celular" pattern=".{8,}" title="Debe contener al menos 8 caracteres" required>
+                                                    <span style="font-weight: 700;"> Celular:</span><input type="text" v-model="telefono" class="form-control" placeholder="Celular" pattern="^[0-9]{8,}$" title="Solo numeros y Debe contener al menos 8 caracteres" required>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                              </div>
@@ -296,11 +296,11 @@
                                               <h2 v-text="tituloModal"></h2> <h2>Afiliado</h2>
                                              <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                    <span style="font-weight: 700;"> CI:</span> <input type="text" v-model="num_documento" class="form-control" pattern=".{8,}" title="Debe contener al menos 8 caracteres" placeholder="Número de CI" required>
+                                                    <span style="font-weight: 700;"> CI:</span> <input type="text" v-model="num_documento" class="form-control" pattern="^[0-9]{8,}$" title="Solo numeros y Debe contener al menos 8 caracteres" placeholder="Número de CI" required>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <span style="font-weight: 700;"> Celular:</span><input type="text" v-model="telefono" class="form-control" pattern=".{8,}" title="Debe contener al menos 8 caracteres" placeholder="Celular" required>
+                                                    <span style="font-weight: 700;"> Celular:</span><input type="text" v-model="telefono" class="form-control" pattern="^[0-9]{8,}$" title="Solo numeros y Debe contener al menos 8 caracteres" placeholder="Celular" required>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                              </div>
