@@ -168,7 +168,7 @@
                         foreach ($listas as $r) {
                             echo '<tr>';
                             echo '<td>' . $r->marca . '</td>';
-                            echo '<td>' . $r->nombre . '</td>';
+                            echo '<td>' . $r->nombre . ' ' . $r->apellidoP . ' ' . $r->apellidoM . '</td>';
                             echo '<td>' . $r->gnombre . '</td>';
                             echo '<td>' . $r->total_cantidad . '</td>';
                             echo '<td>' . $r->fecha . '</td>';

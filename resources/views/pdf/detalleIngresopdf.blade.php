@@ -170,7 +170,7 @@
                             echo '<tr>';
                             echo '<td>' . $r->id . '</td>';
                             echo '<td>' . $r->marca . '</td>';
-                            echo '<td>' . $r->nombre . '</td>';
+                            echo '<td>' . $r->nombre . ' ' . $r->apellidoP . ' ' . $r->apellidoM . '</td>';
                             echo '<td>' . $r->cantidad . '</td>';
                             echo '<td>' . $r->cantidad*24 . '</td>';
                             echo '<td>' . $r->fecha . '</td>';

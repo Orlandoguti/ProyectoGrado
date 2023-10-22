@@ -128,7 +128,11 @@
                                             </div>
                                             <div class="widget-content-left flex2">
                                                 <span v-text="rfid.marca" class="widget-heading"></span>
-                                                <span v-text="rfid.nombre" class="widget-subheading opacity-7"></span>
+                                                <div>                                                    
+                                                    <span v-text="rfid.nombre" class="widget-subheading opacity-7"></span>
+                                                    <span v-text="rfid.apellidoP" class="widget-subheading opacity-7"></span>
+                                                    <span v-text="rfid.apellidoM" class="widget-subheading opacity-7"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +144,7 @@
                                         <div class="badge bg-danger">Ganado en Corral</div>
                                     </div>
                                     <div v-if="rfid.estado == 1">
-                                        <div class="badge bg-warning">Proceo de Faeneado</div>
+                                        <div class="badge bg-warning">Proceso de Faeneado</div>
                                     </div>
                                     <div v-if="rfid.estado == 2">
                                         <div class="badge bg-success">Ganado Carneado</div>
@@ -226,7 +230,7 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom03" class="form-label">Nombre:</label>
-                                            <input v-model="nombre" type="text" class="form-control" id="validationCustom03" placeholder="Nombre del Afiliado" required disabled>
+                                            <input :value="nombre + ' ' + apellidoP + ' ' + apellidoM" type="text" class="form-control" id="validationCustom03" placeholder="Nombre del Afiliado" required disabled>
                                             <div class="invalid-feedback">
                                                 Correcto!
                                             </div>
@@ -295,6 +299,8 @@ data (){
       fecharegistro:'',
       marca : '',
       nombre : '',
+      apellidoP : '',
+      apellidoM : '',
       telefono : '',
       id : 0,
       idgenero : 0,
@@ -425,7 +431,7 @@ methods : {
         data: {
           token: "kwpdjhrs6i7owtjo",
           to: rfid.telefono,
-          body: 'Señor(a): ' + rfid.nombre + 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
+          body: 'Señor(a): ' + rfid.nombre + rfid.apellidoP + rfid.apellidoM + ' Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
         }
 
       };
@@ -468,6 +474,8 @@ methods : {
     // Realiza una solicitud HTTP a tu backend para obtener los detalles de la opción seleccionada
     axios.get(`/personas/ver/${idpersona}`).then((response) => {
         this.nombre = response.data.nombre;
+        this.apellidoP = response.data.apellidoP;
+        this.apellidoM = response.data.apellidoM;
         this.telefono = response.data.telefono;
     });
     },
@@ -617,6 +625,8 @@ methods : {
       this.idrfid= 0;
       this.idpersona = '';
       this.nombre = '';
+      this.apellidoP = '';
+      this.apellidoM = '';
       this.estado= 0;
       this.fecha = '';
       this.closeWebSocket();
@@ -705,7 +715,7 @@ methods : {
                                     })
     },
   initializeWebSocket() {
-  this.webSocket = new WebSocket('wss://192.168.100.116:81/', ['arduino']);
+  this.webSocket = new WebSocket('ws://192.168.100.116:81/', ['arduino']);
 
   this.webSocket.onopen = () => {
     console.log('Connected to WebSocket server');

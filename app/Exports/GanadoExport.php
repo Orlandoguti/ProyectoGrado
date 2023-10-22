@@ -26,13 +26,13 @@ class GanadoExport implements FromView, ShouldAutoSize
  }
      public function view(): View
     {
-        if ($this->date1 != '' && $this->date2 != '' && $this ->buscar != '' && $this ->festado != '' || $this->buscar == '' && $this->festado == '' && $this->date1 != '' && $this->date2 != '') {
+        if ($this->date1 != '' && $this->date2 != '' && $this ->buscar != '' || $this->buscar == '' && $this->date1 != '' && $this->date2 != '') {
             return view('exports.ganadoexcel', [
                 'rfids' => DB::table('rfids')
                     ->join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
@@ -53,7 +53,7 @@ class GanadoExport implements FromView, ShouldAutoSize
                     'total_estado0' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
@@ -67,7 +67,7 @@ class GanadoExport implements FromView, ShouldAutoSize
                     'total_estado1' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
@@ -81,7 +81,7 @@ class GanadoExport implements FromView, ShouldAutoSize
                     'total_estado2' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
@@ -98,7 +98,7 @@ class GanadoExport implements FromView, ShouldAutoSize
                 'rfids' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
@@ -117,7 +117,7 @@ class GanadoExport implements FromView, ShouldAutoSize
                     'total_estado0' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
@@ -131,7 +131,7 @@ class GanadoExport implements FromView, ShouldAutoSize
                     'total_estado1' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')
@@ -145,7 +145,7 @@ class GanadoExport implements FromView, ShouldAutoSize
                     'total_estado2' => Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
                     ->join('generos', 'rfids.idgenero', '=', 'generos.id')
                     ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+                    ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
                     ->where(function ($query) {
                         $query->where('personas.nombre', 'like', '%' . $this->buscar . '%')
                             ->orWhere('generos.nombre', 'like', '%' . $this->buscar . '%')

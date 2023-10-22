@@ -15,7 +15,7 @@ class PersonaController extends Controller
 
         $filtro = $request->filtro;
 
-        $personas = Persona::select('personas.id', 'personas.nombre', 'personas.num_documento', 'personas.marca')
+        $personas = Persona::select('personas.id', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.num_documento', 'personas.marca')
         ->join('users as u', 'personas.id', '=', 'u.id')
         ->where(function ($query) use ($filtro) {
             $query->where('nombre', 'like', '%' . $filtro . '%')

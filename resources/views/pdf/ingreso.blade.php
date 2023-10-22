@@ -72,7 +72,7 @@
     <header>
         <div id="container">
             <div id="left">
-                <p id="encabezado"><b>FACTURA #{{$detallelistasindex->id}}/2023</b></p>
+                <p id="encabezado"><b>BOUCHER #{{$detallelistasindex->id}}/2023</b></p>
             </div>
             <div id="right">
                 <p id="encabezado"><b>COPIA AL AFILIADO - El ALTO, Z:LOS ANDES </b></p>
@@ -94,7 +94,7 @@
             </div>
             <div class="">
                 <span>Marca: {{$detallelistasindex->marca}}</span><br>
-                <span>Nombre: {{$detallelistasindex->nombre}}</span>
+                <span>Nombre: {{ $detallelistasindex->nombre . ' ' . $detallelistasindex->apellidoP . ' ' . $detallelistasindex->apellidoM }}</span>
             </div>
         </div>
         <div class="">
@@ -103,7 +103,7 @@
         <table>
             <thead>
                 <tr>
-                    <th scope="col left" colspan="2">Descripcion</th>
+                    <th scope="col left" colspan="2">Marca</th>
                     <th scope="col left" colspan="2">Grupo Carneo</th>
                     <th scope="col right" colspan="2">Total</th>
                 </tr>

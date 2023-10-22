@@ -16,7 +16,7 @@
                         <tr>
                             <td>{{$r->idrfid}}</td>
                             <td>{{$r->marca}}</td>
-                            <td>{{$r->nombre}}</td>
+                            <td>{{ $r->nombre . ' ' . $r->apellidoP . ' ' . $r->apellidoM }}</td>
                             <td>{{$r->gnombre}}</td>
                             <td>{{$r->grunombre}}</td>
                             <td>

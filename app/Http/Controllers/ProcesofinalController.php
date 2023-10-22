@@ -47,7 +47,7 @@ class ProcesofinalController extends Controller
 
         $rfid = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
             ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-            ->select('rfids.idgenero','generos.nombre as gnombre', 'rfids.id','rfids.idrfid', 'rfids.idpersona', 'personas.nombre', 'personas.marca', 'personas.num_documento', 'rfids.estado', 'rfids.fecha')
+            ->select('rfids.idgenero','generos.nombre as gnombre', 'rfids.id','rfids.idrfid', 'rfids.idpersona', 'personas.nombre', 'personas.apellidoP', 'personas.apellidoM', 'personas.marca', 'personas.num_documento', 'rfids.estado', 'rfids.fecha')
             ->where('rfids.idrfid', $rfidId)->whereIn('rfids.estado', [1])
             ->first();
 
@@ -58,6 +58,8 @@ class ProcesofinalController extends Controller
                 'gnombre' => $rfid->gnombre,
                 'idpersona' => $rfid->idpersona,
                 'nombre' => $rfid->nombre,
+                'apellidoP' => $rfid->apellidoP,
+                'apellidoM' => $rfid->apellidoM,
                 'marca' => $rfid->marca,
                 'num_documento' => $rfid->num_documento,
                 'fecha' => $rfid->fecha,
@@ -101,7 +103,7 @@ class ProcesofinalController extends Controller
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos','rfids.idgenero','=','generos.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
-            ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
+            ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre', 'personas.apellidoP', 'personas.apellidoM','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
 
             ->where('rfids.estado', '=', 1)
 

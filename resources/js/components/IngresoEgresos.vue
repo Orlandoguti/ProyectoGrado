@@ -426,7 +426,8 @@ export default {
                                 'success'
                             );
                             this.cerrarModal();
-                            this.listarEgreso(1, this.date1, this.date2);
+                            this.listarEgreso(1,this.buscar,this.date1,this.date2);
+                            this.indexChart();
                         }).catch((error) => {
                             console.log(error);
                         });

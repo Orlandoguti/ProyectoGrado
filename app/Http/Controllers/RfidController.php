@@ -31,7 +31,7 @@ class RfidController extends Controller
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos','rfids.idgenero','=','generos.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
-            ->select('rfids.id','rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo','personas.id as idpersona','personas.nombre','generos.id as idgenero','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
+            ->select('rfids.id','rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo','personas.id as idpersona','personas.nombre','personas.apellidoP','personas.apellidoM','generos.id as idgenero','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
             ->where('rfids.fecha','=',$fecha)
             ->where('users.idrol', '=', 3)
             ->where(function($query) use ($buscar) {
@@ -76,7 +76,7 @@ class RfidController extends Controller
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos', 'rfids.idgenero', '=', 'generos.id')
             ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-            ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha','rfids.updated_at as fechaupdate')
+            ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha','rfids.updated_at as fechaupdate')
             ->where('users.idrol', '=', 3)
             ->whereIn('rfids.estado', [0, 1])
             ->where('personas.marca','=', $marca)
@@ -132,7 +132,7 @@ class RfidController extends Controller
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos', 'rfids.idgenero', '=', 'generos.id')
             ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-            ->select('rfids.id', 'rfids.idrfid', 'rfids.idregistro', 'rfids.idprocesofaeneo', 'rfids.idfaeneo', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+            ->select('rfids.id', 'rfids.idrfid', 'rfids.idregistro', 'rfids.idprocesofaeneo', 'rfids.idfaeneo', 'personas.id as idpersona', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
             ->where(function ($query) use ($buscar) {
                 $query->where('personas.nombre', 'like', '%' . $buscar . '%')
                     ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
@@ -213,7 +213,7 @@ class RfidController extends Controller
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos','rfids.idgenero','=','generos.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
-            ->select('rfids.id','rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
+            ->select('rfids.id','rfids.idrfid','rfids.idregistro','rfids.idprocesofaeneo','rfids.idfaeneo','personas.id as idpersona','personas.nombre','personas.apellidoP','personas.apellidoM','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
             ->where(function($query) use ($buscar) {
                 $query->where('personas.nombre', 'like', '%' . $buscar . '%')
                     ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
@@ -313,10 +313,18 @@ class RfidController extends Controller
                 'rfids.id',
                 'rfids.idrfid',
                 'registro.nombre AS idregistro',
+                'registro.apellidoP AS idregistroP',
+                'registro.apellidoM AS idregistroP',
                 'procesofaeneo.nombre AS idprocesofaeneo',
+                'procesofaeneo.apellidoP AS idprocesofaeneoP',
+                'procesofaeneo.apellidoM AS idprocesofaeneoM',                
                 'faeneo.nombre AS idfaeneo',
+                'faeneo.apellidoP AS idfaeneoP',
+                'faeneo.apellidoM AS idfaeneoM',
                 'personas.id AS idpersona',
                 'personas.nombre AS persona_nombre',
+                'personas.apellidoP',
+                'personas.apellidoM',                
                 'generos.nombre AS gnombre',
                 'grupos.nombre AS grunombre',
                 'personas.marca',
@@ -348,7 +356,7 @@ class RfidController extends Controller
             ->join('personas', 'rfids.idpersona', '=', 'personas.id')
             ->join('generos', 'rfids.idgenero', '=', 'generos.id')
             ->join('grupos', 'rfids.idgrupo', '=', 'grupos.id')
-            ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
+            ->select('rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha')
             ->where(function($query) use ($buscar) {
                 $query->where('personas.nombre', 'like', '%' . $buscar . '%')
                     ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
@@ -372,7 +380,7 @@ class RfidController extends Controller
                 $rfids = Rfid::join('personas','rfids.idpersona','=','personas.id')
                 ->join('generos','rfids.idgenero','=','generos.id')
                 ->join('grupos','rfids.idgrupo','=','grupos.id')
-                ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
+                ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','personas.apellidoP','personas.apellidoM','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
                 ->where(function($query) use ($buscar) {
                     $query->where('personas.nombre', 'like', '%' . $buscar . '%')
                         ->orWhere('generos.nombre', 'like', '%' . $buscar . '%')
@@ -473,7 +481,7 @@ class RfidController extends Controller
 
         $rfid = Rfid::join('personas', 'rfids.idpersona', '=', 'personas.id')
             ->join('generos', 'rfids.idgenero', '=', 'generos.id')
-            ->select('rfids.idgenero','generos.nombre as gnombre', 'rfids.id','rfids.idrfid', 'rfids.idpersona', 'personas.nombre', 'personas.marca', 'personas.num_documento', 'rfids.estado', 'rfids.fecha')
+            ->select('rfids.idgenero','generos.nombre as gnombre', 'rfids.id','rfids.idrfid', 'rfids.idpersona', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'personas.num_documento', 'rfids.estado', 'rfids.fecha')
             ->where('rfids.idrfid', $rfidId)->whereIn('rfids.estado', [0, 1,])
             ->first();
 
@@ -484,6 +492,8 @@ class RfidController extends Controller
                 'gnombre' => $rfid->gnombre,
                 'idpersona' => $rfid->idpersona,
                 'nombre' => $rfid->nombre,
+                'apellidoP' => $rfid->apellidoP,
+                'apellidoM' => $rfid->apellidoM,
                 'marca' => $rfid->marca,
                 'num_documento' => $rfid->num_documento,
                 'fecha' => $rfid->fecha,
@@ -654,7 +664,7 @@ class RfidController extends Controller
             ->join('users', 'personas.id', '=', 'users.id')
             ->join('generos','rfids.idgenero','=','generos.id')
             ->join('grupos','rfids.idgrupo','=','grupos.id')
-            ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
+            ->select('rfids.id','rfids.idrfid','personas.id as idpersona','personas.nombre','personas.apellidoP','personas.apellidoM','generos.nombre as gnombre','grupos.nombre as grunombre','personas.marca','personas.num_documento','personas.direccion','personas.telefono','rfids.estado','rfids.fecha')
             ->where('rfids.fecha','=',$fecha)
             ->where('rfids.estado', '=', 1)
             ->where('users.idrol', '=', 3)
@@ -716,7 +726,7 @@ class RfidController extends Controller
             ->leftJoin('generos', 'rfids.idgenero', '=', 'generos.id')
             ->leftJoin('grupos', 'rfids.idgrupo', '=', 'grupos.id')
             ->leftJoin('personas as faeneo', 'rfids.idfaeneo', '=', 'faeneo.id')
-            ->select( 'faeneo.nombre as idfaeneo','rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha','rfids.updated_at as fechaupdate')
+            ->select( 'faeneo.nombre as idfaeneo','rfids.id', 'rfids.idrfid', 'personas.id as idpersona', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'generos.nombre as gnombre', 'grupos.nombre as grunombre', 'personas.marca', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'rfids.estado', 'rfids.fecha','rfids.updated_at as fechaupdate')
             ->where('users.idrol', '=', 3)
             ->where('rfids.estado', '=', 2)
             ->where('personas.marca','=', $marca)

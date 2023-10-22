@@ -72,7 +72,7 @@
         <header>
             <div id="container">
                 <div id="left">
-                    <p id="encabezado"><b>FACTURA #{{$di->id}}/2023</b></p>
+                    <p id="encabezado"><b>BOUCHER #{{$di->id}}/2023</b></p>
                 </div>
                 <div id="right">
                     <p id="encabezado"><b>COPIA AL AFILIADO - El ALTO, Z:LOS ANDES </b></p>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="">
                     <span>Marca:{{$di->marca}}</span><br>
-                    <span>Nombre:{{$di->nombre}}</span>
+                    <span>Nombre: {{ $di->nombre . ' ' . $di->apellidoP . ' ' . $di->apellidoM }}</span>
                 </div>
             </div>
             <div class="">

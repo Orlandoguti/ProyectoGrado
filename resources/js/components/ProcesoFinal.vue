@@ -34,10 +34,19 @@
                 </div>
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="row" style="justify-content: center;">                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Habilitar Edicion ID:</label>
+                                <div style="display: flex; justify-content: center;">
+                                <input type="checkbox" class="inputcheck" @click="habilitarInput" v-model="inputHabilitado"/>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row" style="justify-content: center;">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">ID Tarjeta:</label>
-                                <input @input="autollenarCampos"  type="text" v-model="rfidData" class="form-control" placeholder="Registre la Tarjeta" disabled>
+                                <input v-if="inputHabilitado === false" @input="autollenarCampos" type="text" v-model="rfidData" class="form-control" placeholder="Registre la Tarjeta" :disabled="!inputHabilitado">
+                                <input v-else @keyup.enter="autollenarCampos" type="text" v-model="rfidData" class="form-control" placeholder="Registre la Tarjeta">
                             </div>
                         </div>
                         <div class="row" style="justify-content: center;">
@@ -101,7 +110,11 @@
                                         </div>
                                         <div class="widget-content-left flex2">
                                             <span v-text="rfid.marca" class="widget-heading"></span>
-                                            <span v-text="rfid.nombre" class="widget-subheading opacity-7"></span>
+                                            <div>                                              
+                                                <span v-text="rfid.nombre" class="widget-subheading opacity-7"></span>
+                                                <span v-text="rfid.apellidoP" class="widget-subheading opacity-7"></span>
+                                                <span v-text="rfid.apellidoM" class="widget-subheading opacity-7"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -160,9 +173,12 @@ export default {
 
   data (){
       return {
+        inputHabilitado: false,
           webSocket: null,
           rfidData: '',
           nombre : '',
+          apellidoP : '',
+          apellidoM : '',
           gnombre : '',
           estado : '',
           idgrupo:'',
@@ -214,7 +230,7 @@ pagesNumber: function() {
 
 watch: {
     rfidData(newVal) {
-      if (newVal) {
+      if (newVal && this.inputHabilitado == false) {
         this.autollenarCampos(newVal);
       }
     },
@@ -222,6 +238,9 @@ watch: {
     },
   methods : {
 
+    habilitarInput() {
+      this.inputDeshabilitado = false; // Cambia el valor para habilitar el input
+    },
     enviarMensajeWhatsApp(rfid) {
       var settings = {
         async: true,
@@ -231,7 +250,7 @@ watch: {
         data: {
           token: "kwpdjhrs6i7owtjo",
           to: rfid.telefono,
-          body: 'Señor(a): ' + rfid.nombre + 'Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' + rfid.gnombre + ' Ya puedes Venir a Recojerlo Att: F.U.T.E.C.R.A.'
+          body: 'Señor(a): '+'*'+ rfid.nombre +' '+ rfid.apellidoP +' ' + rfid.apellidoM +'*'+ ' Tu ganado Ingresado: ' + rfid.fecha + ' ya fue carneado en el: ' + rfid.grunombre + ' Genero: ' +'*'+ rfid.gnombre +'*'+ ' Ya puedes venir a Recojerlo Att: F.U.T.E.C.R.A.'
         }
 
       };
@@ -282,6 +301,8 @@ watch: {
                         this.idpersona = data.idpersona;
                         this.gnombre = data.gnombre;
                         this.nombre = data.nombre;
+                        this.apellidoP = data.apellidoP;
+                        this.apellidoM = data.apellidoM;
                         this.marca = data.marca;
                         this.fecha = data.fecha;
                         // Realizar la verificación de marca en la lista
@@ -348,7 +369,7 @@ watch: {
                     showMethod: 'fadeIn',
                     hideMethod: 'fadeOut',
                 };
-                toastr.success('Registrado se a actualizado la Lista.','Actualizado');
+                toastr.info('Registrado se a actualizado la Lista.','Actualizado');
                 // Apagar el LED después de 1 segundo
                 setTimeout(function() {
                     me.webSocket.send('Apagar LED');
@@ -356,6 +377,8 @@ watch: {
                 // Restablecer los valores
                 me.rfidData = 0;
                 me.nombre = '';
+                me.apellidoP = '';
+                me.apellidoM = '';
                 me.marca = '';
                 me.gnombre = '';
                 me.fecha = '';

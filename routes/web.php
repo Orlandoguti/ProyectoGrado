@@ -76,6 +76,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post('/user/actualizar', 'UserController@update');
         Route::put('/user/desactivar', 'UserController@desactivar');
         Route::put('/user/activar', 'UserController@activar');
+        Route::post('/user/verificarMarca', 'UserController@verificarMarca');
 
         Route::get('/cargo/selectCargo', 'CargoController@selectCargo');
 

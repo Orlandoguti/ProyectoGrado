@@ -24,14 +24,14 @@ class UserController extends Controller
             $personas = User::leftjoin('personas','users.id','=','personas.id')
             ->leftjoin('roles','users.idrol','=','roles.id')
             ->leftjoin('cargos','personas.idcargo','=','cargos.id')
-            ->select('personas.id','personas.nombre','personas.marca','personas.idcargo','personas.num_documento','personas.direccion','personas.telefono','users.email','users.password','users.condicion','users.idrol','roles.nombre as rol','personas.imagen')
+            ->select('personas.id','personas.nombre','personas.apellidoP','personas.apellidoM','personas.marca','personas.idcargo','personas.num_documento','personas.direccion','personas.telefono','users.email','users.password','users.condicion','users.idrol','roles.nombre as rol','personas.imagen')
             ->orderBy('personas.id', 'desc')->paginate(10);
         }
         else{
             $personas = User::leftjoin('personas', 'users.id', '=', 'personas.id')
             ->leftjoin('roles', 'users.idrol', '=', 'roles.id')
             ->leftjoin('cargos', 'personas.idcargo', '=', 'cargos.id')
-            ->select('personas.id', 'personas.nombre', 'personas.marca', 'personas.idcargo', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'users.email', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol', 'personas.imagen')
+            ->select('personas.id', 'personas.nombre','personas.apellidoP','personas.apellidoM ','personas.marca', 'personas.idcargo', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'users.email', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol', 'personas.imagen')
             ->where(function ($query) use ($criterio, $buscar) {
                 $query->where('personas.'.$criterio, 'like', '%'. $buscar . '%')
                     ->orWhere('roles.nombre', 'like', '%'. $buscar . '%');
@@ -61,7 +61,8 @@ class UserController extends Controller
 
             $persona = new Persona();
             $persona->nombre = $request->nombre;
-
+            $persona->apellidoP = $request->apellidoP;
+            $persona->apellidoM = $request->apellidoM;
             $persona->marca = $request->marca;
             $persona->num_documento = $request->num_documento;
             $persona->direccion = $request->direccion;
@@ -111,6 +112,8 @@ class UserController extends Controller
             $user = User::findOrFail($request->id);
             $persona = Persona::findOrFail($user->id);
             $persona->nombre = $request->nombre;
+            $persona->apellidoP = $request->apellidoP;
+            $persona->apellidoM = $request->apellidoM;
             $persona->marca = $request->marca;
             $persona->num_documento = $request->num_documento;
             $persona->direccion = $request->direccion;
@@ -156,5 +159,17 @@ class UserController extends Controller
     {
         $path = $request->file('select_users_file')->getRealPath();
         Excel::import(new UsersImport,$path);
+    }
+    public function verificarMarca(Request $request)
+    {
+        $marca = $request->input('marca');
+
+        $existingUser = Persona::where('marca', $marca)->first();
+
+        if ($existingUser) {
+            return response()->json(['exists' => true]);
+        }
+
+        return response()->json(['exists' => false]);
     }
 }

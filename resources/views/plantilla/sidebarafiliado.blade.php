@@ -55,7 +55,7 @@
                         </div>
                         <div class="widget-content-left  ms-3 header-user-info">
                             <div class="widget-heading">
-                                {{Auth::user()->persona->nombre}}
+                                    {{ Auth::user()->persona->nombre . ' ' . Auth::user()->persona->apellidoP . ' ' . Auth::user()->persona->apellidoM }}
                             </div>
                             <div class="widget-subheading">
                                 {{Auth::user()->rol->nombre}}

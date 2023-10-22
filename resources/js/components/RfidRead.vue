@@ -48,16 +48,26 @@
                 </div>
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                        <div class="row" style="justify-content: center;">
+                        <div class="row" style="justify-content: center;">                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Habilitar Edicion ID:</label>
+                                <div style="display: flex; justify-content: center;">
+                                <input type="checkbox" class="inputcheck" @click="habilitarInput" v-model="inputHabilitado"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="justify-content: center;">                            
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">ID Tarjeta:</label>
-                                <input @input="autollenarCampos"  type="text" v-model="rfidData" class="form-control" placeholder="Registre la Tarjeta" disabled>
+                                <input v-if="inputHabilitado === false" @input="autollenarCampos" type="text" v-model="rfidData" class="form-control" placeholder="Registre la Tarjeta" :disabled="!inputHabilitado">
+                                <input v-else @keyup.enter="autollenarCampos" type="text" v-model="rfidData" class="form-control" placeholder="Registre la Tarjeta">
                             </div>
                         </div>
                         <div class="row" style="justify-content: center;">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Nombre del Afiliado:</label>
-                                <input name="nombre" id="nombre" type="text" v-model="nombre" class="form-control" placeholder="Nombre del Afiliado" disabled>
+                                <label class="form-label">Nombre del Afiliado:</label>  
+                                <input v-if="nombreCompleto =='  '" name="nombre" id="nombre" type="text" class="form-control" placeholder="Nombre del Afiliado" disabled>                              
+                                <input v-else name="nombre" id="nombre" type="text" v-model="nombreCompleto" class="form-control" placeholder="Nombre del Afiliado" disabled>
                             </div>
                         </div>
                         <div class="row" style="justify-content: center;">
@@ -152,11 +162,14 @@ export default {
 
   data (){
       return {
+          inputHabilitado: false,
           webSocket: null,
           rfidData: '',
           grupo:'Grupo 1',
           totalesPorGrupo: {},
           nombre : '',
+          apellidoP : '',
+          apellidoM : '',
           gnombre : '',
           estado : '',
           idgrupo:'',
@@ -181,6 +194,9 @@ export default {
 
   },
   computed:{
+    nombreCompleto() {
+        return this.nombre + ' ' + this.apellidoP + ' ' + this.apellidoM;
+    },
     arrayListaFiltrada() {
       let listaFiltrada = this.arrayLista;
 
@@ -232,13 +248,17 @@ export default {
 
 watch: {
     rfidData(newVal) {
-      if (newVal) {
+      if (newVal && this.inputHabilitado == false) {
         this.autollenarCampos(newVal);
       }
     },
 
     },
   methods : {
+    
+    habilitarInput() {
+      this.inputDeshabilitado = false; // Cambia el valor para habilitar el input
+    },
     enviarMensajeWhatsApp(lista) {
         // Contar la cantidad de "No Encontrado" en la propiedad 'ganados' para el elemento 'lista'
         const cantidadGenero0 = (lista.ganados.match(/No Encontrado/g) || []).length;
@@ -311,6 +331,8 @@ watch: {
                         toastr.info('El ID Rfid escaneado esta en Proceso de Faeneado.' , 'Verificado');
                         this.rfidData = 0;
                         this.nombre = '';
+                        this.apellidoP = '';
+                        this.apellidoM = '';
                         this.marca = '';
                         this.gnombre = '';
                         this.fecha = '';
@@ -320,6 +342,8 @@ watch: {
                         this.idpersona = data.idpersona;
                         this.gnombre = data.gnombre;
                         this.nombre = data.nombre;
+                        this.apellidoP = data.apellidoP;
+                        this.apellidoM = data.apellidoM;
                         this.marca = data.marca;
                         this.fecha = data.fecha;
                         // Realizar la verificación de marca en la lista
@@ -365,6 +389,8 @@ watch: {
                 toastr.warning('No se an encontrado registros en la Lista.','Error');
                 this.rfidData = '';
                 this.nombre = '';
+                this.apellidoP = '';
+                this.apellidoM = '';
                 this.marca = '';
                 this.gnombre = '';
                 this.fecha = '';
@@ -409,7 +435,7 @@ watch: {
                 .then(function(response) {
                 // Encender el LED en el ESP8266
                 me.webSocket.send('Encender LED');
-                swal('Registrado!', 'Se ha actualizado la Lista.', 'warning');
+                Swal.fire('Registrado!', 'Se ha actualizado la Lista.', 'warning');
                 // Apagar el LED después de 1 segundo
                 setTimeout(function() {
                     me.webSocket.send('Apagar LED');
@@ -418,12 +444,14 @@ watch: {
                 // Restablecer los valores
                 me.rfidData = 0;
                 me.nombre = '';
+                me.apellidoP = '';
+                me.apellidoM = '';
                 me.marca = '';
                 me.gnombre = '';
                 me.fecha = '';
                 })
                 .catch(function(error) {
-                swal('Error!', 'No se ha podido actualizar la Lista.', 'warning');
+                Swal.fire('Error!', 'No se ha podido actualizar la Lista.', 'warning');
                 console.log(error);
                 });
             },

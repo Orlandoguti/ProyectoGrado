@@ -56,7 +56,7 @@
                                             <tr v-for="detallelista in arrayDetalleLista" :key="detallelista.id">
                                             <td class="text-center text-muted"  v-text="detallelista.id"></td>
                                             <td class="text-center text-muted"  v-text="detallelista.marca"></td>
-                                            <td class="text-center text-muted"  v-text="detallelista.nombre"></td>
+                                            <td class="text-center text-muted">{{ detallelista.nombre + ' ' + detallelista.apellidoP + ' ' + detallelista.apellidoM }}</td>
                                             <td class="text-center text-muted"  v-text="detallelista.cantidad"></td>
                                             <td class="text-center text-muted"><span>{{detallelista.total}} Bs.</span></td>
                                             <td v-text="detallelista.fecha" class="text-center"></td>

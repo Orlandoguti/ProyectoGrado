@@ -28,7 +28,7 @@ class ListaController extends Controller
         $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
             ->join('generos', 'listas.idgenero', '=', 'generos.id')
-            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'personas.telefono', 'listas.fecha')
+            ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'personas.telefono', 'listas.fecha')
             ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
             ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
             ->where('listas.cantidad', '>', 0)
@@ -80,7 +80,7 @@ class ListaController extends Controller
             $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
             ->join('generos', 'listas.idgenero', '=', 'generos.id')
-            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'listas.fecha')
+            ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
             ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
             ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
             ->selectRaw('SUM(listas.cantidad * 24) as totalbs')
@@ -93,14 +93,14 @@ class ListaController extends Controller
                 return $query->where('personas.marca', $fmarca);
             })
             ->where('listas.fecha','=', $fechahoy)
-            ->groupBy('grupos.nombre', 'personas.nombre', 'personas.marca', 'listas.fecha')
+            ->groupBy('grupos.nombre', 'personas.nombre','personas.apellidoP', 'personas.apellidoM', 'personas.marca', 'listas.fecha')
             ->orderBy('listas.fecha', 'desc')->paginate(10);
 
         }else{
             $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
                         ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
                         ->join('generos', 'listas.idgenero', '=', 'generos.id')
-                        ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'listas.fecha')
+                        ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
                         ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
                         ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
                         ->selectRaw('SUM(listas.cantidad * 24) as totalbs')
@@ -113,7 +113,7 @@ class ListaController extends Controller
                             return $query->where('personas.marca', $fmarca);
                         })
                         ->whereBetween('listas.fecha', [$date1, $date2])
-                        ->groupBy('grupos.nombre', 'personas.nombre', 'personas.marca', 'listas.fecha')
+                        ->groupBy('grupos.nombre', 'personas.nombre','personas.apellidoP', 'personas.apellidoM', 'personas.marca', 'listas.fecha')
                         ->orderBy('listas.fecha', 'desc')->paginate(10);
         // Genera el PDF y guarda en una ubicación temporal
         }
@@ -145,7 +145,7 @@ class ListaController extends Controller
                     $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
                     ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
                     ->join('generos', 'listas.idgenero', '=', 'generos.id')
-                    ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'listas.fecha')
+                    ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
                     ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
                     ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
                     ->selectRaw('SUM(listas.cantidad * 24) as totalbs')
@@ -158,14 +158,14 @@ class ListaController extends Controller
                         return $query->where('personas.marca', $fmarca);
                     })
                     ->where('listas.fecha','=', $fechahoy)
-                    ->groupBy('grupos.nombre', 'personas.nombre', 'personas.marca', 'listas.fecha')
+                    ->groupBy('grupos.nombre', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
                     ->orderBy('listas.fecha', 'desc')->get();
 
                 }else{
                     $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
                                 ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
                                 ->join('generos', 'listas.idgenero', '=', 'generos.id')
-                                ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'listas.fecha')
+                                ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
                                 ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
                                 ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
                                 ->selectRaw('SUM(listas.cantidad * 24) as totalbs')
@@ -178,7 +178,7 @@ class ListaController extends Controller
                                     return $query->where('personas.marca', $fmarca);
                                 })
                                 ->whereBetween('listas.fecha', [$date1, $date2])
-                                ->groupBy('grupos.nombre', 'personas.nombre', 'personas.marca', 'listas.fecha')
+                                ->groupBy('grupos.nombre', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
                                 ->orderBy('listas.fecha', 'desc')->get();
                 // Genera el PDF y guarda en una ubicación temporal
                 }
@@ -194,10 +194,10 @@ class ListaController extends Controller
 
             $detalleListas = DB::table('detalle_listas as d')
             ->join('personas as p', 'd.idpersona', '=', 'p.id')
-            ->select('d.id', 'p.marca', 'd.fecha', 'p.nombre')
+            ->select('d.id', 'p.marca', 'd.fecha', 'p.nombre','p.apellidoP','p.apellidoM')
             ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].cantidad")) as cantidad_json')
             ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total_json')
-            ->groupBy('p.marca', 'd.id', 'd.fecha', 'p.nombre')
+            ->groupBy('p.marca', 'd.id', 'd.fecha', 'p.nombre', 'p.apellidoP', 'p.apellidoM')
             ->orderBy('d.id', 'desc')
             ->where(function($query) use ($buscar) {
                 $query->where('p.marca', 'like', '%' . $buscar . '%')
@@ -251,10 +251,10 @@ class ListaController extends Controller
 
                 $detalleListas = DB::table('detalle_listas as d')
                     ->join('personas as p', 'd.idpersona', '=', 'p.id')
-                    ->select('d.id', 'p.marca', 'd.fecha', 'p.nombre')
+                    ->select('d.id', 'p.marca', 'd.fecha', 'p.nombre', 'p.apellidoP', 'p.apellidoM')
                     ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].cantidad")) as cantidad_json')
                     ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total_json')
-                    ->groupBy('p.marca', 'd.id', 'd.fecha', 'p.nombre')
+                    ->groupBy('p.marca', 'd.id', 'd.fecha', 'p.nombre', 'p.apellidoP', 'p.apellidoM')
                     ->orderBy('d.id', 'desc')
                     ->where(function($query) use ($buscar) {
                         $query->where('p.marca', 'like', '%' . $buscar . '%')
@@ -289,7 +289,7 @@ class ListaController extends Controller
             {
                 $detallelistasindex = DB::table('detalle_listas as d')
                     ->join('personas as p', 'd.idpersona', '=', 'p.id')
-                    ->select('p.marca', 'd.id', 'p.nombre', 'd.fecha')
+                    ->select('p.marca', 'd.id', 'p.nombre', 'p.apellidoP', 'p.apellidoM', 'd.fecha')
                     ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].cantidad")) as cantidad_json')
                     ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total_json')
                     ->latest('d.id')
@@ -345,7 +345,7 @@ class ListaController extends Controller
 
                 $detallelistasindex = DB::table('detalle_listas as d')
                     ->join('personas as p', 'd.idpersona', '=', 'p.id')
-                    ->select('p.marca', 'd.id', 'p.nombre', 'd.fecha')
+                    ->select('p.marca', 'd.id', 'p.nombre', 'p.apellidoP', 'p.apellidoM', 'd.fecha')
                     ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].cantidad")) as cantidad_json')
                     ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(d.detalle, "$.registros[*].total")) as total_json')
                     ->where('d.id', $id)

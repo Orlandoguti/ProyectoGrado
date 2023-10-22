@@ -196,7 +196,11 @@
                                             </div>
                                             <div class="widget-content-left flex2">
                                                 <span v-text="rfid.marca" class="widget-heading"></span>
-                                                <span v-text="rfid.nombre" class="widget-subheading opacity-7"></span>
+                                                <div>                                                    
+                                                    <span v-text="rfid.nombre" class="widget-subheading opacity-7"></span>
+                                                    <span v-text="rfid.apellidoP" class="widget-subheading opacity-7"></span>
+                                                    <span v-text="rfid.apellidoM" class="widget-subheading opacity-7"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -286,7 +290,11 @@
                                             </div>
                                             <div class="widget-content-left flex2">
                                                 <span v-text="marca" class="widget-heading"></span>
-                                                <span v-text="nombre" class="widget-subheading opacity-7"></span>
+                                                <div>                                                    
+                                                    <span v-text="nombre" class="widget-subheading opacity-7"></span>
+                                                    <span v-text="apellidoP" class="widget-subheading opacity-7"></span>
+                                                    <span v-text="apellidoM" class="widget-subheading opacity-7"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -319,9 +327,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                <td class="text-center text-muted"  v-text="idregistro"></td>
-                                <td class="text-center text-muted"  v-text="idprocesofaeneo"></td>
-                                <td v-text="idfaeneo" class="text-center"></td>
+                                <td class="text-center text-muted">{{ idregistro + ' ' + idregistroP + ' ' + idregistroM }}</td>
+                                <td class="text-center text-muted">{{ idprocesofaeneo + ' ' + idprocesofaeneoP + ' ' + idprocesofaeneoM }}</td>
+                                <td class="text-center text-muted">{{ idfaeneo + ' ' + idfaeneoP + ' ' + idfaeneoM }}</td>
                                 <td v-text="updated_at" class="text-center"></td>
                             </tr>
                             </tbody>
@@ -358,6 +366,12 @@ data (){
     idregistro:'',
     idprocesofaeneo:'',
     idfaeneo:'',
+    idregistroP:'',
+    idprocesofaeneoP:'',
+    idfaeneoP:'',
+    idregistroM:'',
+    idprocesofaeneoM:'',
+    idfaeneoM:'',
     chartData : [],
         chartData2 : [],
         chartData3 : [],
@@ -373,6 +387,8 @@ data (){
       fecha : '',
       marca : '',
       nombre : '',
+      apellidoP : '',
+      apellidoM : '',
       idgenero : 0,
       estado : 0,
       arrayPersona : [],
@@ -949,6 +965,12 @@ methods : {
       this.idregistro = '';
       this.idprocesofaeneo = '';
       this.idfaeneo = '';
+      this.idregistroP = '';
+      this.idprocesofaeneoP = '';
+      this.idfaeneoP = '';
+      this.idregistroM = '';
+      this.idprocesofaeneoM = '';
+      this.idfaeneoM = '';
       this.estado= '';
       this.fecha = '';
       this.updated_at = '';
@@ -967,6 +989,8 @@ methods : {
                     me.id = arrayRfid[0]['id'];
                     me.idrfid = arrayRfid[0]['idrfid'];
                     me.nombre = arrayRfid[0]['persona_nombre'];
+                    me.apellidoP = arrayRfid[0]['apellidoP'];
+                    me.apellidoM = arrayRfid[0]['apellidoM'];
                     me.marca = arrayRfid[0]['marca'];
                     me.grunombre = arrayRfid[0]['grunombre'];
                     me.gnombre = arrayRfid[0]['gnombre'];
@@ -976,6 +1000,14 @@ methods : {
                     me.idregistro = arrayRfid[0]['idregistro'];
                     me.idprocesofaeneo = arrayRfid[0]['idprocesofaeneo'];
                     me.idfaeneo = arrayRfid[0]['idfaeneo'];
+                    
+                    me.idregistroP = arrayRfid[0]['idregistroP'];
+                    me.idprocesofaeneoP = arrayRfid[0]['idprocesofaeneoP'];
+                    me.idfaeneoP = arrayRfid[0]['idfaeneoP'];
+                    
+                    me.idregistroM = arrayRfid[0]['idregistroM'];
+                    me.idprocesofaeneoM = arrayRfid[0]['idprocesofaeneoM'];
+                    me.idfaeneoM = arrayRfid[0]['idfaeneoM'];
                 })
                 .catch(function (error) {
                     console.log(error);

@@ -82,7 +82,7 @@
                                         <tbody v-if="arrayListaFiltrada.length">
                                             <tr v-for="lista in arrayListaFiltrada" :key="lista.id">
                                             <td class="text-center text-muted"  v-text="lista.marca"></td>
-                                            <td class="text-center text-muted"  v-text="lista.nombre"></td>
+                                            <td class="text-center text-muted">{{ lista.nombre + ' ' + lista.apellidoP + ' ' + lista.apellidoM }}</td>
                                             <td class="text-center text-muted"  v-text="lista.gnombre"></td>
                                             <td class="text-center text-muted"  v-text="lista.total_cantidad"></td>
                                             <td v-text="lista.fecha" class="text-center"></td>
