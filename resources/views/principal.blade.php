@@ -21,7 +21,7 @@
 
 <body class="modal-open">
 
-     <div id="app" class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+     <div id="app" class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header ">
 
 
 	@if(Auth::check())

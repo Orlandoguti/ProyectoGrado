@@ -2,26 +2,26 @@
             <section>
                 <section>
                     <div class="app-page-title">
-                            <div class="page-title-wrapper" style="width: 100%;justify-content: center;display: flex;">
+                            <div class="page-title-wrapper" style="width: 100%;justify-content: center; display: flex;">
                                 <div class="page-title-heading" style="width: 25%;">
                                     <div class="page-title-icon">
                                         <i class="pe-7s-note2 icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>NOTICIAS
+                                    <div class="textodiv">NOTICIAS
                                         <div class="page-title-subheading">F.U.T.E.C.R.A.
                                         </div>
                                     </div>
                                 </div>
-                               <div style="display: contents;">
-                                <img src="/img/plantilla/toro2izq.png" style="height: 100px;width: auto;">
-                               <p style="font-family: fantasy;font-size: 1.875rem;line-height: 1.5;text-align: center;">
-                                 <span>F.U.T.E.C.R.A.</span><br> <span style="font-size: initial;">Federacion Unica de Trabajadores en Carne y Ramas Anexas</span>
-                               </p>
-                                <img src="/img/plantilla/toro2der.png" style="height: 100px;width: auto;">
-                             </div>
-                             <div style="width: 25%; text-align: center;">
-                                <img src="/img/plantilla/logopdf2.png" style="width: 100px; height: auto; overflow: visible;">
+                                <div style="display: contents;">
+                                    <img src="/img/plantilla/toro2izq.png" style="width: 130px; max-width: 100%; min-width: 1%;">
+                                    <p style="font-family: fantasy; font-size: 1.875rem; line-height: 1.5; text-align: center; max-width: 100%;">
+                                        <span class="text" style=" white-space: nowrap;">F.U.T.E.C.R.A.</span><br><span class="text2" style="font-size: initial; white-space: nowrap;">Federacion Unica de Trabajadores en Carne y Ramas Anexas</span>
+                                    </p>
+                                    <img src="/img/plantilla/toro2der.png" style="width: 130px; max-width: 100%; min-width: 1%;">
+                                </div>
+                             <div class="imagelogopdf" style="width: 25%; text-align: center;">
+                              <img src="/img/plantilla/logopdf2.png" style="width: 100px; max-width: 100%;">  
                              </div>
                             </div>
                         </div>
@@ -47,8 +47,8 @@
                                                         <img :src="'/img/noticias/' + noticia.imagen" class="d-block w-100" alt="Noticia Image">
                                                     </div>
                                                     <div class="carousel-caption">
-                                                        <h3>{{ noticia.titulo }}</h3>
-                                                        <p>{{ noticia.descripcion }}</p>
+                                                        <h3 class="noticiah1">{{ noticia.titulo }}</h3>
+                                                        <p class="noticiah2">{{ noticia.descripcion }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                           <div class="col-md-11" style="padding-bottom: 2%;display: flex;justify-content: center;">
-                                <button type="button" class="btn btn-info" @click="abrirModal('noticia','registrar')" data-bs-toggle="modal" style="margin-left: 1%;"><span>Agregar Noticia</span></button>
+                                <button type="button" class="btn btn-info mm-active" @click="abrirModal('noticia','registrar')" data-bs-toggle="modal" style="margin-left: 1%;"><span>Agregar Noticia</span></button>
                           </div>
                         <div class="modal fade bd-example-modal-lg" :class="{'mostrar' : modal}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" style="margin-top: 10%;">
@@ -535,6 +535,5 @@ eliminiarInformacion(id) {
     font-family: "Roboto", sans-serif;
     margin-bottom: 1rem;
   }
-
-
+ 
 </style>

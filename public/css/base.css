@@ -15799,6 +15799,12 @@ body {
   right: 0 !important;
 }
 
+@media (max-width: 761px) {
+  .dropdown-menu.dropdown-menu-right {
+    top: 184px !important;
+  }
+}
+
 .dropdown-menu .dropdown-header {
   text-transform: uppercase;
   font-size: 0.7333333333rem;
@@ -30775,5 +30781,35 @@ A VERTICAL event
   height: 350px;
   margin-bottom: 1.5rem;
   background-size: 100%;
+}
+
+@media (max-width: 750px) {
+  .text {
+    font-size: 0.8rem !important;
+    font-weight: bold;
+  }
+
+  .text2 {
+    font-size: 0.6rem !important;
+    font-weight: bold;
+  }
+
+  .textodiv {
+    font-size: 0% !important;
+    /* Reducir el tamaño de fuente a 1rem en dispositivos móviles */
+  }
+
+  .page-title-heading {
+    display: none !important;
+  }
+
+  .page-title-subheading {
+    font-size: 0% !important;
+    width: 0% !important;
+  }
+
+  .imagelogopdf {
+    display: none !important;
+  }
 }
 

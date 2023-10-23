@@ -11,7 +11,11 @@
   &.dropdown-menu-right {
     right: 0 !important;
   }
-
+  @media (max-width: 761px) {
+    &.dropdown-menu-right {
+      top: 184px !important;
+    }
+}
   .dropdown-header {
     text-transform: uppercase;
     font-size: $font-size-base / 1.2;

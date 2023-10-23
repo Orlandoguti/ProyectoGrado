@@ -110,3 +110,27 @@
 @import "layout/responsive/responsive-base";
 // DEMO
 @import "demo-ui/demo";
+
+@media (max-width: 750px) {
+    .text {
+        font-size: 0.8rem !important;        
+        font-weight: bold;
+    }
+    .text2 {
+        font-size: 0.6rem !important;
+        font-weight: bold;
+    }
+    .textodiv {
+    font-size: 0% !important; /* Reducir el tamaño de fuente a 1rem en dispositivos móviles */
+    }
+    .page-title-heading{
+      display: none !important;
+    }
+    .page-title-subheading{
+      font-size: 0% !important;
+      width: 0% !important;
+    }
+    .imagelogopdf{
+      display: none !important;
+    }
+}

@@ -8,21 +8,21 @@
                                 <i class="pe-7s-id icon-gradient bg-mean-fruit">
                                 </i>
                             </div>
-                            <div>FAENEO DE GANADO
+                            <div class="textodiv">FAENEO DE GANADO
                                 <div class="page-title-subheading">F.U.T.E.C.R.A.
                                 </div>
                             </div>
                         </div>
-                       <div style="display: contents;">
-                        <img src="/img/plantilla/toro2izq.png" style="height: 100px;width: auto;">
-                       <p style="font-family: fantasy;font-size: 1.875rem;line-height: 1.5;text-align: center;">
-                         <span>F.U.T.E.C.R.A.</span><br> <span style="font-size: initial;">Federacion Unica de Trabajadores en Carne y Ramas Anexas</span>
-                       </p>
-                        <img src="/img/plantilla/toro2der.png" style="height: 100px;width: auto;">
-                     </div>
-                     <div style="width: 25%; text-align: center;">
-                        <img src="/img/plantilla/logopdf2.png" style="width: 100px; height: auto; overflow: visible;">
-                     </div>
+                        <div style="display: contents;">
+                                    <img src="/img/plantilla/toro2izq.png" style="width: 130px; max-width: 100%; min-width: 1%;">
+                                    <p style="font-family: fantasy; font-size: 1.875rem; line-height: 1.5; text-align: center; max-width: 100%;">
+                                        <span class="text" style=" white-space: nowrap;">F.U.T.E.C.R.A.</span><br><span class="text2" style="font-size: initial; white-space: nowrap;">Federacion Unica de Trabajadores en Carne y Ramas Anexas</span>
+                                    </p>
+                                    <img src="/img/plantilla/toro2der.png" style="width: 130px; max-width: 100%; min-width: 1%;">
+                                </div>
+                             <div class="imagelogopdf" style="width: 25%; text-align: center;">
+                              <img src="/img/plantilla/logopdf2.png" style="width: 100px; max-width: 100%;">  
+                             </div>
                     </div>
                 </div>
        </section>

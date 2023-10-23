@@ -22,9 +22,8 @@ Si se desea instalar este sistema se tiene los siguientes requisitos:
 
 `npm install`
 
-4.- Mover la carpeta "v-calendar-scheduler" que se encuentra en la raiz y remplazarla en "node_modules"
 
-5.- Renombrar el archivo .env.example a .env y configurar los accesos a la base de datos
+4.- Renombrar el archivo .env.example a .env y configurar los accesos a la base de datos
 
 	DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
@@ -33,7 +32,7 @@ Si se desea instalar este sistema se tiene los siguientes requisitos:
     DB_USERNAME=root
     DB_PASSWORD=
 
-6.- Generar la estructura de la base de datos
+5.- Generar la estructura de la base de datos
 
 `php artisan migrate`
 
