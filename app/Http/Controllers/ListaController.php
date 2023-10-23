@@ -28,7 +28,7 @@ class ListaController extends Controller
         $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
             ->join('generos', 'listas.idgenero', '=', 'generos.id')
-            ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'personas.telefono', 'listas.fecha')
+            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca','listas.fecha')
             ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
             ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
             ->where('listas.cantidad', '>', 0)
@@ -80,7 +80,7 @@ class ListaController extends Controller
             $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
             ->join('generos', 'listas.idgenero', '=', 'generos.id')
-            ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
+            ->select('grupos.nombre as gnombre','personas.nombre','personas.apellidoP','personas.apellidoM','personas.marca', 'listas.fecha')
             ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
             ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
             ->selectRaw('SUM(listas.cantidad * 24) as totalbs')
@@ -93,7 +93,7 @@ class ListaController extends Controller
                 return $query->where('personas.marca', $fmarca);
             })
             ->where('listas.fecha','=', $fechahoy)
-            ->groupBy('grupos.nombre', 'personas.nombre','personas.apellidoP', 'personas.apellidoM', 'personas.marca', 'listas.fecha')
+            ->groupBy('grupos.nombre', 'personas.nombre','personas.apellidoP','personas.apellidoM', 'personas.marca', 'listas.fecha')
             ->orderBy('listas.fecha', 'desc')->paginate(10);
 
         }else{

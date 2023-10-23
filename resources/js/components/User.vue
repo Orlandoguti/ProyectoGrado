@@ -171,7 +171,7 @@
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                                 <div class="col-md-12 mb-3" style="margin-left: -10%;">
-                                                    <span style="color: antiquewhite;"> ApellidoP:</span><input type="text" v-model="apellidoM" class="form-control" placeholder="Apellido M" required>
+                                                    <span style="color: antiquewhite;"> ApellidoM:</span><input type="text" v-model="apellidoM" class="form-control" placeholder="Apellido M" required>
                                                     <div class="invalid-feedback"> Añada Apellido M!</div>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
@@ -279,7 +279,7 @@
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                                 <div class="col-md-12 mb-3" style="margin-left: -10%;">
-                                                    <span style="color: antiquewhite;"> ApellidoP:</span><input type="text" v-model="apellidoM" class="form-control" placeholder="Apellido M" required>
+                                                    <span style="color: antiquewhite;"> ApellidoM:</span><input type="text" v-model="apellidoM" class="form-control" placeholder="Apellido M" required>
                                                     <div class="invalid-feedback"> Añada Apellido M!</div>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>

@@ -314,7 +314,7 @@ class RfidController extends Controller
                 'rfids.idrfid',
                 'registro.nombre AS idregistro',
                 'registro.apellidoP AS idregistroP',
-                'registro.apellidoM AS idregistroP',
+                'registro.apellidoM AS idregistroM',
                 'procesofaeneo.nombre AS idprocesofaeneo',
                 'procesofaeneo.apellidoP AS idprocesofaeneoP',
                 'procesofaeneo.apellidoM AS idprocesofaeneoM',                

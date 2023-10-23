@@ -31,7 +31,7 @@ class UserController extends Controller
             $personas = User::leftjoin('personas', 'users.id', '=', 'personas.id')
             ->leftjoin('roles', 'users.idrol', '=', 'roles.id')
             ->leftjoin('cargos', 'personas.idcargo', '=', 'cargos.id')
-            ->select('personas.id', 'personas.nombre','personas.apellidoP','personas.apellidoM ','personas.marca', 'personas.idcargo', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'users.email', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol', 'personas.imagen')
+            ->select('personas.id', 'personas.nombre','personas.apellidoP','personas.apellidoM','personas.marca', 'personas.idcargo', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'users.email', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol', 'personas.imagen')
             ->where(function ($query) use ($criterio, $buscar) {
                 $query->where('personas.'.$criterio, 'like', '%'. $buscar . '%')
                     ->orWhere('roles.nombre', 'like', '%'. $buscar . '%');

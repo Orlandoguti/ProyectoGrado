@@ -105,7 +105,6 @@
                             <th class="text-center">Grupo Carneo</th>
                             <th class="text-center">Marca</th>
                             <th class="text-center">Cantidad</th>
-                            <th class="text-center">Generos</th>
                             <th class="text-center">Fecha</th>
                             <th class="text-center">Opciones</th>
                         </tr>
@@ -115,7 +114,7 @@
                                 <td v-text="lista.gnombre" class="text-center"></td>
                                 <td v-text="lista.marca" class="text-center"></td>
                                 <td v-text="lista.total_cantidad" class="text-center"></td>
-                                <td v-text="lista.ganados" class="text-center"></td>
+                                <td v-if="ver==1" v-text="lista.ganados" class="text-center"></td>
                                 <td v-text="lista.fecha" class="text-center"></td>
                                 <td class="text-center">
                                     <button type="button" @click="enviarMensajeWhatsApp(lista)" class="btn btn-success btn-sm">
@@ -162,6 +161,7 @@ export default {
 
   data (){
       return {
+        ver:0,
           inputHabilitado: false,
           webSocket: null,
           rfidData: '',
@@ -490,8 +490,7 @@ watch: {
       },
 
     initializeWebSocket() {
-      this.webSocket = new WebSocket('ws://192.168.100.116:81/', ['arduino']);
-
+        this.webSocket = new WebSocket('ws://172.16.10.43:81/', ['arduino']);
       this.webSocket.onopen = () => {
         console.log('Connected to WebSocket server');
         this.webSocket.send('Connect ' + new Date());
