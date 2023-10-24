@@ -28,7 +28,7 @@ class ListaController extends Controller
         $listas = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
             ->join('generos', 'listas.idgenero', '=', 'generos.id')
-            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca','listas.fecha')
+            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca','personas.telefono','listas.fecha')
             ->selectRaw('GROUP_CONCAT(generos.nombre SEPARATOR " - ") as ganados')
             ->selectRaw('SUM(listas.cantidad_registrada) as total_cantidad')
             ->where('listas.cantidad', '>', 0)
@@ -41,14 +41,14 @@ class ListaController extends Controller
                 // Aplicar el filtro de fecha solo si se proporciona una fecha
                 return $query->where('listas.fecha', $fechaFiltro);
             })
-            ->groupBy('grupos.nombre', 'personas.nombre', 'personas.marca', 'listas.fecha')
+            ->groupBy('grupos.nombre', 'personas.nombre', 'personas.marca','personas.telefono', 'listas.fecha')
             ->orderBy('listas.fecha')
             ->paginate(10);
 
             $listashoy = Lista::join('personas', 'listas.idpersona', '=', 'personas.id')
             ->join('grupos', 'listas.idgrupo', '=', 'grupos.id')
             ->join('generos', 'listas.idgenero', '=', 'generos.id')
-            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca', 'listas.fecha')
+            ->select('grupos.nombre as gnombre','personas.nombre', 'personas.marca','personas.telefono', 'listas.fecha')
             ->where('listas.fecha', '=', $fechahoy)
             ->where('listas.estado', '=', 0)
             ->get();

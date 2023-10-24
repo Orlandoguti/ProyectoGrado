@@ -147,6 +147,7 @@ data (){
       total_vacas:'',
       webSocket: null,
       waterLevelStr: [],
+      waterLevelStr2: [],
       temperature: '', // Aquí almacenaremos las temperaturas
       humidity: '',    // Aquí almacenaremos las humedades
       chartData:[],
@@ -464,6 +465,9 @@ methods : {
         document.addEventListener('waterLevelUpdate', (event) => {
         this.waterLevelStr = event.detail;
         });
+        document.addEventListener('waterLevelUpdate2', (event) => {
+        this.waterLevelStr2 = event.detail;
+        });
 
         },
     initializeWaterBubble() {
@@ -508,10 +512,10 @@ methods : {
         });
 
         // Función para actualizar el valor de datos cada segundo
-        const updateWaterLevel = () => {
+        const updateWaterLevel2 = () => {
             const interval = setInterval(() => {
             // Actualizar el valor de datos usando this.waterLevelStr
-            const data = parseFloat(this.waterLevelStr) || 0; // Convertir a número y manejar NaN
+            const data = parseFloat(this.waterLevelStr2) || 0; // Convertir a número y manejar NaN
             $('#nivelagua2').waterbubble({
                 radius: 100,
                 lineWidth: undefined,
@@ -531,7 +535,7 @@ methods : {
             });
         };
 
-      updateWaterLevel();
+      updateWaterLevel2();
     },
 
     drawChart() {

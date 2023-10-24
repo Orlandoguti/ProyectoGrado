@@ -404,7 +404,7 @@ watch: {
 
 
     initializeWebSocket() {
-      this.webSocket = new WebSocket('ws://172.16.10.43:81/', ['arduino']);
+        this.webSocket = new WebSocket('ws://192.168.100.116:81/', ['arduino']);
 
       this.webSocket.onopen = () => {
         console.log('Connected to WebSocket server');

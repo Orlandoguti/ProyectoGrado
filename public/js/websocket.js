@@ -19,6 +19,7 @@ function initializeWebSocket() {
       document.dispatchEvent(new CustomEvent('temperatureUpdate2', { detail: data.temperature2 }));
       document.dispatchEvent(new CustomEvent('humidityUpdate2', { detail: data.humidity2 }));
       document.dispatchEvent(new CustomEvent('waterLevelUpdate', { detail: data.waterLevelStr }));
+      document.dispatchEvent(new CustomEvent('waterLevelUpdate2', { detail: data.waterLevelStr2 }));
 
     };
   }
