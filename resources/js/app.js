@@ -27,20 +27,9 @@ window.User = User
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('ganados', require('./components/Ganados.vue').default);
-Vue.component('corrales', require('./components/Corrales.vue').default);
 Vue.component('afiliado-ganado', require('./components/GanadosAfiliados.vue').default);
-Vue.component('lista-afiliado-ganado', require('./components/ListaGanadosAfiliados.vue').default);
-Vue.component('registrar-ganado', require('./components/RegistrarGanados.vue').default);
-Vue.component('rfid-read', require('./components/RfidRead.vue').default);
-Vue.component('rfid-procesofinal', require('./components/ProcesoFinal.vue').default);
 Vue.component('noticias', require('./components/Noticias.vue').default);
-Vue.component('noticias-afiliado', require('./components/NoticiasAfiliado.vue').default);
 Vue.component('user', require('./components/User.vue').default);
-Vue.component('lista', require('./components/Listas.vue').default);
-Vue.component('grupos', require('./components/Grupos.vue').default);
-Vue.component('clasegresos', require('./components/ClasEgresos.vue').default);
-Vue.component('detalle-lista', require('./components/DetalleLista.vue').default);
-Vue.component('ingreso-egreso', require('./components/IngresoEgresos.vue').default);
 
 const app = new Vue({
     el: '#app',
@@ -82,3 +71,4 @@ $('.btn-exit').on('click', function(){
         }
     });
 });
+

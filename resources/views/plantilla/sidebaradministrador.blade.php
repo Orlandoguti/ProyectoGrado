@@ -307,7 +307,7 @@
                                         <li @click="menu=0">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-menu"></i>
-                                                Noticias
+                                                Programacion
                                             </a>
                                         </li>
                                         <li @click="menu=1">
@@ -316,101 +316,21 @@
                                                 </i>Dashboard
                                             </a>
                                         </li>
-                                    </ul>
-                                </li>
-                                <li class="app-sidebar__heading">PROCESOS DE FAENEO</li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-server"></i>
-                                        Gestion de Ganados
-                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li @click="menu=2">
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-menu"></i>
-                                                Ganados
-                                            </a>
-                                        </li>
-                                        <li @click="menu=3">
+                                        <li @click="menu=7">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-id">
-                                                </i>Proceso Faeneo
-                                            </a>
-                                        </li>
-                                        <li @click="menu=4">
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-wallet">
-                                                </i>Proceso Final
+                                                </i>Importar
                                             </a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li class="app-sidebar__heading">LISTA DE AUTORIZACION FAENEO</li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Gestion Listas
-                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li @click="menu=5">
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-note2"></i>
-                                                Listas
-                                            </a>
-                                        </li>
-                                        <li @click="menu=8">
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-id">
-                                                </i>Detalle Ingresos
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="app-sidebar__heading">INGRESOS - EGRESOS</li>
-                                <li @click="menu=9">
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-cash">
-                                        </i>Gestion Egresos
-                                    </a>
-                                </li>
+                                </li>     
                                 <li class="app-sidebar__heading">GESTION DE USUARIOS</li>
                                 <li @click="menu=6">
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-user">
                                         </i>Usuarios
                                     </a>
-                                </li>
-                                <li class="app-sidebar__heading">ADMINISTRACION</li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Lista de Administracion
-                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li @click="menu=10">
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-note2"></i>
-                                                Grupos
-                                            </a>
-                                        </li>
-                                        <li @click="menu=11">
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-id">
-                                                </i>Clasificacion
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="app-sidebar__heading">CORRALES</li>
-                                <li @click="menu=7">
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-display1">
-                                        </i>Monitorear Corrales
-                                    </a>
-                                </li>
+                                </li>                                
                             </ul>
                         </div>
                     </div>
@@ -427,7 +347,7 @@
                                     <ul class="nav">
                                         <li class="nav-item">
                                             <a href="javascript:void(0);" class="nav-link">
-                                                @2023 F.U.T.E.C.R.A.
+                                                @2023 UNIFRANZ S.A.
                                             </a>
                                         </li>
                                     </ul>
@@ -436,7 +356,7 @@
                                     <ul class="nav">
                                         <li class="nav-item">
                                             <a href="javascript:void(0);" class="nav-link">
-                                                Federacion Unica de Trabajadores en Carne y Ramas Anexas.
+                                                Universidad Privada Franz Tamayo.
                                             </a>
                                         </li>
                                     </ul>

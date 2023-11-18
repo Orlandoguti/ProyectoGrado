@@ -72,7 +72,7 @@ a {
   .login-image {
     transform: translateY(20%);
     max-width: 100%;
-    width: 250px;
+    width: 170px;
     height: auto;
   }
 a:focus {

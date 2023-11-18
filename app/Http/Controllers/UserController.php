@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App\Imports\UsersImport;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -23,15 +24,15 @@ class UserController extends Controller
         if ($buscar==''){
             $personas = User::leftjoin('personas','users.id','=','personas.id')
             ->leftjoin('roles','users.idrol','=','roles.id')
-            ->leftjoin('cargos','personas.idcargo','=','cargos.id')
-            ->select('personas.id','personas.nombre','personas.apellidoP','personas.apellidoM','personas.marca','personas.idcargo','personas.num_documento','personas.direccion','personas.telefono','users.email','users.password','users.condicion','users.idrol','roles.nombre as rol','personas.imagen')
+            ->leftjoin('carreras','personas.idcarrera','=','carreras.id')
+            ->select('personas.id','personas.nombre','personas.color','personas.idcarrera','personas.num_documento','personas.direccion','personas.telefono','users.email','users.password','users.condicion','users.idrol','roles.nombre as rol','personas.imagen')
             ->orderBy('personas.id', 'desc')->paginate(10);
         }
         else{
             $personas = User::leftjoin('personas', 'users.id', '=', 'personas.id')
             ->leftjoin('roles', 'users.idrol', '=', 'roles.id')
-            ->leftjoin('cargos', 'personas.idcargo', '=', 'cargos.id')
-            ->select('personas.id', 'personas.nombre','personas.apellidoP','personas.apellidoM','personas.marca', 'personas.idcargo', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'users.email', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol', 'personas.imagen')
+            ->leftjoin('carreras', 'personas.idcarrera', '=', 'carreras.id')
+            ->select('personas.id', 'personas.nombre','personas.color', 'personas.idcarrera', 'personas.num_documento', 'personas.direccion', 'personas.telefono', 'users.email', 'users.password', 'users.condicion', 'users.idrol', 'roles.nombre as rol', 'personas.imagen')
             ->where(function ($query) use ($criterio, $buscar) {
                 $query->where('personas.'.$criterio, 'like', '%'. $buscar . '%')
                     ->orWhere('roles.nombre', 'like', '%'. $buscar . '%');
@@ -61,17 +62,15 @@ class UserController extends Controller
 
             $persona = new Persona();
             $persona->nombre = $request->nombre;
-            $persona->apellidoP = $request->apellidoP;
-            $persona->apellidoM = $request->apellidoM;
-            $persona->marca = $request->marca;
+            $persona->color = $request->color;
             $persona->num_documento = $request->num_documento;
             $persona->direccion = $request->direccion;
             $persona->telefono = $request->telefono;
-            $persona->idcargo = $request->idcargo;
+            $persona->idcarrera = $request->idcarrera;
             if ($request->idrol == 2) {
-                $persona->marca = 'Sin Marca';
+                $persona->color = 'Sin color';
                 }else{
-                $persona->marca = $request->marca;
+                $persona->color = $request->color;
                 }
             $fileData = $request->file('imagen');
             if($fileData) { // Check if an image is uploaded
@@ -112,13 +111,11 @@ class UserController extends Controller
             $user = User::findOrFail($request->id);
             $persona = Persona::findOrFail($user->id);
             $persona->nombre = $request->nombre;
-            $persona->apellidoP = $request->apellidoP;
-            $persona->apellidoM = $request->apellidoM;
-            $persona->marca = $request->marca;
+            $persona->color = $request->color;
             $persona->num_documento = $request->num_documento;
             $persona->direccion = $request->direccion;
             $persona->telefono = $request->telefono;
-            $persona->idcargo = $request->idcargo;
+            $persona->idcarrera = $request->idcarrera;
             $fileData = $request->file('imagen');
             if(Input::hasfile('imagen')) {
                 $fileName = time()."_".$fileData->getClientOriginalName();
@@ -160,16 +157,18 @@ class UserController extends Controller
         $path = $request->file('select_users_file')->getRealPath();
         Excel::import(new UsersImport,$path);
     }
-    public function verificarMarca(Request $request)
+
+    public function obteneridCarrera()
     {
-        $marca = $request->input('marca');
+        $idcarreras = Auth::user()->persona->idcarrera;
 
-        $existingUser = Persona::where('marca', $marca)->first();
+        return ['idcarreras' => $idcarreras];
+    }
 
-        if ($existingUser) {
-            return response()->json(['exists' => true]);
-        }
+    public function obteneridUsuaio()
+    {
+        $idusuarioget = Auth::user()->persona->id;
 
-        return response()->json(['exists' => false]);
+        return ['idusuarioget' => $idusuarioget];
     }
 }

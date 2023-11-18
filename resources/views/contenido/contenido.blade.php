@@ -88,7 +88,7 @@
 
                 @elseif (Auth::user()->idrol == 3)
                 <template v-if="menu==0">
-                    <noticias-afiliado></noticias-afiliado>
+                    <noticias></noticias>
                 </template>
                 <template v-if="menu==1">
                     <afiliado-ganado></afiliado-ganado>

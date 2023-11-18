@@ -37,7 +37,7 @@
                                     <select class="form-control col-md-3" v-model="criterio">
                                         <option value="nombre">Nombre o Rol</option>
                                         <option value="num_documento">CI</option>
-                                        <option value="marca">Marca</option>
+                                        <option value="color">Color</option>
                                         <option value="telefono">Celular</option>
                                       </select>
                                       <input type="text" v-model="buscar" @keyup="listarPersona(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
@@ -74,18 +74,14 @@
                                                 </div>
                                                 <div v-if="persona.idrol == 3">
                                                     <div class="widget-content-left flex2">
-                                                        <span v-text="persona.marca" class="widget-heading"></span>
+                                                        <span v-text="persona.color" class="widget-heading"></span>
                                                         <div>                                                            
                                                             <span v-text="persona.nombre" class="widget-subheading opacity-7"></span>
-                                                            <span v-text="persona.apellidoP" class="widget-subheading opacity-7"></span>
-                                                            <span v-text="persona.apellidoM" class="widget-subheading opacity-7"></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div v-else>
-                                                    <span v-text="persona.nombre" class="widget-subheading opacity-7"></span>                                                    
-                                                    <span v-text="persona.apellidoP" class="widget-subheading opacity-7"></span>
-                                                    <span v-text="persona.apellidoM" class="widget-subheading opacity-7"></span>
+                                                    <span v-text="persona.nombre" class="widget-subheading opacity-7"></span>          
                                                 </div>
 
                                             </div>
@@ -163,16 +159,6 @@
                                                 <div class="col-md-12 mb-3" style="margin-left: -10%;">
                                                     <span style="color: antiquewhite;"> Nombre:</span><input type="text" v-model="nombre" class="form-control" placeholder="Nombre..."  required>
                                                     <div class="invalid-feedback"> Añada un Nombre</div>
-                                                    <div class="valid-feedback"> Correcto! </div>
-                                                </div>
-                                                <div class="col-md-12 mb-3" style="margin-left: -10%;">
-                                                    <span style="color: antiquewhite;"> ApellidoP:</span><input type="text" v-model="apellidoP" class="form-control" placeholder="Apellido P" required>
-                                                    <div class="invalid-feedback"> Añada Apellido P!</div>
-                                                    <div class="valid-feedback"> Correcto! </div>
-                                                </div>
-                                                <div class="col-md-12 mb-3" style="margin-left: -10%;">
-                                                    <span style="color: antiquewhite;"> ApellidoM:</span><input type="text" v-model="apellidoM" class="form-control" placeholder="Apellido M" required>
-                                                    <div class="invalid-feedback"> Añada Apellido M!</div>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                                 <div class="col-md-12 mb-3" style="margin-left: -10%; margin-top: -5.4%;">
@@ -272,20 +258,10 @@
                                                     <span style="color: antiquewhite;"> Nombre:</span><input type="text" v-model="nombre" class="form-control" placeholder="Nombre..."  required>
                                                     <div class="invalid-feedback"> Añada un Nombre</div>
                                                     <div class="valid-feedback"> Correcto! </div>
-                                                </div>
-                                                <div class="col-md-12 mb-3" style="margin-left: -10%;">
-                                                    <span style="color: antiquewhite;"> ApellidoP:</span><input type="text" v-model="apellidoP" class="form-control" placeholder="Apellido P" required>
-                                                    <div class="invalid-feedback"> Añada Apellido P!</div>
-                                                    <div class="valid-feedback"> Correcto! </div>
-                                                </div>
-                                                <div class="col-md-12 mb-3" style="margin-left: -10%;">
-                                                    <span style="color: antiquewhite;"> ApellidoM:</span><input type="text" v-model="apellidoM" class="form-control" placeholder="Apellido M" required>
-                                                    <div class="invalid-feedback"> Añada Apellido M!</div>
-                                                    <div class="valid-feedback"> Correcto! </div>
-                                                </div>
+                                                </div>                                               
                                                 <div class="col-md-12 mb-3" style="margin-left: -10%; margin-top: -5.4%;">
-                                                    <span style="color: antiquewhite;"> Marca:</span> <input type="text" v-model="marca" class="form-control" pattern=".{2,}" title="Debe contener al menos 2 caracteres" placeholder="Marca de la persona" required>
-                                                    <div class="invalid-feedback"> Añada una Marca!</div>
+                                                    <span style="color: antiquewhite;"> Color:</span> <input type="text" v-model="color" class="form-control" pattern=".{2,}" title="Debe contener al menos 2 caracteres" placeholder="Color de la persona" required>
+                                                    <div class="invalid-feedback"> Añada una Color!</div>
                                                     <div class="valid-feedback"> Correcto! </div>
                                                 </div>
                                                 </div>
@@ -339,7 +315,7 @@
                                         </div>
                                         <div style="margin-top: -6%; display: flex; justify-content: center;">
                                             <button type="button" @click="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="button" v-if="tipoAccion==1" style="margin-left: 2%;" class="btn btn-primary" @click="verificarMarca()" @onclick="funciones()">Registrar</button>
+                                            <button type="button" v-if="tipoAccion==1" style="margin-left: 2%;" class="btn btn-primary" @click="registrarPersona()" @onclick="funciones()">Registrar</button>
                                             <button type="button" v-if="tipoAccion==2" style="margin-left: 2%;" class="btn btn-primary" @click="actualizarPersona()">Actualizar</button>
                                         </div>
                                 </form>
@@ -364,9 +340,7 @@
                 ing:'',
                 persona_id: 0,
                 nombre : '',
-                apellidoP : '',
-                apellidoM : '',
-                marca : '',
+                color : '',
                 num_documento : '',
                 direccion : '',
                 telefono : '',
@@ -520,20 +494,6 @@
                 //Envia la petición para visualizar la data de esa página
                 me.listarPersona(page,buscar,criterio);
             },
-            verificarMarca() {
-                axios.post('/user/verificarMarca', { marca: this.marca })
-                    .then((response) => {
-                        if (response.data.exists) {
-                            Swal.fire('Error', 'La marca ya existe en la base de datos.', 'error');
-                        } else {
-                            // Marca no existe, continuar con el registro
-                            this.registrarPersona();
-                        }
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            },
             registrarPersona(){
                 if (this.$refs.form.checkValidity()) {                    
                     const swalWithBootstrapButtons = Swal.mixin({
@@ -556,9 +516,7 @@
                 let me = this;
                 let formData = new FormData();
                 formData.append('nombre', this.nombre);
-                formData.append('apellidoP', this.apellidoP);
-                formData.append('apellidoM', this.apellidoM);
-                formData.append('marca', this.marca);
+                formData.append('color', this.color);
                 formData.append('num_documento', this.num_documento);
                 formData.append('direccion', this.direccion);
                 formData.append('telefono', this.telefono);
@@ -621,10 +579,8 @@
             let formData = new FormData();
 
                 formData.append('id', this.persona_id);
-                formData.append('nombre', this.nombre);                
-                formData.append('apellidoP', this.apellidoP);
-                formData.append('apellidoM', this.apellidoM);
-                formData.append('marca', this.marca);
+                formData.append('nombre', this.nombre); 
+                formData.append('color', this.color);
                 formData.append('num_documento', this.num_documento);
                 formData.append('direccion', this.direccion);
                 formData.append('telefono', this.telefono);
@@ -658,12 +614,10 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.nombre='';
-                this.apellidoP='';
-                this.apellidoM='';
                 this.formValidated=false;
                 this.inputHabilitado = 'false';
                 this.vermodal=1;
-                this.marca='';
+                this.color='';
                 this.num_documento='';
                 this.direccion='';
                 this.telefono='';
@@ -690,9 +644,7 @@
                                 this.modal = 1;
                                 this.tituloModal = 'Registrar Usuario';
                                 this.nombre= '';
-                                this.apellidoP='';
-                                this.apellidoM='';
-                                this.marca='';
+                                this.color='';
                                 this.num_documento='';
                                 this.direccion='';
                                 this.telefono='';
@@ -722,9 +674,7 @@
                                 this.vermodal = 2;
                                 }
                                 this.nombre = data['nombre'];
-                                this.apellidoP = data['apellidoP'];
-                                this.apellidoM = data['apellidoM'];
-                                this.marca = data['marca'];
+                                this.color = data['color'];
                                 this.num_documento = data['num_documento'];
                                 this.direccion = data['direccion'];
                                 this.telefono = data['telefono'];

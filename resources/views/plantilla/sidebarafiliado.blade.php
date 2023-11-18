@@ -300,10 +300,10 @@
                                 <li  @click="menu=0">
                                     <a href="#" class="mm-active">
                                         <i class="metismenu-icon pe-7s-home"></i>
-                                        Noticias
+                                        Programacion
                                     </a>
                                 </li>
-                                <li class="app-sidebar__heading">MIS GANADOS</li>
+                                <li class="app-sidebar__heading">MIS MATERIAS</li>
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-server"></i>
@@ -314,13 +314,7 @@
                                         <li @click="menu=1">
                                             <a href="#">
                                                 <i class="metismenu-icon pe-7s-menu"></i>
-                                                Mis Ganados
-                                            </a>
-                                        </li>
-                                        <li @click="menu=2">
-                                            <a href="#">
-                                                <i class="metismenu-icon pe-7s-menu"></i>
-                                                Mis Ganados Faeneados
+                                                Mis Materias
                                             </a>
                                         </li>
                                     </ul>
@@ -340,8 +334,8 @@
                                 <div class="app-footer-left">
                                     <ul class="nav">
                                         <li class="nav-item">
-                                            <a href="javascript:void(0);" class="nav-link">
-                                                @2023 F.U.T.E.C.R.A.
+                                        <a href="javascript:void(0);" class="nav-link">
+                                                @2023 UNIFRANZ S.A.
                                             </a>
                                         </li>
                                     </ul>
@@ -350,7 +344,7 @@
                                     <ul class="nav">
                                         <li class="nav-item">
                                             <a href="javascript:void(0);" class="nav-link">
-                                                Federacion Unica de Trabajadores en Carne y Ramas Anexas.
+                                                Universidad Privada Franz Tamayo.
                                             </a>
                                         </li>
                                     </ul>
